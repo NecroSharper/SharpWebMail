@@ -36,7 +36,7 @@ namespace anmar.SharpWebMail
 		public void Add ( System.Object key, System.Object value ) {
 			if ( key==null || value ==null )
 				throw new System.ArgumentNullException();
-			
+
 			System.Text.RegularExpressions.Regex condition = this.ParseCondition(key.ToString());
 			anmar.SharpWebMail.EmailServerInfo server = anmar.SharpWebMail.EmailServerInfo.Parse(value.ToString());
 			if ( condition!=null && server!=null )
@@ -55,10 +55,9 @@ namespace anmar.SharpWebMail
 			return condition;
 		}
 		public anmar.SharpWebMail.EmailServerInfo Select ( System.String key ) {
-			foreach(System.Text.RegularExpressions.Regex item in this._servers.Keys ) {
-				log.Error(item.IsMatch(key));
-				if ( item.IsMatch(key) )
-					return (anmar.SharpWebMail.EmailServerInfo)this._servers[item];
+			foreach( System.Collections.DictionaryEntry item in this._servers ) {
+				if ( ((System.Text.RegularExpressions.Regex)item.Key).IsMatch(key) )
+					return (anmar.SharpWebMail.EmailServerInfo)item.Value;
 			}
 			return null;
 		}

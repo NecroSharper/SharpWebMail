@@ -142,7 +142,7 @@ namespace anmar.SharpWebMail.UI
 			}
 		}
 		private void parseConfigServers ( System.String config_item ) {
-			System.Collections.Hashtable config = (System.Collections.Hashtable)System.Configuration.ConfigurationSettings.GetConfig(config_item);
+			System.Collections.Specialized.NameValueCollection config = (System.Collections.Specialized.NameValueCollection)System.Configuration.ConfigurationSettings.GetConfig(config_item);
 			anmar.SharpWebMail.ServerSelector selector = new anmar.SharpWebMail.ServerSelector();
 			if ( config!=null ) {
 				foreach ( System.String item in config.Keys ) {
