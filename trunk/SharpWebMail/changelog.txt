@@ -1,3 +1,6 @@
+11/03/2004
+ - [Login] Hide culture combo if it's empty.
+
 11/02/2004
  - [Inbox] Start refactorization of the inbox handling code in order to improve performance.
 
