@@ -1,0 +1,103 @@
+<Project name="SharpWebMail" standardNamespace="anmar.SharpWebMail" description="" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
+  <Contents>
+    <File name=".\src\AssemblyInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\CTNInbox.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\CTNSimplePOP3Client.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\CTNSimpleTCPClient.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\UI\default.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\UI\download.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\UI\global.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\UI\login.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\UI\newmessage.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\UI\globalUI.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\UI\readmessage.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\UI\search.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\res\resources.cmd" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.es.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.sr-SP-Latn.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\changelog.txt" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\license.txt" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\doc\readme.txt" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\doc\TODO.txt" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\doc\cultures_neutral.txt" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\doc\cultures_specific.txt" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\default.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\download.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\Global.asax" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\globalUI.ascx" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\login.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\newmessage.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\readmessage.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\search.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\sharpwebmail.css" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\web.config" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\fcke\fckconfig.js" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.resources" subtype="Code" buildaction="EmbedAsResource" dependson="" data="" />
+    <File name=".\src\UI\readmessageheaders.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\basicsanitizer.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\res\SharpWebMail.da.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\src\serverselector.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\emailserver.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\iemailclient.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\emailclientfactory.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\simpleimapclient.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\simpleemailclient.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\res\SharpWebMail.ru.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.el.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.fr.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.ro.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.vi.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.it.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\src\UI\addressbook.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="..\asp.net\addressbook.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\src\sharpwebmailconfighandler.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\res\SharpWebMail.pt-BR.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\SharpWebMail.build" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.en.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.zh-CHT.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+  </Contents>
+  <References>
+    <Reference type="Project" refto="SharpMimeTools" localcopy="True" />
+    <Reference type="Assembly" refto="..\bin\log4net.dll" localcopy="True" />
+    <Reference type="Assembly" refto="..\bin\FredCK.FCKeditorV2.dll" localcopy="True" />
+    <Reference type="Assembly" refto="..\bin\OpenSmtp.dll" localcopy="True" />
+  </References>
+  <DeploymentInformation target="" script="" strategy="Assembly" />
+  <Configuration runwithwarnings="False" name="Debug">
+    <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
+    <Execution commandlineparameters="" consolepause="True" />
+    <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+  </Configuration>
+  <Configurations active="Debug">
+    <Configuration runwithwarnings="False" name="Debug">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
+      <Execution commandlineparameters="" consolepause="True" />
+      <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+    </Configuration>
+    <Configuration runwithwarnings="False" name="Release">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="True" win32Icon="" noconfig="False" nostdlib="False" />
+      <Execution commandlineparameters="" consolepause="True" />
+      <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+    </Configuration>
+    <Configuration runwithwarnings="False" name="Debug-1.1">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="v1.1.4322" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG;NET_1_1;API_1_1" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
+      <Execution commandlineparameters="" consolepause="True" />
+      <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+    </Configuration>
+    <Configuration runwithwarnings="False" name="Release-1.1">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="v1.1.4322" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="NET_1_1;API_1_1" generatexmldocumentation="True" win32Icon="" noconfig="False" nostdlib="False" />
+      <Execution commandlineparameters="" consolepause="True" />
+      <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+    </Configuration>
+    <Configuration runwithwarnings="False" name="Debug-2.0">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="v2.0.40607" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG;NET_2_0;API_2_0" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
+      <Execution commandlineparameters="" consolepause="True" />
+      <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+    </Configuration>
+    <Configuration runwithwarnings="False" name="Release-2.0">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="v2.0.40607" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="NET_2_0;API_2_0" generatexmldocumentation="True" win32Icon="" noconfig="False" nostdlib="False" />
+      <Execution commandlineparameters="" consolepause="True" />
+      <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+    </Configuration>
+  </Configurations>
+</Project>
