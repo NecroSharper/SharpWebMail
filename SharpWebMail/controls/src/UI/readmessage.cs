@@ -84,7 +84,7 @@ namespace anmar.SharpWebMail.UI
 							label.Text = label.Text.Insert (label.Text.Length, "</pre>");
 						} else {
 							label.CssClass = "XPFormText";
-							if ( (int)Application["sanitizer_mode"]==1 ) {
+							if ( (int)Application["sharpwebmail/read/message/sanitizer_mode"]==1 ) {
 								label.Text = anmar.SharpWebMail.BasicSanitizer.SanitizeHTML(label.Text, anmar.SharpWebMail.SanitizerMode.CommentBlocks|anmar.SharpWebMail.SanitizerMode.RemoveEvents);
 							}
 						}
@@ -106,8 +106,8 @@ namespace anmar.SharpWebMail.UI
 					attachment.CssClass = "XPDownload";
 					if ( mm.Name!=null )
 						attachment.Text = System.String.Format ("{0} ({1} bytes)", System.IO.Path.GetFileName(mm.Name), mm.Size);
-					if ( Session["temppath"]!=null ) {
-						System.String path = Session["temppath"].ToString();
+					if ( Session["sharpwebmail/read/message/temppath"]!=null ) {
+						System.String path = Session["sharpwebmail/read/message/temppath"].ToString();
 						path = System.IO.Path.Combine (path, msgid);
 						// Dump file contents
 						System.IO.FileInfo file = mm.DumpBody ( path, true );

@@ -35,6 +35,7 @@
     <File name=".\res\SharpWebMail.resources" subtype="Code" buildaction="EmbedAsResource" dependson="" data="" />
     <File name=".\src\UI\readmessageheaders.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\src\basicsanitizer.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\res\SharpWebMail.da.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="SharpMimeTools" localcopy="True" />

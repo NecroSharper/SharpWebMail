@@ -27,6 +27,7 @@ namespace anmar.SharpWebMail.UI
 {
 	public class Global : System.Web.HttpApplication {
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private System.Collections.Hashtable configOptions = new System.Collections.Hashtable();
 
 		public override void Init() {
 		}
@@ -54,27 +55,40 @@ namespace anmar.SharpWebMail.UI
 			// Inbox Object
 			Session["inbox"] = new anmar.SharpWebMail.CTNInbox();
 
-			// Temp folder
-			if ( Application["temppath"]!=null ) {
-				Session["temppath"] = System.IO.Path.Combine (Application["temppath"].ToString(), Session.SessionID);
-			} else {
-				Session["temppath"] = null;
-			}
-
+			Session["sharpwebmail/read/message/temppath"] = parseTempFolder(Application["sharpwebmail/read/message/temppath"], Session.SessionID);
+			Session["sharpwebmail/send/message/temppath"] = parseTempFolder(Application["sharpwebmail/send/message/temppath"], Session.SessionID);
 		}
 
 		public void Session_End ( System.Object sender, System.EventArgs args ) {
 			// Clean up temp files
+			cleanTempFolder(Session["sharpwebmail/read/message/temppath"]);
+			cleanTempFolder(Session["sharpwebmail/send/message/temppath"]);
+		}
+		private void cleanTempFolder ( System.Object value ) {
 			try {
-				if ( Session["temppath"]!=null ) {
-					System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo (Session["temppath"].ToString());
+				if ( value!=null ) {
+					System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo (value.ToString());
 					dir.Delete(true);
 					dir=null;
 				}
-			} catch( System.Exception ) {
+			} catch( System.Exception e ) {
+				if ( log.IsErrorEnabled )
+					log.Error("Error cleanling up dir", e);
 			}
 		}
 		private void initConfig () {
+			this.configOptions.Add ( "sharpwebmail/general/default_lang", "en-US" );
+			this.configOptions.Add ( "sharpwebmail/general/title", "hola" );
+			this.configOptions.Add ( "sharpwebmail/login/append", "" );
+			this.configOptions.Add ( "sharpwebmail/login/mode", 1 );
+			this.configOptions.Add ( "sharpwebmail/login/title", "" );
+			this.configOptions.Add ( "sharpwebmail/read/inbox/pagesize", 10 );
+			this.configOptions.Add ( "sharpwebmail/read/inbox/stat", 2 );
+			this.configOptions.Add ( "sharpwebmail/read/message/sanitizer_mode", 0 );
+			this.configOptions.Add ( "sharpwebmail/read/message/temppath", "" );
+			this.configOptions.Add ( "sharpwebmail/send/message/sanitizer_mode", 0 );
+			this.configOptions.Add ( "sharpwebmail/send/message/temppath", "" );
+
 			Application["product"] = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 			Application["version"] = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
@@ -84,22 +98,53 @@ namespace anmar.SharpWebMail.UI
 				Application.Add (key, System.Configuration.ConfigurationSettings.AppSettings[key]);
 			}
 
+			initConfigSection("sharpwebmail/general");
+			initConfigSection("sharpwebmail/login");
+			initConfigSection("sharpwebmail/read/inbox");
+			initConfigSection("sharpwebmail/read/message");
+			initConfigSection("sharpwebmail/send/message");
+
 			parseConfig ("mail_server_pop3_port", 110);
 			parseConfig ("mail_server_smtp_port", 25);
-			parseConfig ("pagesize", 10);
-			parseConfig ("login_mode", 1);
-			parseConfig ("sanitizer_mode", 0);
 
-			if ( Application["temppath"]!=null && Application["temppath"].ToString().Length>0) {
-				Application["temppath"] = System.IO.Path.Combine (Server.MapPath("/"), Application["temppath"].ToString());
-			} else {
-				Application["temppath"] = null;
+			Application["sharpwebmail/read/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/read/message/temppath"]);
+			Application["sharpwebmail/send/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/send/message/temppath"]);
+		}
+		private void initConfigSection ( System.String section ) {
+			System.Collections.Hashtable config = (System.Collections.Hashtable)System.Configuration.ConfigurationSettings.GetConfig(section);
+			if ( config!=null ) {
+				foreach ( System.String item in config.Keys ) {
+					System.String config_item = System.String.Format("{0}/{1}", section, item);
+					Application.Add (config_item, initConfigElement(config_item, config[item]));
+				}
+			}
+		}
+		private System.Object initConfigElement ( System.String config_item, System.Object value ) {
+			if ( this.configOptions.ContainsKey(config_item) ) {
+				System.Object defaultvalue = this.configOptions[config_item];
+				if ( defaultvalue.GetType().Equals(typeof(int)) ) {
+					return parseConfigElement(value.ToString(), (int)defaultvalue);
+				} else if ( defaultvalue.GetType().Equals(typeof(System.String)) ) {
+					return (value==null)?defaultvalue:value;
+				}
+			}
+			return value;
+		}
+		private System.Object parseConfigElement ( System.String value, System.Int32 defaultvalue ) {
+			try {
+				return System.Int32.Parse(value);
+			} catch ( System.Exception e ) {
+				if ( log.IsErrorEnabled )
+					log.Error("Error parsing integer", e);
+				return defaultvalue;
 			}
 		}
 		private void parseConfig ( System.String key, System.Int32 defaultvalue ) {
 			try {
 				Application[key] = System.Int32.Parse(Application[key].ToString());
-			} catch ( System.Exception ) {
+			} catch ( System.Exception e ) {
+				if ( log.IsErrorEnabled )
+					log.Error("Error parsing integer", e);
 				Application[key] = defaultvalue;
 			}
 		}
@@ -107,7 +152,9 @@ namespace anmar.SharpWebMail.UI
 			System.Globalization.CultureInfo culture = null;
 			try {
 				culture = System.Globalization.CultureInfo.CreateSpecificCulture(name);
-			} catch ( System.Exception ) {
+			} catch ( System.Exception e ) {
+				if ( log.IsErrorEnabled )
+					log.Error("Error parsing culture", e);
 			}
 			return culture;
 		}
@@ -119,12 +166,20 @@ namespace anmar.SharpWebMail.UI
 					break;
 			}
 			if ( culture==null )
-				culture = ParseCulture(System.Configuration.ConfigurationSettings.AppSettings["default_lang"]);
+				culture = ParseCulture(Application["sharpwebmail/general/default_lang"].ToString());
 			if ( culture==null )
 				culture = ParseCulture("en-US");
 			if ( culture==null )
 				culture = ParseCulture("");
 			return culture;
+		}
+		private System.String parseTempFolder( System.Object prefix, System.Object sufix ) {
+			// Temp folder
+			if ( prefix!=null && sufix!=null ) {
+				return System.IO.Path.Combine (prefix.ToString(), sufix.ToString());
+			} else {
+				return null;
+			}
 		}
 	}
 }

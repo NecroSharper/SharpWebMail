@@ -33,10 +33,10 @@ namespace anmar.SharpWebMail.UI
 			System.String msgid = System.Web.HttpUtility.HtmlEncode (Page.Request.QueryString["msgid"]);
 			System.String name = Page.Request.QueryString["name"];
 			System.String inline = Page.Request.QueryString["i"];
-			if ( msgid != null && name!=null && Session["temppath"]!=null ) {
+			if ( msgid != null && name!=null && Session["sharpwebmail/read/message/temppath"]!=null ) {
 				System.Object[] details = inbox[ msgid ];
 				if ( details != null && details.Length>0 ) {
-					System.String path = Session["temppath"].ToString();
+					System.String path = Session["sharpwebmail/read/message/temppath"].ToString();
 					try {
 						path = System.IO.Path.Combine (path, msgid);
 					} catch ( System.ArgumentException ) {
