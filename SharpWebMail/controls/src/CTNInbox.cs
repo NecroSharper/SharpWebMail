@@ -52,7 +52,8 @@ namespace anmar.SharpWebMail
 											  "Headers", typeof(anmar.SharpMimeTools.SharpMimeHeader), 		// 13
 											  "Date", typeof(System.DateTime),			// 14
 											  "delete", typeof(System.Boolean),			// 15
-											  "read", typeof(System.Boolean)};			// 16
+											  "read", typeof(System.Boolean),			// 16
+											  "guid", typeof(System.Guid)};			// 17
 		/// <summary>
 		/// 
 		/// </summary>
@@ -79,18 +80,28 @@ namespace anmar.SharpWebMail
 		public CTNInbox( System.String[] names ) {
 			this.names = names;
 		}
+		public System.Object[] this [ System.String uid ] {
+			get {
+				try {
+					return this[new System.Guid(uid)];
+				} catch ( System.Exception e ) {
+					if ( log.IsErrorEnabled )
+						log.Error("Error parsing UID", e);
+					return null;
+				}
+			}
+		}
 		/// <summary>
 		/// 
 		/// </summary>
-		public System.Object[] this [ System.Object uidl ] {
+		public System.Object[] this [ System.Guid guid ] {
 			get {
-				uidl = uidl.ToString().Replace("'", "''");
-				System.Data.DataRow[] result = this.inbox.Select(System.String.Format ("uidl='{0}'", uidl));
+				System.Data.DataRow[] result = this.inbox.Select(System.String.Format ("guid='{0}'", guid));
 				if ( result.Length==1 ) {
-					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("{1} uidl='{0}' found", uidl));
+					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("{1} guid='{0}' found", guid));
 					return result[0].ItemArray;
 				} else {
-					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("uidl='{0}' not found", uidl));
+					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("guid='{0}' not found", guid));
 					return null;
 				}
 			}
@@ -189,9 +200,9 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="uidl"></param>
-		public void deleteMessage ( System.String uidl ) {
-			if ( this.markMessage( uidl, 15, true ) )
+		/// <param name="uid"></param>
+		public void deleteMessage ( System.String uid ) {
+			if ( this.markMessage( uid, 15, true ) )
 				this.mcount--;
 			return;
 		}
@@ -201,16 +212,26 @@ namespace anmar.SharpWebMail
 		public void flush () {
 			this.init();
 		}
+		private System.Guid getGuid ( System.String uid ) {
+			try {
+				return new System.Guid(uid);
+			} catch ( System.Exception e ) {
+				if ( log.IsErrorEnabled )
+					log.Error("Error parsing UID", e);
+				return System.Guid.Empty;
+			}
+		}
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="uidl"></param>
+		/// <param name="uid"></param>
 		/// <returns></returns>
-		public System.String getMessageIndex ( System.String uidl ) {
-			System.Data.DataRow[] result;
-			uidl = uidl.Replace("'", "''");
-			result = this.inbox.Select("uidl='" + uidl + "'");
-			return ( result.Length==1 )?result[0][1].ToString():System.String.Empty;
+		public System.String getMessageIndex ( System.String uid ) {
+			System.Data.DataRow[] result=null;
+			System.Guid guid = this.getGuid(uid);
+			if ( !guid.Equals(System.Guid.Empty) )
+				result = this.inbox.Select("guid='" + guid.ToString() + "'");
+			return ( result!=null && result.Length==1 )?result[0][1].ToString():System.String.Empty;
 		}
 		/// <summary>
 		/// 
@@ -240,15 +261,15 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="uidl"></param>
+		/// <param name="uid"></param>
 		/// <param name="col"></param>
 		/// <param name="val"></param>
-		protected bool markMessage ( System.String uidl, int col, bool val ) {
+		protected bool markMessage ( System.String uid, int col, bool val ) {
 			System.Data.DataRow[] result;
-			if ( uidl==null )
+			System.Guid guid = this.getGuid(uid);
+			if ( guid.Equals(System.Guid.Empty) )
 				return false;
-			uidl = uidl.Replace("'", "''");
-			result = this.inbox.Select("uidl='" + uidl + "'");
+			result = this.inbox.Select("guid='" + guid.ToString() + "'");
 			if ( result.Length==1 && ((bool)result[0][col])==!val ) {
 				result[0][col] = val;
 				return true;
@@ -311,6 +332,7 @@ namespace anmar.SharpWebMail
 			tmpRow[13] = System.DBNull.Value;
 			tmpRow[15] = false;
 			tmpRow[16] = false;
+			tmpRow[17] = System.Guid.NewGuid();
 			inbox.Rows.Add (tmpRow);
 			this.mcount++;
 			this.msize += size;
@@ -318,17 +340,17 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="uidl"></param>
-		public void readMessage ( System.String uidl ) {
-			this.markMessage( uidl, 16, true );
+		/// <param name="uid"></param>
+		public void readMessage ( System.String uid ) {
+			this.markMessage( uid, 16, true );
 			return;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="uidl"></param>
-		public void undeleteMessage ( System.String uidl ) {
-			if ( this.markMessage( uidl, 15, false ))
+		/// <param name="uid"></param>
+		public void undeleteMessage ( System.String uid ) {
+			if ( this.markMessage( uid, 15, false ))
 				this.mcount++;
 			return;
 		}
