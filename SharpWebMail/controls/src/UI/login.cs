@@ -40,6 +40,7 @@ namespace anmar.SharpWebMail.UI
 		protected System.Web.UI.WebControls.Button loginButton;
 		protected System.Web.UI.HtmlControls.HtmlForm LoginForm;
 		protected System.Web.UI.WebControls.Literal loginWindowHeadTitle;
+		protected System.Web.UI.HtmlControls.HtmlSelect selectculture;
 		protected System.Web.UI.WebControls.RegularExpressionValidator usernameValidator;
 
 		protected System.String PrepareLogin ( System.String user ) {
@@ -55,6 +56,15 @@ namespace anmar.SharpWebMail.UI
 		/*
 		 * Events
 		*/
+		protected void CultureChange ( System.Object sender, System.EventArgs args ) {
+			if ( selectculture!=null ) {
+				try {
+					int effectiveculture = System.Int32.Parse(selectculture.Value);
+					Session["effectiveculture"] = effectiveculture;
+					Session["resources"] = ((System.Resources.ResourceManager)Application["resources"]).GetResourceSet(new System.Globalization.CultureInfo(effectiveculture), true,true);
+				} catch ( System.Exception ){}
+			}
+		}
 		protected void Login_Click ( System.Object sender, System.EventArgs args ) {
 			// authenticate user
 			if (this.IsPostBack&&this.IsValid) {
@@ -87,6 +97,15 @@ namespace anmar.SharpWebMail.UI
 		/*
 		 * Page Events
 		*/
+		protected void Page_Init () {
+			if ( selectculture!=null && !this.IsPostBack ) {
+				selectculture.DataSource = Application["AvailableCultures"];
+				selectculture.DataTextField = "Value";
+				selectculture.DataValueField = "Key";
+				selectculture.DataBind();
+				selectculture.Value = Session["effectiveculture"].ToString();
+			}
+		}
 		protected void Page_Load ( System.Object sender, System.EventArgs args ) {
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
@@ -100,7 +119,6 @@ namespace anmar.SharpWebMail.UI
 				loginWindowPassword.Text = rs.GetString("loginWindowPassword");
 				loginButton.Text = rs.GetString("loginButton");
 				errorMsgLogin.Text = rs.GetString("errorMsgLogin");
-
 				switch ( (int)Application["sharpwebmail/login/mode"] ) {
 					case 2:
 						loginWindowUsername.Text = rs.GetString("loginWindowUsername2");

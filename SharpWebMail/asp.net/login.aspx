@@ -44,6 +44,13 @@
             <td> <ASP:RequiredFieldValidator id="RequiredFieldValidator2" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="password" />
             </td>
           </tr>
+          <tr> 
+            <td></td>
+            <td> 
+              <select id="selectculture" runat="server" OnServerChange="CultureChange" style="XPInput" />
+            </td>
+            <td></td>
+          </tr>
           <tr>
             <td>&nbsp;</td>
             <td align="center"><asp:button EnableViewState="true" id="loginButton" onclick="Login_Click" runat="server" text="Login" />
