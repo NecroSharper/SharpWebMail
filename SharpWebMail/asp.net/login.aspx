@@ -2,7 +2,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
 <head>
-<title>Login - <%=Application["product"]%></title>
+<title><asp:Literal EnableViewState="true" id="loginWindowHeadTitle" runat="server" /> - <%=Application["product"]%></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="stylesheet" type=text/css href="sharpwebmail.css">
 </head>
@@ -16,7 +16,7 @@
         <tr>
           <td class="XPTitleBarLeft"><img src="images/spacer.gif" width="6" height="30"></td>
           <td class="XPTitleBar"><img src="images/spacer.gif" width="10" height="1"></td>
-          <td class="XPTitleBar" width="100%"><asp:Label EnableViewState="false" id="loginWindowTitle" runat="server" /></td>
+          <td class="XPTitleBar" width="100%"><asp:Label EnableViewState="true" id="loginWindowTitle" runat="server" /></td>
           <td class="XPTitleBar"></td>
           <td class="XPTitleBarClose"><img src="images/spacer.gif" width="21" height="30"></td>
           <td class="XPTitleBarRight"><img src="images/spacer.gif" width="6" height="30"></td>
@@ -29,29 +29,29 @@
     <td width="100%" class="XPWindowBackground"> 
         <table align="center">
           <tr> 
-            <td> <asp:Label EnableViewState="false" id="loginWindowUsername" CssClass="XPFormLabel" runat="server" /></td>
+            <td> <asp:Label EnableViewState="true" id="loginWindowUsername" CssClass="XPFormLabel" runat="server" /></td>
             <td> 
               <input id="username" type="text" runat="server" value="" size="25" style="XPInput" name="text" />
             </td>
-            <td> <ASP:RequiredFieldValidator EnableViewState="false" id="RequiredFieldValidator1" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="username" /><ASP:RegularExpressionValidator id="usernameValidator" ValidationExpression="^^[A-z0-9_\-]+[@][A-z0-9_\-]+([.][A-z0-9_\-]+){0,}[.][A-z]{2,4}$" ControlToValidate="username" runat="server" ErrorMessage="*" Display="Static" />
+            <td> <ASP:RequiredFieldValidator EnableViewState="true" id="RequiredFieldValidator1" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="username" /><ASP:RegularExpressionValidator id="usernameValidator" ControlToValidate="username" runat="server" ErrorMessage="*" Display="Static" />
             </td>
           </tr>
           <tr> 
-            <td> <asp:Label EnableViewState="false" id="loginWindowPassword" CssClass="XPFormLabel" runat="server" /></td>
+            <td> <asp:Label EnableViewState="true" id="loginWindowPassword" CssClass="XPFormLabel" runat="server" /></td>
             <td> 
               <input id="password" type="password" runat="server" style="XPInput" size="25" name="password" />
             </td>
-            <td> <ASP:RequiredFieldValidator EnableViewState="false" id="RequiredFieldValidator2" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="password" />
+            <td> <ASP:RequiredFieldValidator id="RequiredFieldValidator2" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="password" />
             </td>
           </tr>
           <tr>
             <td>&nbsp;</td>
-            <td align="center"><asp:button EnableViewState="false" id="Button1" onclick="Login_Click" runat="server" text="Login" />
+            <td align="center"><asp:button EnableViewState="true" id="loginButton" onclick="Login_Click" runat="server" text="Login" />
             </td>
             <td>&nbsp;</td>
           </tr>
         </table>
-        <p align="center"><asp:Label EnableViewState="false" id="errorMsgLogin" runat="server" CssClass="XPErrorMessage" visible="false" /></p>
+        <p align="center"><asp:Label EnableViewState="true" id="errorMsgLogin" runat="server" CssClass="XPErrorMessage" visible="false" /></p>
     </td>
     <td class="XPBorderRight"></td>
   </tr>

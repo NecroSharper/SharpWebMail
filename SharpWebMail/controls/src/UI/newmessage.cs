@@ -43,12 +43,12 @@ namespace anmar.SharpWebMail.UI
 		protected System.Web.UI.HtmlControls.HtmlForm sharpwebmailform;
 
 		// Input boxes
+		protected System.Web.UI.HtmlControls.HtmlInputText fromemail;
 		protected System.Web.UI.HtmlControls.HtmlInputText fromname;
 		protected System.Web.UI.HtmlControls.HtmlInputText subject;
 		protected System.Web.UI.HtmlControls.HtmlInputText toemail;
 
 		// Labels
-		protected System.Web.UI.WebControls.Label email;
 		protected System.Web.UI.WebControls.Label newMessageWindowConfirmation;
 
 		//Editor
@@ -56,8 +56,9 @@ namespace anmar.SharpWebMail.UI
 
 		//Panels
 		protected System.Web.UI.WebControls.Panel attachmentsPanel;
-		protected System.Web.UI.WebControls.Panel newMessagePanel;
 		protected System.Web.UI.WebControls.Panel confirmationPanel;
+		protected System.Web.UI.WebControls.Panel newMessageFromPanel;
+		protected System.Web.UI.WebControls.Panel newMessagePanel;
 
 		//Other form elements
 		protected System.Web.UI.HtmlControls.HtmlInputFile newMessageWindowAttachFile;
@@ -132,7 +133,7 @@ namespace anmar.SharpWebMail.UI
 			
 			this.newMessageWindowConfirmation = (System.Web.UI.WebControls.Label)this.SharpUI.FindControl("newMessageWindowConfirmation");
 
-			this.SharpUI.refreshPageButton.Click += new System.Web.UI.ImageClickEventHandler(refreshPageButton_Click);
+			this.SharpUI.refreshPageImageButton.Click += new System.Web.UI.ImageClickEventHandler(refreshPageButton_Click);
 
 			// Disable Panels
 			this.attachmentsPanel.Visible = false;
@@ -140,8 +141,8 @@ namespace anmar.SharpWebMail.UI
 			this.newMessagePanel.Visible = false;
 
 			// Disable some things
-			this.SharpUI.nextPageButton.Enabled = false;
-			this.SharpUI.prevPageButton.Enabled = false;
+			this.SharpUI.nextPageImageButton.Enabled = false;
+			this.SharpUI.prevPageImageButton.Enabled = false;
 
 			System.String msgid = Page.Request.QueryString["msgid"];
 			if ( msgid != null ) {
@@ -155,7 +156,7 @@ namespace anmar.SharpWebMail.UI
 						} else {
 							this.subject.Value = System.String.Format ("{0} {1}", this.subject.Value, details[10].ToString()).Trim();
 						}
-						// From name if present on original message
+						// From name if present on original message's To header
 						foreach ( anmar.SharpMimeTools.SharpMimeAddress address in (System.Collections.IEnumerable) details[8] ) {
 							if ( address["address"]!=null && address["address"].Equals( User.Identity.Name )
 								&& address["name"].Length>0 && !address["address"].Equals(address["name"]) ) {
@@ -167,9 +168,8 @@ namespace anmar.SharpWebMail.UI
 						foreach ( anmar.SharpMimeTools.SharpMimeAddress address in (System.Collections.IEnumerable) details[9] ) {
 							if ( address["address"]!=null && !address["address"].Equals( User.Identity.Name ) ) {
 								if ( this.toemail.Value.Length >0 )
-									this.toemail.Value += ", ";
+									this.toemail.Value += "; ";
 								this.toemail.Value += address["address"];
-								break;
 							}
 						}
 						this.FCKEditor.CanUpload = FredCK.EnablePropertyValues.False;
@@ -190,10 +190,8 @@ namespace anmar.SharpWebMail.UI
 
 			System.Web.Mail.MailMessage mailMessage = new System.Web.Mail.MailMessage();
 			mailMessage.To = this.toemail.Value;
-			//mailMessage.Cc = this.TextBoxCc.Text;
-			//mailMessage.Bcc = this.TextBoxBcc.Text;
-			mailMessage.From = "\"" + this.fromname.Value + "\" <" + User.Identity.Name + ">";
-			mailMessage.Subject = this.subject.Value;
+			mailMessage.From = this.fromname.Value.Trim() + "<" + User.Identity.Name + ">";
+			mailMessage.Subject = this.subject.Value.Trim();
 			mailMessage.Body = bodyStart + FCKEditor.Value + bodyEnd;
 			mailMessage.BodyFormat = System.Web.Mail.MailFormat.Html;
 
@@ -231,7 +229,6 @@ namespace anmar.SharpWebMail.UI
 						}
 					}
 				}
-				inbox = null;
 			}
 			try {
 				if ( log.IsDebugEnabled) log.Error ( "Sending message" );
@@ -267,9 +264,24 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		private void showMessagePanel () {
-			// Set labels localized texts
-			this.email=(System.Web.UI.WebControls.Label )this.SharpUI.FindControl("email");
-			this.email.Text = User.Identity.Name;
+			System.Web.UI.WebControls.RegularExpressionValidator rev = (System.Web.UI.WebControls.RegularExpressionValidator) this.SharpUI.FindControl("toemailValidator");
+			rev.ValidationExpression = @"^" + anmar.SharpMimeTools.ABNF.addr_spec + @"(;\s*" + anmar.SharpMimeTools.ABNF.addr_spec + @")*$";
+			this.newMessageFromPanel=(System.Web.UI.WebControls.Panel )this.SharpUI.FindControl("newMessageFromPanel");
+			if ( !this.IsPostBack ) {
+				switch ( (int)Application["login_mode"] ) {
+					case 2:
+						this.newMessageFromPanel.Visible = true;
+						rev = (System.Web.UI.WebControls.RegularExpressionValidator) this.SharpUI.FindControl("fromemailValidator");
+						rev.ValidationExpression = "^" + anmar.SharpMimeTools.ABNF.addr_spec + "$";
+						break;
+					case 1:
+					case 3:
+					default:
+						System.Web.UI.WebControls.Label newMessageWindowFromEmail = (System.Web.UI.WebControls.Label )this.SharpUI.FindControl("newMessageWindowFromEmail");
+						newMessageWindowFromEmail.Text = User.Identity.Name;
+						break;
+				}
+			}
 			this.newMessagePanel.Visible = true;
 			return;
 		}
@@ -321,7 +333,13 @@ namespace anmar.SharpWebMail.UI
 			this.newMessageWindowAttachmentsAddedList.DataSource = attachments;
 			this.newMessageWindowAttachmentsAddedList.DataBind();
 		}
-
+		protected void msgtoolbarCommand ( Object sender, System.Web.UI.WebControls.CommandEventArgs  e ) {
+			switch ( e.CommandName ) {
+				case "cancel":
+					Server.Transfer("newmessage.aspx", true);
+					break;
+			}
+		}
 		/// <summary>
 		/// 
 		/// </summary>
@@ -350,13 +368,7 @@ namespace anmar.SharpWebMail.UI
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
 
-			//Our Inbox
-			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-
-			this.mainInterface ( inbox );
-
-			inbox = null;
-
+			this.mainInterface ( this.SharpUI.Inbox );
 		}
 
 		/// <summary>

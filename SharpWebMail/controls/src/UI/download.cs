@@ -46,10 +46,13 @@ namespace anmar.SharpWebMail.UI
 					System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo ( path );
 					if ( dir.Exists && file.Exists && dir.FullName.Equals (new System.IO.DirectoryInfo (file.Directory.FullName).FullName) ) {
 						//TODO: return correct Content-Type
-						if ( inline!=null && !inline.Equals("1") )
-							Response.AppendHeader("Content-Disposition", System.String.Format ("attachment; filename=\"{0}\";", name));
+						System.String header;
+						if ( inline!=null && inline.Equals("1") )
+							header = "inline";
 						else
-							Response.AppendHeader("Content-Disposition", System.String.Format ("inline; filename=\"{0}\";", name));
+							header = "attachment";
+						header = System.String.Format ("{0}; filename=\"{1}\"; size=\"{2}\";", header, name, file.Length);
+						Response.AppendHeader("Content-Disposition", header);
 						Response.WriteFile ( file.FullName );
 					}
 					file = null;

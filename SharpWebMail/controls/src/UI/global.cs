@@ -45,21 +45,7 @@ namespace anmar.SharpWebMail.UI
 		public void Session_Start ( Object sender, EventArgs e ) {
 			// For each request initialize the culture values with the
 			// user language as specified by the browser.
-			try {
-				System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
-			} catch(Exception) {
-				try {
-					// provide fallback for not supported languages. This is really just a safety catch, for 'in-case' scenarios
-					System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(System.Configuration.ConfigurationSettings.AppSettings["default_lang"]);
-				} catch(Exception) {
-					try {
-						// provide fallback for not supported languages. This is really just a safety catch, for 'in-case' scenarios
-						System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-					} catch(Exception) {
-					}
-				}
-			}
-
+			System.Threading.Thread.CurrentThread.CurrentCulture = this.ParseCultures ( Request.UserLanguages );
 			System.Threading.Thread.CurrentThread.CurrentUICulture = System.Threading.Thread.CurrentThread.CurrentCulture;
 
 			Session["resources"] = ((System.Resources.ResourceManager)Application["resources"]).GetResourceSet(System.Threading.Thread.CurrentThread.CurrentUICulture, true, true);
@@ -99,6 +85,7 @@ namespace anmar.SharpWebMail.UI
 			parseConfig ("mail_server_pop3_port", 110);
 			parseConfig ("mail_server_smtp_port", 25);
 			parseConfig ("pagesize", 10);
+			parseConfig ("login_mode", 1);
 
 			if ( Application["temppath"]!=null && Application["temppath"].ToString().Length>0) {
 				Application["temppath"] = System.IO.Path.Combine (Server.MapPath("/"), Application["temppath"].ToString());
@@ -112,6 +99,29 @@ namespace anmar.SharpWebMail.UI
 			} catch ( System.Exception ) {
 				Application[key] = dflt;
 			}
+		}
+		private System.Globalization.CultureInfo ParseCulture ( System.String name ) {
+			System.Globalization.CultureInfo culture = null;
+			try {
+				culture = System.Globalization.CultureInfo.CreateSpecificCulture(name);
+			} catch ( System.Exception ) {
+			}
+			return culture;
+		}
+		private System.Globalization.CultureInfo ParseCultures ( System.String[] cultures ) {
+			System.Globalization.CultureInfo culture = null;
+			foreach ( System.String item in cultures ) {
+				culture = this.ParseCulture(item);
+				if ( culture!=null )
+					break;
+			}
+			if ( culture==null )
+				culture = ParseCulture(System.Configuration.ConfigurationSettings.AppSettings["default_lang"]);
+			if ( culture==null )
+				culture = ParseCulture("en-US");
+			if ( culture==null )
+				culture = ParseCulture("");
+			return culture;
 		}
 	}
 }

@@ -26,9 +26,6 @@ namespace anmar.SharpWebMail.UI
 {
 	public class Login : System.Web.UI.Page {
 
-		// General variables
-		private System.Resources.ResourceSet rm;
-
 		// Labels
 		protected System.Web.UI.WebControls.Label errorMsgLogin;
 		protected System.Web.UI.WebControls.Label loginWindowPassword;
@@ -40,42 +37,83 @@ namespace anmar.SharpWebMail.UI
 		protected System.Web.UI.HtmlControls.HtmlInputText password;
 
 		//Other form elements
+		protected System.Web.UI.WebControls.Button loginButton;
 		protected System.Web.UI.HtmlControls.HtmlForm LoginForm;
-		protected System.Web.UI.WebControls.Button Button1;
+		protected System.Web.UI.WebControls.Literal loginWindowHeadTitle;
+		protected System.Web.UI.WebControls.RegularExpressionValidator usernameValidator;
 
+		protected System.String PrepareLogin ( System.String user ) {
+			// Remove comments allowed by addr-spec
+			user = anmar.SharpMimeTools.SharpMimeTools.uncommentString (user);
+			System.String[] tmp = user.Split ('@');
+			if ( tmp.Length==2 )
+				// Remove space surrounding local-part and domain allowed by addr-spec
+				user = System.String.Format ("{0}@{1}", tmp[0].Trim(), tmp[1].Trim());
+			// TODO: limit user length
+			return user;
+		}
+		/*
+		 * Events
+		*/
 		protected void Login_Click(System.Object sender, System.EventArgs E) {
-    
-			// authenticate user: this samples accepts only one user with
-			// a name of jdoe@somewhere.com and a password of 'password'
+			// authenticate user
 			if (this.IsPostBack&&this.IsValid) {
-				anmar.SharpWebMail.CTNSimplePOP3Client client = new anmar.SharpWebMail.CTNSimplePOP3Client (Application["mail_server_pop3"].ToString(), (int) Application["mail_server_pop3_port"], username.Value, password.Value );
-				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-				if ( client.getInboxIndex ( inbox, 0, (int) Application["pagesize"], true ) ) {
-					System.Web.Security.FormsAuthentication.RedirectFromLoginPage(username.Value, false);
-					Session["client"] = client;
-					Session["inbox"] = inbox;
-				} else {
-					errorMsgLogin.Visible=true;
+				int login_mode = (int)Application["login_mode"];
+				if ( login_mode==3 && Application["login_mode_append"]!=null ) {
+					if ( this.username.Value.IndexOf ("@") == -1 ) {
+						this.username.Value = System.String.Format ( "{0}@{1}", this.username.Value, Application["login_mode_append"]);
+					}
+					this.usernameValidator.ValidationExpression = "^" + anmar.SharpMimeTools.ABNF.addr_spec + "$";
+					this.usernameValidator.Validate();
 				}
-				client = null;
-				inbox = null;
+				if ( this.IsValid ) {
+					this.username.Value=this.PrepareLogin(this.username.Value);
+					anmar.SharpWebMail.CTNSimplePOP3Client client = new anmar.SharpWebMail.CTNSimplePOP3Client (Application["mail_server_pop3"].ToString(), (int) Application["mail_server_pop3_port"], this.username.Value, password.Value );
+					anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+					if ( client.getInboxIndex ( inbox, 0, (int) Application["pagesize"], true ) ) {
+						System.Web.Security.FormsAuthentication.RedirectFromLoginPage(this.username.Value, false);
+						Session["client"] = client;
+						Session["inbox"] = inbox;
+					} else {
+						errorMsgLogin.Visible=true;
+					}
+					client = null;
+					inbox = null;
+				}
 			}
 		}
-
+		/*
+		 * Page Events
+		*/
 		protected void Page_Load(System.Object Src, System.EventArgs E ) {
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+			if ( !this.IsPostBack ) {
+				//Localized resources for this session
+				System.Resources.ResourceSet rs = (System.Resources.ResourceSet) Session["resources"];
+				// Set labels localized texts
+				loginWindowTitle.Text = rs.GetString("loginWindowTitle") + ": " + System.Configuration.ConfigurationSettings.AppSettings["system_name"];
+				loginWindowHeadTitle.Text = System.Configuration.ConfigurationSettings.AppSettings["system_name"];
+	            loginWindowUsername.Text = rs.GetString("loginWindowUsername");
+				loginWindowPassword.Text = rs.GetString("loginWindowPassword");
+				loginButton.Text = rs.GetString("loginButton");
+				errorMsgLogin.Text = rs.GetString("errorMsgLogin");
 
-			//Localized resources for this session
-			rm = (System.Resources.ResourceSet) Session["resources"];
-
-			// Set labels localized texts
-			loginWindowTitle.Text = rm.GetString("loginWindowTitle") + ": " + System.Configuration.ConfigurationSettings.AppSettings["system_name"];
-            loginWindowUsername.Text = rm.GetString("loginWindowUsername");
-			loginWindowPassword.Text = rm.GetString("loginWindowPassword");
-			errorMsgLogin.Text = rm.GetString("errorMsgLogin");
-
-			rm = null;
+				switch ( (int)Application["login_mode"] ) {
+					case 2:
+						loginWindowUsername.Text = rs.GetString("loginWindowUsername2");
+						this.usernameValidator.ValidationExpression = ".+";
+						break;
+					case 3:
+						this.usernameValidator.ValidationExpression = "^" + anmar.SharpMimeTools.ABNF.local_part + "(@" + anmar.SharpMimeTools.ABNF.domain + "$){0,1}";
+						break;
+					case 1:
+					default:
+						this.usernameValidator.ValidationExpression = "^" + anmar.SharpMimeTools.ABNF.addr_spec + "$";
+						break;
+				}
+				rs = null;
+			}
 		}
 
 	}

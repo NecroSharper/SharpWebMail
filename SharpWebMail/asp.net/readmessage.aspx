@@ -22,10 +22,27 @@
                         <td width="100%" class="XPPanel" valign="middle"> 
                           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="XPPanelTitle" align="left">
                             <tr>
-                              <td width="100%" class="XPPanel"><asp:Label id="newMessageWindowTitle" runat="server"/></td>
-                              <td align="right" nowrap><img src="images/PanelClose.gif" width="11" height="11" align="middle"><img src="images/spacer.gif" width="3" height="14"></td>
-                          </tr>
-                        </table>
+                              <td width="80%" align="left" class="XPPanel"><asp:Label id="newMessageWindowTitle" runat="server"/></td>
+							  <td width="20%" align="right" class="XPPanel">
+                                <table width="100%"  border="0">
+                                  <tr>
+								    <td width="100%"><img src="images/spacer.gif" width="1" height="1"></td>
+								    <td nowrap><asp:ImageButton runat="server" ID="msgtoolbarReply" OnCommand="msgtoolbarCommand" CommandName="reply"
+                                           ImageUrl="images/msgtoolbar_reply.gif"/>
+									<img src="images/spacer.gif" width="3" height="14"></td>
+									<td nowrap><asp:ImageButton runat="server" ID="msgtoolbarForward" OnCommand="msgtoolbarCommand" CommandName="forward" enabled="false"
+                                           ImageUrl="images/msgtoolbar_forward.gif"/>
+										   <img src="images/spacer.gif" width="3" height="14"></td>
+								    <td><asp:HyperLink runat="server" ID="msgtoolbarHeader" NavigateUrl="javascript:void(0);"
+                                           ImageUrl="images/msgtoolbar_header.gif"/><img src="images/spacer.gif" width="8" height="14"></td>
+                                    <td>
+                                      <asp:ImageButton runat="server" ID="msgtoolbarDelete" OnCommand="msgtoolbarCommand" CommandName="delete"
+                                           ImageUrl="images/msgtoolbar_delete.gif"/>
+                                     </td>
+                                  </tr>
+                                </table></td>
+                            </tr>
+                          </table>
                         </td>
                         <td class="XPPanelTitleBorderRight"><img src="images/spacer.gif" width="6" height="4"></td>
                       </tr>

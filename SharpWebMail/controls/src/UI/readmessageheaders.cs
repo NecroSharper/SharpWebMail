@@ -24,38 +24,29 @@ using System;
 
 namespace anmar.SharpWebMail.UI
 {
-	public class Search : System.Web.UI.Page {
-		// General variables
-		protected anmar.SharpWebMail.UI.globalUI SharpUI;
-
-		/*
-		 * General functions
-		*/
-		protected void mainInterface ( ) {
-			// Disable some things
-			this.SharpUI.nextPageImageButton.Enabled = false;
-			this.SharpUI.prevPageImageButton.Enabled = false;
-		}
-		/*
-		 * Events
-		*/
-		/// <summary>
-		/// 
-		/// </summary>
-		protected void Search_Click ( System.Object sender, System.EventArgs E ) {
-			Server.Transfer ("default.aspx", true);
-		}
+	public class readmessageheaders : System.Web.UI.Page {
+		protected System.Web.UI.WebControls.Literal headers;
 		/*
 		 * Page Events
 		*/
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void Page_Load ( System.Object Src, System.EventArgs E ) {
+		protected void Page_Load( System.Object Src, System.EventArgs E ) {
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
 
-			this.mainInterface ();
+			System.String msgid = Page.Request.QueryString["msgid"];
+			if ( msgid != null ) {
+				//Our Inbox
+				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+				System.Object[] details = inbox[ msgid ];
+				if ( details != null && details.Length>0 ) {
+					this.headers.Text = Server.HtmlEncode(((anmar.SharpMimeTools.SharpMimeHeader)details[13]).RawHeaders);
+					this.headers.Text = System.String.Format ("<pre>{0}</pre>", this.headers.Text);
+				}
+				inbox = null;
+			}
 		}
 	}
 }

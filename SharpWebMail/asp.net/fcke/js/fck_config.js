@@ -1,6 +1,6 @@
 /*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2004 Frederico Caldeira Knabben
  *
  * Licensed under the terms of the GNU Lesser General Public License
  * (http://www.opensource.org/licenses/lgpl-license.php)
@@ -38,6 +38,7 @@ config.BaseUrl = document.location.protocol + '//' + document.location.host + '/
 //## Enable XHTML support
 //##
 config.EnableXHTML = false ;
+config.EnableSourceXHTML = false ;
 
 //##
 //## Miscelaneous
@@ -50,6 +51,7 @@ config.StartupShowDetails = false ;
 //##
 config.ForcePasteAsPlainText	= false ;
 config.AutoDetectPasteFromWord	= true ;
+config.ForceCleanPasteFromWord	= true ;
 
 //##
 //## When the user presses <ENTER> inserts a <BR> tag instead of a <P>
@@ -67,20 +69,26 @@ config.DefaultLanguage    = "en" ;
 
 // ## Spell Checker download - http://www.iespell.com/download.php
 config.SpellCheckerDownloadUrl = "http://www.rochen.com/ieSpellSetup201325.exe" ;
+config.SpellCheckerIeSpell = false ;
+config.SpellCheckerWord = true ;
+
+// ## Show the "Preview" command in the context menu.
+config.ShowPreviewContextMenu = true ;
 
 //##
 //## Sets the toolbar icons path
 //##
-config.ToolbarImagesPath = config.BasePath + "images/toolbar/" ;
+//config.ToolbarImagesPath = config.BasePath + "images/toolbar/default/" ;
+config.ToolbarImagesPath = config.BasePath + "images/toolbar/office2003/" ;
 
 //##
 //## Toolbar Buttons Sets
 //##
 config.ToolbarSets = new Object() ;
 config.ToolbarSets["Default"] = [
-	['Cut','Copy','Paste','PasteText','PasteWord','-','Find','-','Undo','Redo','-','SelectAll','RemoveFormat','-','Link','RemoveLink','-','Image','Table','Rule','SpecialChar','Smiley','-','About'] ,
+	['Cut','Copy','Paste','PasteText','PasteWord','-','Find','Replace','-','Undo','Redo','-','SelectAll','RemoveFormat','-','Link','RemoveLink','-','Image','Table','Rule','SpecialChar','UniversalKey','Smiley','-','About'] ,
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-','InsertOrderedList','InsertUnorderedList','-','Outdent','Indent','-','ShowTableBorders','ShowDetails','-','Zoom'] ,
-	['FontFormat','-','Font','-','FontSize','-','TextColor','BGColor']
+	['FontStyleAdv','-','Font','-','FontSize','-','TextColor','BGColor']
 ] ;
 
 config.ToolbarSets["Source"] = [
@@ -103,6 +111,12 @@ config.StyleNames  = ';Main Header;Blue Title;Centered Title' ;
 config.StyleValues = ';MainHeader;BlueTitle;CenteredTitle' ;
 
 //##
+//## Table Auto Format Style
+//##
+config.TableStyleNames  = ';Table Style 1 (Yellow);Table Style 2 (Yellow);Table Style 3 (Yellow);Table Style 4 (Blue)' ;
+config.TableStyleValues = ';1;2;3;4' ;
+
+//##
 //## Font Names
 //##
 config.ToolbarFontNames = ';Arial;Comic Sans MS;Courier New;Tahoma;Times New Roman;Verdana' ;
@@ -112,7 +126,7 @@ config.ToolbarFontNames = ';Arial;Comic Sans MS;Courier New;Tahoma;Times New Rom
 //##
 config.LinkShowTargets = true ;
 config.LinkTargets = '_blank;_parent;_self;_top' ;
-config.LinkDefaultTarget = '_self' ;
+config.LinkDefaultTarget = '' ;
 
 //##
 //## Image Browsing
@@ -122,6 +136,7 @@ config.ImageBrowser = false ;
 config.ImageBrowserURL = config.BasePath + "filemanager/browse/sample_html/browse.html" ;
 //config.ImageBrowserURL = config.BasePath + "filemanager/browse/sample_php/browse.php" ;
 //config.ImageBrowserURL = config.BasePath + "filemanager/browse/sample_jsp/browse.jsp?type=img" ;
+//config.ImageBrowserURL = config.BasePath + "filemanager/browse/sample_asp/browse.asp" ;
 // Image browsing window sizes
 config.ImageBrowserWindowWidth  = 400 ;
 config.ImageBrowserWindowHeight = 250 ;
@@ -157,8 +172,8 @@ config.LinkBrowserWindowHeight	= 250 ;
 //##
 config.LinkUpload = false ;
 // Page that effectivelly upload the Link file.
-//config.LinkUploadURL = config.BasePath + "filemanager/upload/asp/upload.asp" ;
-config.LinkUploadURL = config.BasePath + "filemanager/upload/aspx/upload.aspx" ;
+config.LinkUploadURL = config.BasePath + "filemanager/upload/asp/upload.asp" ;
+//config.LinkUploadURL = config.BasePath + "filemanager/upload/aspx/upload.aspx" ;
 //config.LinkUploadURL = config.BasePath + "filemanager/upload/cfm/upload.cfm" ;
 //config.LinkUploadURL = config.BasePath + "filemanager/upload/php/upload.php" ;
 //config.LinkUploadURL = config.BasePath + "filemanager/upload/jsp/upload.jsp" ;

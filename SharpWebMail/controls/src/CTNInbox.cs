@@ -29,7 +29,7 @@ namespace anmar.SharpWebMail
 		protected System.Data.DataTable inbox;
 		protected System.Object[] names = {   "index", typeof(System.Int32),			//  0
 											  "msgnum", typeof(System.Int32),			//  1
-											  "Size", typeof(System.Int32),			//  2
+											  "Size", typeof(System.Int32),				//  2
 											  "uidl", typeof(System.String),			//  3
 											  "From", typeof(System.String),			//  4
 											  "FromName", typeof(System.String),		//  5
@@ -56,6 +56,7 @@ namespace anmar.SharpWebMail
 		}
 		public System.Object[] this [ System.Object uidl ] {
 			get {
+				uidl = uidl.ToString().Replace("'", "''");
 				System.Data.DataRow[] result = this.inbox.Select(System.String.Format ("uidl='{0}'", uidl));
 				if ( result.Length==1 ) {
 					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("{1} uidl='{0}' found", uidl));
@@ -80,7 +81,7 @@ namespace anmar.SharpWebMail
 				// with the mail server
 				System.Data.DataRow[] result;
 				for ( int i=0 ; i<uidllist.Length; i++ ) {
-					result = this.inbox.Select("delete=false AND uidl = '" + uidllist[i] + "'");
+					result = this.inbox.Select("uidl = '" + uidllist[i].Replace("'", "''") + "'");
 					// Message not found, so we add it
 					if (result.Length == 0 ){
 						this.newMessage (i+1, list[i], uidllist[i]);
@@ -92,7 +93,7 @@ namespace anmar.SharpWebMail
 					}
 				}
 				// now we try to find deleted messages
-				result = this.inbox.Select("delete=false");
+				result = this.inbox.Select();
 
 				for ( int i=0, max = result.GetLength(0), j=0 ; i<max; i++ ) {
 					for (j = 0; j<uidllist.Length; j++ ) {
@@ -104,7 +105,7 @@ namespace anmar.SharpWebMail
 						this.mcount--;
 						this.msize -= (int) result[j][2];
 						result[i].Delete();
-						result = this.inbox.Select("delete=false");
+						result = this.inbox.Select();
 						max = result.GetLength(0);
 						i--;
 					}
@@ -144,7 +145,7 @@ namespace anmar.SharpWebMail
 					msgs.Remove(tmpkey);
 				}
 				// We want to get headers only if we do not have them
-				if ( result[i][4].ToString().Length==0 && !msgs.ContainsKey (tmpkey) ) {
+				if ( result[i][13].Equals(System.DBNull.Value) && !msgs.ContainsKey (tmpkey) ) {
 					msgs.Add( result[i][1], result[i][3].ToString() );
 				}
 			}
@@ -152,6 +153,7 @@ namespace anmar.SharpWebMail
 		}
 		public void deleteMessage ( System.String uidl ) {
 			this.markMessage( uidl, 15, true );
+			this.mcount--;
 			return;
 		}
 		/// <summary>
@@ -165,6 +167,7 @@ namespace anmar.SharpWebMail
 		/// </summary>
 		public System.String getMessageIndex ( System.String uidl ) {
 			System.Data.DataRow[] result;
+			uidl = uidl.Replace("'", "''");
 			result = this.inbox.Select("uidl='" + uidl + "'");
 			return ( result.Length==1 )?result[0][1].ToString():System.String.Empty;
 		}
@@ -192,6 +195,7 @@ namespace anmar.SharpWebMail
 		}
 		protected void markMessage ( System.String uidl, int col, bool val ) {
 			System.Data.DataRow[] result;
+			uidl = uidl.Replace("'", "''");
 			result = this.inbox.Select("uidl='" + uidl + "'");
 			if ( result.Length==1 ) {
 				result[0][col] = val;
@@ -204,6 +208,7 @@ namespace anmar.SharpWebMail
 		public bool newMessage (System.String uidl, anmar.SharpMimeTools.SharpMimeHeader header ) {
 			bool error = false;
 			System.Data.DataRow[] result;
+			uidl = uidl.Replace("'", "''");
 			result = this.inbox.Select("uidl = '" + uidl + "'");
 			if (result.Length == 1 ){
 				result[0][4] = header.From;
@@ -235,6 +240,7 @@ namespace anmar.SharpWebMail
 			tmpRow[2] = size;
 			tmpRow[3] = uidl;
 			tmpRow[12] = System.String.Empty;
+			tmpRow[13] = System.DBNull.Value;
 			tmpRow[15] = false;
 			tmpRow[16] = false;
 			inbox.Rows.Add (tmpRow);
@@ -243,6 +249,11 @@ namespace anmar.SharpWebMail
 		}
 		public void readMessage ( System.String uidl ) {
 			this.markMessage( uidl, 16, true );
+			return;
+		}
+		public void undeleteMessage ( System.String uidl ) {
+			this.markMessage( uidl, 15, false );
+			this.mcount++;
 			return;
 		}
 		/// <summary>

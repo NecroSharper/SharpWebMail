@@ -27,7 +27,8 @@ namespace anmar.SharpWebMail.UI
 	public class readmessage : System.Web.UI.Page {
 		// General variables
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		private System.String msgid;
+		protected System.String msgid;
+		protected bool delete=false;
 		protected anmar.SharpWebMail.UI.globalUI SharpUI;
 
 		//Form
@@ -100,77 +101,43 @@ namespace anmar.SharpWebMail.UI
 						goto case anmar.SharpMimeTools.MimeTopLevelMediaType.application;
 					}
 					// Lets make Mono compiler happy
+#if MONO
 					break;
+#endif
 				case anmar.SharpMimeTools.MimeTopLevelMediaType.application:
 				case anmar.SharpMimeTools.MimeTopLevelMediaType.audio:
 				case anmar.SharpMimeTools.MimeTopLevelMediaType.image:
 				case anmar.SharpMimeTools.MimeTopLevelMediaType.video:
-					System.String name = mm.Name;
-					if ( name!=null ) {
-						if ( log.IsDebugEnabled )
-							log .Debug ("Found attachment: " + name);
-						name = System.IO.Path.GetFileName(name);
-						System.Web.UI.WebControls.HyperLink attachment = new System.Web.UI.WebControls.HyperLink ();
-						System.Web.UI.WebControls.Image image = null;
-						System.String urlstring = System.String.Format("download.aspx?msgid={0}&name={1}&i={2}",
-																	Server.UrlEncode(msgid), Server.UrlEncode(name),
-																	inline);
-						if ( mm.Disposition!=null && mm.Disposition.Equals("inline") ) {
-							inline = "1";
-							if ( mm.Header.TopLevelMediaType.Equals(anmar.SharpMimeTools.MimeTopLevelMediaType.image)
-									&& ( mm.Header.SubType.Equals("gif") || mm.Header.SubType.Equals("jpg") || mm.Header.SubType.Equals("png")) ) {
-								image = new System.Web.UI.WebControls.Image ();
-								image.ImageUrl = urlstring;
-							}
-						}
-						attachment.NavigateUrl = urlstring;
-						attachment.Text = System.String.Format ("{0} ({1} bytes)", name, mm.Size);
-						attachment.CssClass = "XPDownload";
+					System.Web.UI.WebControls.HyperLink attachment = new System.Web.UI.WebControls.HyperLink ();
+					System.Web.UI.WebControls.Image image = null;
+					attachment.CssClass = "XPDownload";
+					if ( mm.Name!=null )
+						attachment.Text = System.String.Format ("{0} ({1} bytes)", System.IO.Path.GetFileName(mm.Name), mm.Size);
+					if ( Session["temppath"]!=null ) {
+						System.String path = Session["temppath"].ToString();
+						path = System.IO.Path.Combine (path, msgid);
 						// Dump file contents
-						bool error = true;
-						try {
-							if ( Session["temppath"]!=null ) {
-								System.String path = Session["temppath"].ToString();
-								path = System.IO.Path.Combine (path, msgid);
-								System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo ( path );
-								dir.Create();
-								System.IO.FileInfo file = new System.IO.FileInfo (System.IO.Path.Combine (path, name) );
-								if ( dir.Exists
-									 && dir.FullName.Equals (new System.IO.DirectoryInfo (file.Directory.FullName).FullName) ) {
-									if ( !file.Exists ) {
-										if ( mm.Header.ContentDispositionParameters.ContainsKey("creation-date") )
-											file.CreationTime = anmar.SharpMimeTools.SharpMimeTools.parseDate ( mm.Header.ContentDispositionParameters["creation-date"] );
-										if ( mm.Header.ContentDispositionParameters.ContainsKey("modification-date") )
-											file.LastWriteTime = anmar.SharpMimeTools.SharpMimeTools.parseDate ( mm.Header.ContentDispositionParameters["modification-date"] );
-										if ( mm.Header.ContentDispositionParameters.ContainsKey("read-date") )
-											file.LastAccessTime = anmar.SharpMimeTools.SharpMimeTools.parseDate ( mm.Header.ContentDispositionParameters["read-date"] );
-										System.IO.Stream stream = file.Create();
-										error = !mm.DumpBody (stream);
-										stream.Close();
-										if ( error ) {
-											file.Delete();
-										}
-									} else {
-										error = false;
-									}
+						System.IO.FileInfo file = mm.DumpBody ( path, true );
+						if ( file!=null && file.Exists ) {
+							System.String urlstring = System.String.Format("download.aspx?msgid={0}&name={1}&i={2}",
+																Server.UrlEncode(msgid), Server.UrlEncode(file.Name),
+																inline);
+							if ( mm.Disposition!=null && mm.Disposition.Equals("inline") ) {
+								inline = "1";
+								if ( mm.Header.TopLevelMediaType.Equals(anmar.SharpMimeTools.MimeTopLevelMediaType.image)
+										&& ( mm.Header.SubType.Equals("gif") || mm.Header.SubType.Equals("jpg") || mm.Header.SubType.Equals("png")) ) {
+									image = new System.Web.UI.WebControls.Image ();
+									image.ImageUrl = urlstring;
 								}
-								dir = null;
 							}
-						} catch ( System.Exception ) {
-							error = true;
-						} finally {
-							// If an error happens, we only remove the URL so
-							// user knows there is an attchment
-							if (error) {
-								attachment.NavigateUrl = System.String.Empty;
-								image = null;
-							}
+							attachment.NavigateUrl = urlstring;
+							attachment.Text = System.String.Format ("{0} ({1} bytes)", file.Name, file.Length);
 						}
-						this.readMessageWindowAttachmentsHolder.Controls.Add (attachment);
-						// Display inline image
-						if ( image!=null ) {
-							entity.Controls.Add (image);
-						}
+					}
+					this.readMessageWindowAttachmentsHolder.Controls.Add (attachment);
+					// Display inline image
+					if ( image!=null ) {
+						entity.Controls.Add (image);
 					}
 					break;
 				default:
@@ -180,7 +147,7 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void mainInterface ( anmar.SharpWebMail.CTNInbox inbox ) {
+		protected void mainInterface ( ) {
 
 			if ( this.readMessageWindowSubjectTextLabel == null ) {
 				this.readMessageWindowCcTextLabel=(System.Web.UI.WebControls.Label )this.SharpUI.FindControl("readMessageWindowCcTextLabel");
@@ -191,11 +158,27 @@ namespace anmar.SharpWebMail.UI
 				this.newMessageWindowTitle=(System.Web.UI.WebControls.Label )this.SharpUI.FindControl("newMessageWindowTitle");
 				this.readMessageWindowBodyTextHolder=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("readMessageWindowBodyTextHolder");
 				this.readMessageWindowAttachmentsHolder=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("readMessageWindowAttachmentsHolder");
+				((System.Web.UI.WebControls.HyperLink)this.SharpUI.FindControl("msgtoolbarHeader")).Attributes.Add ("onclick", "window.open('headers.aspx?msgid=" + msgid + "', '_blank', 'menubar=no, toolbar=no, resizable=yes, scrollbars=yes, width=500, height=300')");
 			}
 
 			// Disable some things
-			this.SharpUI.nextPageButton.Enabled = false;
-			this.SharpUI.prevPageButton.Enabled = false;
+			this.SharpUI.nextPageImageButton.Enabled = false;
+			this.SharpUI.prevPageImageButton.Enabled = false;
+		}
+		/*
+		 * Events
+		*/
+		protected void msgtoolbarCommand ( Object sender, System.Web.UI.WebControls.CommandEventArgs  e ) {
+			switch ( e.CommandName ) {
+				case "delete":
+					delete = true;
+					break;
+				case "forward":
+					break;
+				case "reply":
+					Server.Transfer("newmessage.aspx", true);
+					break;
+			}
 		}
 		/*
 		 * Page Events
@@ -206,15 +189,21 @@ namespace anmar.SharpWebMail.UI
 		protected void Page_Load(System.Object Src, System.EventArgs E ) {
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
-
-			//Our Inbox
-			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-
-			this.mainInterface ( inbox );
 			msgid = Page.Request.QueryString["msgid"];
+			this.mainInterface ( );
+		}
+		protected void Page_PreRender( object sender, EventArgs e ) {
 			if ( msgid != null ) {
-				System.Object[] details = inbox[ msgid ];
+				System.Object[] details = this.SharpUI.Inbox[ msgid ];
 				if ( details != null && details.Length>0 ) {
+					//Delete message
+					if ( delete ) {
+						this.SharpUI.Inbox.deleteMessage ( msgid );
+						this.SharpUI.setVariableLabels();
+					}
+					// Disable delete button if message is already deleted
+					if ( (bool)details[15]==true )
+						((System.Web.UI.WebControls.ImageButton)this.SharpUI.FindControl("msgtoolbarDelete")).Enabled=false;
 					this.readMessageWindowDateTextLabel.Text = details[14].ToString();
 					this.readMessageWindowFromTextLabel.Text = Server.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (details[4].ToString()).ToString());
 					this.readMessageWindowToTextLabel.Text = Server.HtmlEncode (details[8].ToString());
@@ -229,8 +218,7 @@ namespace anmar.SharpWebMail.UI
 						this.readMessageWindowCcTextLabel.Text = Server.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (mm.Header.Cc).ToString());
 						this.decodeMessage ( mm, this.readMessageWindowBodyTextHolder );
 						mm = null;
-						inbox.readMessage ( msgid );
-						Session["inbox"] = inbox;
+						this.SharpUI.Inbox.readMessage ( msgid );
 						ms.Close();
 					}
 					ms = null;
@@ -238,7 +226,6 @@ namespace anmar.SharpWebMail.UI
 				}
 				details = null;
 			}
-			inbox = null;
 		}
 	}
 }
