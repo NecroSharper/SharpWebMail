@@ -1,5 +1,5 @@
   SharpWebMail - ASP.NET Web Mail application written in C#
-    v0.7b     - http://anmar.eu.org/projects/sharpwebmail/
+    v0.8b     - http://anmar.eu.org/projects/sharpwebmail/
 
 Introduction
 --------------------------------
@@ -38,7 +38,7 @@ Multilingual user interface
 
 XP look & feel
 
-Tested with IE6 and Mozilla FireFox 0.9, but it should work with other versions
+Tested with IE6 and Mozilla FireFox 0.10, but it should work with other versions
 
 For a full set of features visit <http://anmar.eu.org/projects/sharpwebmail/features.html>
 
@@ -86,7 +86,8 @@ Licence
 History
 --------------------------------
 
-09/13/2004 - version 0.6b   - Released milestone 0.7
+10/16/2004 - version 0.8b   - Released milestone 0.8
+09/13/2004 - version 0.7b   - Released milestone 0.7
 08/17/2004 - version 0.6b   - Released milestone 0.6
 08/11/2004 - version 0.5b   - Released milestone 0.5
 07/21/2004 - version 0.4b   - Released milestone 0.4

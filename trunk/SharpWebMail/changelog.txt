@@ -1,4 +1,7 @@
-10/14/2004
+10/16/2004
+ - Released as version 0.8b (296)
+
+10/15/2004
  - Bugfix: Invalid format in a debug string.
 
 10/14/2004
