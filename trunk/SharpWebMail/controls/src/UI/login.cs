@@ -67,7 +67,7 @@ namespace anmar.SharpWebMail.UI
 		}
 		protected void Login_Click ( System.Object sender, System.EventArgs args ) {
 			// authenticate user
-			if (this.IsPostBack&&this.IsValid) {
+			if (this.IsValid) {
 				int login_mode = (int)Application["sharpwebmail/login/mode"];
 				if ( login_mode==3 && Application["sharpwebmail/login/append"]!=null ) {
 					if ( this.username.Value.IndexOf ("@") == -1 ) {
@@ -154,6 +154,18 @@ namespace anmar.SharpWebMail.UI
 						break;
 				}
 				rs = null;
+				if ( (bool)Application["sharpwebmail/login/enablequerystringlogin"] ) {
+					System.String username = Request.QueryString["username"];
+					System.String password = Request.QueryString["password"];
+					if ( username!=null ) {
+						this.username.Value = username;
+						if ( password!=null ) {
+							this.password.Value = password;
+							this.Validate();
+							this.Login_Click(sender, args);
+						}
+					}
+				}
 			}
 		}
 

@@ -1,3 +1,9 @@
+12/08/2004
+ - [Config] Allow more value types in config file.
+ - [Login] Allow login credentials to pass in the QueryString to login page.
+ - [Config] Add new option to enable the above behavior (it defaults to disabled).
+ - [Config] Move more configuration logic to the configuration handler.
+
 12/01/2004
  - [New Message] Update FCKEditor config to 2.0rc1.
  - [New Message] As mono bug #69200 has been fixed, the workaround is not necessary anymore.
