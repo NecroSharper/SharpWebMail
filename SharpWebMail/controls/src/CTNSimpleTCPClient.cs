@@ -30,7 +30,7 @@ namespace anmar.SharpWebMail
 		private static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		protected System.String lastErrorMessage;
 		protected System.Net.Sockets.TcpClient client;
-		protected System.Double timeoutResponse = 10000;
+		protected System.Double timeoutResponse = 20000;
 
 		public CTNSimpleTCPClient() {
 		}
@@ -123,7 +123,7 @@ namespace anmar.SharpWebMail
 			aTimer.AutoReset = false;
 			aTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.stopWaiting);
 
-			for ( aTimer.Enabled = true; !error && ns.CanRead && ns.CanWrite && !ns.DataAvailable && aTimer.Enabled ; ){}
+			for ( aTimer.Enabled = true; !error && ns.CanRead && ns.CanWrite && !ns.DataAvailable && aTimer.Enabled ; ){System.Threading.Thread.Sleep(500);}
 
 			// If I can read from NetworkStream and there is
 			// some data, I get it
@@ -131,6 +131,8 @@ namespace anmar.SharpWebMail
 				try {
 					if ( ns.DataAvailable )
 						nbytes = ns.Read( readBytes, 0, client.ReceiveBufferSize );
+					else
+						System.Threading.Thread.Sleep(500);
 				} catch ( System.IO.IOException e ) {
 					error = true;
 					nbytes = 0;
@@ -159,7 +161,6 @@ namespace anmar.SharpWebMail
 							reader.DiscardBufferedData();
 							reader=null;
 							response.Seek (0, System.IO.SeekOrigin.End);
-							log.Error("Ultima respuesta: " + lastBoundary);
 						}
 					}
 					// Reset timer
