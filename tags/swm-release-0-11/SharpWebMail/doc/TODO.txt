@@ -1,0 +1,10 @@
+
+ - Write documentation
+ - Forward messages
+ - Test HTML sanitizer
+ - Perhaps an XHTML interface
+ - Support for more languages
+ - Make everything configurable
+ - POP before SMTP
+ - Other AUTH methods (APOP, CRAM-MD5, ...)
+ 
