@@ -96,6 +96,8 @@ namespace anmar.SharpWebMail.UI
 				cleanTempFolder(Session["sharpwebmail/send/message/temppath"]);
 				// Logout
 				System.Web.Security.FormsAuthentication.SignOut();
+				Session.Remove ("DisplayEmail");
+				Session.Remove ("DisplayName");
 				// Go to login page
 				Response.Redirect("login.aspx");
 			}

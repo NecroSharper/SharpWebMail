@@ -215,6 +215,12 @@ namespace anmar.SharpWebMail.UI
 					details = null;
 				}
 			}
+			if ( this.fromname.Value.Length>0 || this.IsPostBack )
+				Session["DisplayName"] = this.fromname.Value;
+			if ( this.fromname.Value.Length==0 && Session["DisplayName"]!=null )
+				this.fromname.Value = Session["DisplayName"].ToString();
+			if ( this.fromemail.Value.Length>0 || this.IsPostBack )
+				Session["DisplayEmail"] = this.fromemail.Value;
 		}
 		/// <summary>
 		/// 
@@ -337,6 +343,9 @@ namespace anmar.SharpWebMail.UI
 						this.newMessageFromPanel.Visible = true;
 						rev = (System.Web.UI.WebControls.RegularExpressionValidator) this.SharpUI.FindControl("fromemailValidator");
 						rev.ValidationExpression = "^" + anmar.SharpMimeTools.ABNF.addr_spec + "$";
+						if ( this.fromemail.Value.Length==0 && Session["DisplayEmail"]!=null ) {
+							this.fromemail.Value = Session["DisplayEmail"].ToString();
+						}
 						break;
 					case 1:
 					case 3:
