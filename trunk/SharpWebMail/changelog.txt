@@ -1,3 +1,7 @@
+04/03/2005
+ - Version number set to 0.12
+ - [i18n] Added Swedish translation. Thanks to Robert Wallström.
+
 03/13/2005
  - Released as version 0.11b (456)
  - [Inbox] Removed unused code.
