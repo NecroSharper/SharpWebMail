@@ -36,6 +36,16 @@ namespace anmar.SharpWebMail.UI
 			this.SharpUI.nextPageImageButton.Enabled = false;
 			this.SharpUI.prevPageImageButton.Enabled = false;
 		}
+		public System.String From {
+			get {
+				return ((System.Web.UI.HtmlControls.HtmlInputControl)this.SharpUI.FindControl("fromsearch")).Value;
+			}
+		}
+		public System.String Subject {
+			get {
+				return ((System.Web.UI.HtmlControls.HtmlInputControl)this.SharpUI.FindControl("subjectsearch")).Value;
+			}
+		}
 		/*
 		 * Events
 		*/
@@ -43,7 +53,7 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		protected void Search_Click ( System.Object sender, System.EventArgs args ) {
-			Server.Transfer ("default.aspx", true);
+			Server.Transfer ("default.aspx", false);
 		}
 		/*
 		 * Page Events
