@@ -78,7 +78,7 @@ namespace anmar.SharpWebMail.UI
 		}
 		private void initConfig () {
 			this.configOptions.Add ( "sharpwebmail/general/default_lang", "en-US" );
-			this.configOptions.Add ( "sharpwebmail/general/title", "hola" );
+			this.configOptions.Add ( "sharpwebmail/general/title", "" );
 			this.configOptions.Add ( "sharpwebmail/login/append", "" );
 			this.configOptions.Add ( "sharpwebmail/login/mode", 1 );
 			this.configOptions.Add ( "sharpwebmail/login/title", "" );
@@ -94,9 +94,6 @@ namespace anmar.SharpWebMail.UI
 
 			Application["resources"] = new System.Resources.ResourceManager("SharpWebMail", System.Reflection.Assembly.GetExecutingAssembly());
 
-			foreach ( System.String key in  System.Configuration.ConfigurationSettings.AppSettings.Keys ) {
-				Application.Add (key, System.Configuration.ConfigurationSettings.AppSettings[key]);
-			}
 
 			initConfigSection("sharpwebmail/general");
 			initConfigSection("sharpwebmail/login");
@@ -104,8 +101,13 @@ namespace anmar.SharpWebMail.UI
 			initConfigSection("sharpwebmail/read/message");
 			initConfigSection("sharpwebmail/send/message");
 
-			parseConfig ("mail_server_pop3_port", 110);
-			parseConfig ("mail_server_smtp_port", 25);
+			// Set defaults for unset config options
+			foreach ( System.String item in this.configOptions.Keys ) {
+				if ( Application[item]==null )
+					Application[item]=this.configOptions[item];
+			}
+			parseConfigServers ("sharpwebmail/read/servers");
+			parseConfigServers ("sharpwebmail/send/servers");
 
 			Application["sharpwebmail/read/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/read/message/temppath"]);
 			Application["sharpwebmail/send/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/send/message/temppath"]);
@@ -139,14 +141,15 @@ namespace anmar.SharpWebMail.UI
 				return defaultvalue;
 			}
 		}
-		private void parseConfig ( System.String key, System.Int32 defaultvalue ) {
-			try {
-				Application[key] = System.Int32.Parse(Application[key].ToString());
-			} catch ( System.Exception e ) {
-				if ( log.IsErrorEnabled )
-					log.Error("Error parsing integer", e);
-				Application[key] = defaultvalue;
+		private void parseConfigServers ( System.String config_item ) {
+			System.Collections.Hashtable config = (System.Collections.Hashtable)System.Configuration.ConfigurationSettings.GetConfig(config_item);
+			anmar.SharpWebMail.ServerSelector selector = new anmar.SharpWebMail.ServerSelector();
+			if ( config!=null ) {
+				foreach ( System.String item in config.Keys ) {
+					selector.Add(item, config[item]);
+				}
 			}
+			Application.Add(config_item, selector);
 		}
 		private System.Globalization.CultureInfo ParseCulture ( System.String name ) {
 			System.Globalization.CultureInfo culture = null;
@@ -175,7 +178,7 @@ namespace anmar.SharpWebMail.UI
 		}
 		private System.String parseTempFolder( System.Object prefix, System.Object sufix ) {
 			// Temp folder
-			if ( prefix!=null && sufix!=null ) {
+			if ( prefix!=null && sufix!=null && !prefix.Equals("") && !sufix.Equals("") ) {
 				return System.IO.Path.Combine (prefix.ToString(), sufix.ToString());
 			} else {
 				return null;

@@ -1,3 +1,13 @@
+08/05/2004
+ - Bugfix: When sending a message in login_mode 2, the user supplied email was
+   being ignored and login name was being used instead.
+ - Add: Now multiple servers can be configured for sending and for reading email.
+   The selection is based in regular expressions tested against the username. The
+   first server which pattern matches is used. Read the config file (web.config)
+   for details. The new server selection method allows future additions of other
+   protocols.
+ - Ensure all config options are set.
+ 
 08/04/2004
  - Added Danish translation. Thanks to Claus Witt.
 
