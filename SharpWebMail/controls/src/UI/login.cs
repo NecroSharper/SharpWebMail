@@ -119,7 +119,10 @@ namespace anmar.SharpWebMail.UI
 				selectculture.DataTextField = "Key";
 				selectculture.DataValueField = "Value";
 				selectculture.DataBind();
-				selectculture.Value = Session["effectiveculture"].ToString();
+				if ( selectculture.Items.Count==0 )
+					selectculture.Visible = false;
+				else
+					selectculture.Value = Session["effectiveculture"].ToString();
 			}
 		}
 		protected void Page_Load ( System.Object sender, System.EventArgs args ) {
