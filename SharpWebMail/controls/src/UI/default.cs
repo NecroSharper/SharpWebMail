@@ -138,50 +138,82 @@ namespace anmar.SharpWebMail.UI
 		/// </summary>
 		protected bool searchPattern ( out System.String pattern ) {
 			bool forcecache = false;
-			System.String Value, format, searchtype;
 			System.String mode = Page.Request.QueryString["mode"];
 			if ( mode!=null && mode.Equals("trash") )
 				pattern = "delete=true";
 			else
 				pattern = "delete=false";
-			searchtype = "OR";
 			if ( this.resetsearch == false ) {
-				foreach ( System.String param in Request.Form ) {
-					Value = Request.Form[param];
-					format = "";
-					switch ( param ) {
-						case "SharpUI:fromsearch":
-							format = "From like '%{0}%'";
-							if ( Value.Length>0 )
-								forcecache = true;
-							break;
-						case "SharpUI:subjectsearch":
-							format = "Subject like '%{0}%'";
-							if ( Value.Length>0 )
-								forcecache = true;
-							break;
+				if ( this.IsPostBack ) {
+					foreach ( System.String param in Request.Form ) {
+						pattern += this.searchPatternAdd(param, ref forcecache);
 					}
-					if ( format.Length>0 && Value.Length>0 ) {
-						Value = Value.Trim();
-						System.String[] items = Value.Replace("\'", "\'\'").Split (' ');
-						pattern += " AND (";
-						for ( int i=0; i<items.Length; i++ ) {
-							if ( items[i].StartsWith("\"") && !items[i].EndsWith("\"")) {
-								items[i+1] = System.String.Format ( "{0} {1}", items[i], items[i+1]);
-							}
-							if ( i>0 )
-								pattern += " " + searchtype + " ";
-							pattern += System.String.Format ( format, items[i] );
-						}
-						pattern += ")";
-						System.Web.UI.HtmlControls.HtmlInputHidden hidden = new System.Web.UI.HtmlControls.HtmlInputHidden();
-						hidden.ID = param.Remove(0, 8);
-						hidden.Value = Value;
-						this.inboxWindowSearchHolder.Controls.Add ( hidden );
-					}
+				} else {
+					pattern += this.searchPatternAdd("fromsearch", ref forcecache);
+					pattern += this.searchPatternAdd("subjectsearch", ref forcecache);
 				}
 			}
 			return forcecache;
+		}
+		private System.String searchPatternAdd ( System.String key, ref bool forcecache ) {
+			System.String patternitem, Value, format, searchtype;
+			Value = System.String.Empty;
+			format = System.String.Empty;
+			patternitem = System.String.Empty;
+			searchtype = "OR";
+			switch ( key ) {
+				case "fromsearch":
+					if ( !this.IsPostBack && Context.Handler is anmar.SharpWebMail.UI.Search ) {
+						anmar.SharpWebMail.UI.Search search = (anmar.SharpWebMail.UI.Search)Context.Handler;
+						Value = search.From;
+						format = "From like '%{0}%'";
+						if ( Value.Length>0 )
+							forcecache = true;
+					}
+					break;
+				case "subjectsearch":
+					if ( !this.IsPostBack && Context.Handler is anmar.SharpWebMail.UI.Search ) {
+						anmar.SharpWebMail.UI.Search search = (anmar.SharpWebMail.UI.Search)Context.Handler;
+						Value = search.Subject;
+						format = "Subject like '%{0}%'";
+						if ( Value.Length>0 )
+							forcecache = true;
+					}
+					break;
+				case "SharpUI:fromsearch":
+					Value = Request.Form[key];
+					key = key.Remove(0, 8);
+					format = "From like '%{0}%'";
+					if ( Value.Length>0 )
+						forcecache = true;
+					break;
+				case "SharpUI:subjectsearch":
+					Value = Request.Form[key];
+					key = key.Remove(0, 8);
+					format = "Subject like '%{0}%'";
+					if ( Value.Length>0 )
+						forcecache = true;
+					break;
+			}
+			if ( format.Length>0 && Value.Length>0 ) {
+				Value = Value.Trim();
+				System.String[] items = Value.Replace("\'", "\'\'").Split (' ');
+				patternitem += " AND (";
+				for ( int i=0; i<items.Length; i++ ) {
+					if ( items[i].StartsWith("\"") && !items[i].EndsWith("\"")) {
+						items[i+1] = System.String.Format ( "{0} {1}", items[i], items[i+1]);
+					}
+					if ( i>0 )
+						patternitem += " " + searchtype + " ";
+					patternitem += System.String.Format ( format, items[i] );
+				}
+				patternitem += ")";
+				System.Web.UI.HtmlControls.HtmlInputHidden hidden = new System.Web.UI.HtmlControls.HtmlInputHidden();
+				hidden.ID = key;
+				hidden.Value = Value;
+				this.inboxWindowSearchHolder.Controls.Add ( hidden );
+			}
+			return patternitem;
 		}
 		
 		/*

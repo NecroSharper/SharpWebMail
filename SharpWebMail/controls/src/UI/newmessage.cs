@@ -329,7 +329,9 @@ namespace anmar.SharpWebMail.UI
 			System.Web.UI.WebControls.RegularExpressionValidator rev = (System.Web.UI.WebControls.RegularExpressionValidator) this.SharpUI.FindControl("toemailValidator");
 			rev.ValidationExpression = @"^" + anmar.SharpMimeTools.ABNF.addr_spec + @"(;\s*" + anmar.SharpMimeTools.ABNF.addr_spec + @")*$";
 			this.newMessageFromPanel=(System.Web.UI.WebControls.Panel )this.SharpUI.FindControl("newMessageFromPanel");
+#if !MONO
 			if ( !this.IsPostBack ) {
+#endif
 				switch ( (int)Application["sharpwebmail/login/mode"] ) {
 					case 2:
 						this.newMessageFromPanel.Visible = true;
@@ -343,7 +345,9 @@ namespace anmar.SharpWebMail.UI
 						newMessageWindowFromEmail.Text = User.Identity.Name;
 						break;
 				}
+#if !MONO
 			}
+#endif
 			this.newMessagePanel.Visible = true;
 			return;
 		}

@@ -1,3 +1,21 @@
+08/15/2004
+ - Search code does not rely on transferring Form to the inbox page. This makes
+   the search page work in mono.
+ - Commented the <location> directives added on 07/14/2004 for xsp, as they make
+   it throw an exception with search page. With xsp the login page does not load
+   images on login page, with mod_mono images as loaded if apache handles these
+   queries (mod_mono configured with AddHandler instead of SetHandler).
+
+08/13/2004
+ - Workaround a mono bug.
+ - Finally I have a mono development box ready.  I've tested everything with
+   mono 1.0.1, mod_mono 1.0.1 and apache 2.0.50 and the only unaddressed issue is
+   related with the search page (I'll fix this soon).
+ - Added Makefile for Mono
+
+08/12/2004
+ - Version number set to 0.6
+
 08/11/2004
  - Released as version 0.5b (244)
 
