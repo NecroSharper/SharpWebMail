@@ -129,7 +129,7 @@
           </td>
         </tr>
         <tr> 
-          <td colspan="2" class="XPToolbar"><a href="http://anmar.eu.org/projects/sharpwebmail/" class="XPToolbarFooter" target="_blank"><%=Application["product"]%> - v<%=Application["version"]%></a> - Copyright &copy; 2003 - 2004<a href="http://anmar.eu.org" class="XPToolbarFooter" target="_blank"> 
+          <td colspan="2" class="XPToolbar"><a href="http://anmar.eu.org/projects/sharpwebmail/" class="XPToolbarFooter" target="_blank"><%=Application["product"]%> - v<%=Application["version"]%></a> - Copyright &copy; 2003-2005 <a href="http://anmar.eu.org" class="XPToolbarFooter" target="_blank"> 
             Angel Marin</a> All rights reserved.</td>
         </tr>
       </table>

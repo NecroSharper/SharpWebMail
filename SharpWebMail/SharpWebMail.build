@@ -7,7 +7,8 @@
 	<property name="build.basedir" value="${nant.project.basedir}" />
 	<property name="build.dir" value="" />
 	<property name="build.config" value="release" />
-	<property name="build.ref" value="" />
+	<property name="build.ref.platform" value="" />
+	<property name="build.ref.platform.version" value="" />
 	<property name="build.res" value="" />
 	<fileset id="build.files.source">
 		<include name="${build.basedir}/controls/src/**/*.cs" />
@@ -34,7 +35,8 @@
 				<include name="${build.dir}/*.dll" />
 				<include name="${build.dir}/*.pdb" />
 				<include name="${build.dir}/*.mdb" />
-				<include name="${build.ref}/*.dll" />
+				<include name="${build.ref.platform}/*.dll" />
+				<include name="${build.ref.platform.version}/*.dll" />
 			</fileset>
 		</copy>
 		<copy file="${build.res}/${project.name}.resources" tofile="${build.res}/${project.name}.en.resources" />
@@ -65,10 +67,10 @@
 		<csc target="library" define="${build.defines}" warnaserror="false" debug="${build.debug}" output="${build.dir}/${project.name}.dll">
 			<sources failonempty="true" refid="build.files.source" />
 			<references>
-				<include name="${build.ref}/FredCK.FCKeditorV2.dll" />
-				<include name="${build.ref}/log4net.dll" />
-				<include name="${build.ref}/OpenSmtp.dll" />
-				<include name="${build.ref}/SharpMimeTools.dll" />
+				<include name="${build.ref.platform}/FredCK.FCKeditorV2.dll" />
+				<include name="${build.ref.platform}/log4net.dll" />
+				<include name="${build.ref.platform}/OpenSmtp.dll" />
+				<include name="${build.ref.platform.version}/SharpMimeTools.dll" />
 				<include name="System.Data.dll" />
 				<include name="System.Directoryservices.dll" />
 				<include name="System.Web.dll" />
@@ -87,7 +89,7 @@
 	<target name="release" description="Release build">
 		<property name="build.debug" value="false" />
 		<property name="build.config" value="release" />
-		<property name="build.defines" value="" />
+		<property name="build.defines" value="RELEASE" />
 		<call target="build" />
 	</target>
 	<target name="build-pre">
@@ -95,10 +97,11 @@
 		<call target="set-framework-config" />
 	</target>
 	<target name="set-folders">
-		<property name="build.dir" value="${build.basedir}/bin/${framework::get-family(framework::get-target-framework())}/${framework::get-version(framework::get-target-framework())}/${build.config}" />
 		<property name="build.aspdir" value="${build.basedir}/asp.net" />
 		<property name="build.res" value="${build.basedir}/controls/res" />
-		<property name="build.ref" value="${build.basedir}/bin/${framework::get-family(framework::get-target-framework())}/${framework::get-version(framework::get-target-framework())}" />
+		<property name="build.ref.platform" value="${build.basedir}/bin/${framework::get-family(framework::get-target-framework())}" />
+		<property name="build.ref.platform.version" value="${build.ref.platform}/${framework::get-version(framework::get-target-framework())}" />
+		<property name="build.dir" value="${build.ref.platform.version}/${build.config}" />
 	</target>
 
 	<!-- Framework targets -->
@@ -111,15 +114,23 @@
 	<!-- Set default .NET config values -->
 	<target name="set-net-config" />
 	<!-- Set default .NET 1.1 config values  -->
-	<target name="set-net-1.1-config" depends="set-net-config" />
+	<target name="set-net-1.1-config" depends="set-net-config">
+		<property name="build.defines" value="${build.defines},NET_1_1,API_1_1" />
+	</target>
 	<!-- Set default .NET 2.0 config values  -->
-	<target name="set-net-2.0-config" depends="set-net-config" />
+	<target name="set-net-2.0-config" depends="set-net-config">
+		<property name="build.defines" value="${build.defines},NET_2_0,API_2_0" />
+	</target>
 	<!-- Set default Mono config values  -->
 	<target name="set-mono-config">
 		<property name="build.defines" value="${build.defines},MONO" />
 	</target>
 	<!-- Set default Mono 1.0 config values  -->
-	<target name="set-mono-1.0-config" depends="set-mono-config" />
+	<target name="set-mono-1.0-config" depends="set-mono-config">
+		<property name="build.defines" value="${build.defines},MONO,MONO_1_0,API_1_1" />
+	</target>
 	<!-- Set default Mono 2.0 config values  -->
-	<target name="set-mono-2.0-config" depends="set-mono-config" />
+	<target name="set-mono-2.0-config" depends="set-mono-config">
+		<property name="build.defines" value="${build.defines},MONO,MONO_2_0,API_2_0" />
+	</target>
 </project>

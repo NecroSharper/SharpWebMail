@@ -1,12 +1,20 @@
 CSC=mcs
+# CSC=gmcs
 CSCFLAGS+= /define:MONO /warn:4 /nologo /target:library
 
 # Mono version (used only for subdirs)
 MONO_VERION = 1.0
+# MONO_VERION = 2.0
+
+# Symbols that identify build target
+CSCFLAGS+= /define:MONO_1_0 /define:API_1_1
+# CSCFLAGS+= /define:MONO_2_0 /define:API_2_0
 
 # Target subdir
 TARGET_BUILD = debug
+# TARGET_BUILD = release
 
+# Debug compile options
 CSCFLAGS+= /debug+ /debug:full /define:DEBUG
 
 # Base dir of SharpWebMail source
@@ -22,7 +30,7 @@ ASP_NET = $(BASE_SWM)/asp.net
 
 RESOURCES = $(BASE_SWM)/controls/res
 
-BIN_SWM = $(BASE_SWM)/controls/bin/mono/$(MONO_VERION)/$(TARGET_BUILD)
+BIN_SWM = $(BASE_SWM)/bin/mono/$(MONO_VERION)/$(TARGET_BUILD)
 BIN_SMT = $(BASE_SMT)/bin/mono/$(MONO_VERION)/$(TARGET_BUILD)
 
 SOURCES_SMT = $(BASE_SMT)/src/*.cs

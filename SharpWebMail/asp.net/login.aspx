@@ -64,7 +64,7 @@
   </tr>
   <tr>
     <td class="XPBorderLeft"><img src="images/spacer.gif" width="4" height="4"></td>
-    <td class="XPWindowFoot"><a href="http://anmar.eu.org/projects/sharpwebmail/" class="XPWindowFoot" target="_blank"><%=Application["product"]%></a> - Copyright &copy; 2003 - 2004 <a href="http://anmar.eu.org" class="XPWindowFoot" target="_blank">Angel Marin</a> All rights reserved</td>
+    <td class="XPWindowFoot"><a href="http://anmar.eu.org/projects/sharpwebmail/" class="XPWindowFoot" target="_blank"><%=Application["product"]%></a> - Copyright &copy; 2003-2005 <a href="http://anmar.eu.org" class="XPWindowFoot" target="_blank">Angel Marin</a> All rights reserved</td>
     <td class="XPBorderRight"><img src="images/spacer.gif" width="4" height="4"></td>
   </tr>
   <tr>
