@@ -1,3 +1,6 @@
+12/21/2004
+ - [New Message] Updated FCKEditor config to 2.0rc2.
+
 12/19/2004
  - [Inbox] When a Date header is not found, try to get the date from the received header.
 

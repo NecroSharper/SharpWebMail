@@ -83,7 +83,7 @@ Authors
  - Angel Marin <anmar at gmx.net> - http://anmar.eu.org/
 
 
-Licence
+License
 --------------------------------
 
  - SharpWebMail code is under GPL v2 or later, read license.txt
