@@ -65,7 +65,7 @@ namespace anmar.SharpWebMail
 								addressbook.Add(configitem, tmpaddressbook[configitem]);
 							}
 							tmpaddressbook = null;
-							if ( addressbook.Contains("name") && !addressbooks.Contains(addressbook["name"]) ) {
+							if ( addressbook.Contains("type") && !addressbook["type"].Equals("none") && addressbook.Contains("name") && !addressbooks.Contains(addressbook["name"]) ) {
 								if ( addressbook.Contains("pagesize") )
 									addressbook["pagesize"] = System.Int32.Parse(addressbook["pagesize"].ToString());
 								else

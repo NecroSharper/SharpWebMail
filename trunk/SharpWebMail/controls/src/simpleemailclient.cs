@@ -525,7 +525,7 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
-		public string errormessage {
+		public System.String errormessage {
 			get {
 				return client.errormessage;
 			}
@@ -533,9 +533,19 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
-		public string lastMessage {
+		public System.String lastMessage {
 			get {
 				return this.lastResponse;
+			}
+		}
+		public System.String Password {
+			get {
+				return this.password;
+			}
+		}
+		public System.String UserName {
+			get {
+				return this.username;
 			}
 		}
 	}
