@@ -1,5 +1,10 @@
 10/14/2004
+ - Bugfix: Invalid format in a debug string.
+
+10/14/2004
  - Bugfix: While parsing cultures, fallback to invariant wasn't properly handled
+ - Bugfix: Adjust the initial sleeps (while waiting to server responses) to something
+   smaller
 
 10/09/2004
  - Bugfix: Too much resources were being used while waiting to mail servers'

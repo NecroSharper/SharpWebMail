@@ -94,6 +94,7 @@ lang:
 			al /nologo /target:library /embed:$(RESOURCES)/SharpWebMail.$$lang.resources,SharpWebMail.$$lang.resources /culture:$$lang /out:$(ASP_NET)/bin/$$lang/SharpWebMail.resources.dll; \
 		fi; \
 	done; \
+	al /nologo /target:library /embed:$(RESOURCES)/SharpWebMail.resources,SharpWebMail.en.resources /culture:en /out:$(ASP_NET)/bin/en/SharpWebMail.resources.dll; \
 
 clean:
 	rm -f $(BIN_SMT)/SharpMimeTools.dll $(BIN_SWM)/SharpWebMail.dll
