@@ -4,7 +4,7 @@
 Introduction
 --------------------------------
 SharpWebMail is an ASP.NET Web Mail application that is written in C#.
-It uses a POP3 server as the mailstore and sends mail through a SMTP.
+It uses a POP3 or IMAP servers as the mailstore and sends mail through a SMTP server.
 It is very simple to configure (Only a few settings in the web.config file).
 You can compose HTML messages, search your inbox, read complex mime messages
 and much more.
@@ -83,7 +83,7 @@ Licence
 History
 --------------------------------
 
-08/xx/2004 - version 0.5b   - Released milestone 0.5
+08/11/2004 - version 0.5b   - Released milestone 0.5
 07/21/2004 - version 0.4b   - Released milestone 0.4
 05/29/2004 - version 0.3b   - Released milestone 0.3
 05/15/2004 - version 0.2b   - Released milestone 0.2
