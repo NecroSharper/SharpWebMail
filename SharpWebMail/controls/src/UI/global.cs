@@ -30,15 +30,9 @@ namespace anmar.SharpWebMail.UI
 		protected static System.Globalization.CultureInfo invariant = null;
 		protected static System.Collections.Specialized.HybridDictionary availablecultures;
 		protected static System.Resources.ResourceManager resources = null;
-		private System.Collections.Hashtable configOptions = System.Collections.Specialized.CollectionsUtil.CreateCaseInsensitiveHashtable();
-
-		public override void Init() {
-		}
 
 		public void Application_Start ( System.Object sender, System.EventArgs args ) {
 			initConfig();
-		}
-		public void Application_End ( System.Object sender, System.EventArgs args ) {
 		}
 
 		public void Application_Error ( System.Object sender, System.EventArgs args ) {
@@ -89,40 +83,17 @@ namespace anmar.SharpWebMail.UI
 			return culture;
 		}
 		private void initConfig () {
-			this.configOptions.Add ( "sharpwebmail/general/default_lang", "en" );
-			this.configOptions.Add ( "sharpwebmail/general/title", "" );
-			this.configOptions.Add ( "sharpwebmail/login/append", "" );
-			this.configOptions.Add ( "sharpwebmail/login/mode", 1 );
-			this.configOptions.Add ( "sharpwebmail/login/title", "" );
-			this.configOptions.Add ( "sharpwebmail/read/inbox/pagesize", 10 );
-			this.configOptions.Add ( "sharpwebmail/read/inbox/stat", 2 );
-			this.configOptions.Add ( "sharpwebmail/read/message/sanitizer_mode", 0 );
-			this.configOptions.Add ( "sharpwebmail/read/message/temppath", "" );
-			this.configOptions.Add ( "sharpwebmail/send/message/sanitizer_mode", 0 );
-			this.configOptions.Add ( "sharpwebmail/send/message/temppath", "" );
 
 			Application["product"] = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 			Application["version"] = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
 			resources = new System.Resources.ResourceManager("SharpWebMail", System.Reflection.Assembly.GetExecutingAssembly());
 			Application["resources"] = resources;
-			System.Collections.Specialized.ListDictionary config = (System.Collections.Specialized.ListDictionary)System.Configuration.ConfigurationSettings.GetConfig("sharpwebmail");
-			initConfigSection("sharpwebmail/general", config);
-			initConfigSection("sharpwebmail/login", config);
-			initConfigSection("sharpwebmail/read/inbox", config);
-			initConfigSection("sharpwebmail/read/message", config);
-			initConfigSection("sharpwebmail/send/message", config);
-			if ( config.Contains("sharpwebmail/send/addressbook") )
-			    Application.Add ("sharpwebmail/send/addressbook", config["sharpwebmail/send/addressbook"]);
-
-			// Set defaults for unset config options
-			foreach ( System.String item in this.configOptions.Keys ) {
-				if ( Application[item]==null )
-					Application[item]=this.configOptions[item];
+			System.Collections.Hashtable config = (System.Collections.Hashtable)System.Configuration.ConfigurationSettings.GetConfig("sharpwebmail");
+			foreach ( System.Collections.DictionaryEntry item in config ) {
+				Application.Add(item.Key.ToString(), item.Value);
 			}
-			parseConfigServers ("sharpwebmail/read/servers", config);
-			parseConfigServers ("sharpwebmail/send/servers", config);
-
+			config = null;
 			TestAvailableCultures();
 			System.Collections.SortedList availablecultures_values = new System.Collections.SortedList(availablecultures.Count);
 			foreach ( System.Collections.DictionaryEntry item in availablecultures ) {
@@ -134,27 +105,6 @@ namespace anmar.SharpWebMail.UI
 			Application["sharpwebmail/read/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/read/message/temppath"]);
 			Application["sharpwebmail/send/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/send/message/temppath"]);
 		}
-		private void initConfigSection ( System.String section, System.Collections.Specialized.ListDictionary globalconfig ) {
-			System.Collections.Hashtable config = null;
-			if ( globalconfig.Contains(section) )
-				config = (System.Collections.Hashtable)globalconfig[section];
-			if ( config!=null ) {
-				foreach ( System.String item in config.Keys ) {
-					System.String config_item = System.String.Format("{0}/{1}", section, item);
-					Application.Add (config_item, initConfigElement(config_item, config[item]));
-				}
-			}
-		}
-		private System.Object initConfigElement ( System.String config_item, System.Object value ) {
-			if ( this.configOptions.ContainsKey(config_item) ) {
-				System.Object defaultvalue = this.configOptions[config_item];
-				if ( defaultvalue.GetType().Equals(typeof(int)) )
-					return parseConfigElement(value.ToString(), (int)defaultvalue);
-				else if ( defaultvalue.GetType().Equals(typeof(System.String)) )
-					return (value==null)?defaultvalue:value;
-			}
-			return value;
-		}
 		private void initInvariantCulture() {
 			if ( invariant==null )
 				ParseInvariant(Application["sharpwebmail/general/default_lang"].ToString());
@@ -162,27 +112,6 @@ namespace anmar.SharpWebMail.UI
 				ParseInvariant("en");
 			if ( invariant==null )
 				invariant = System.Globalization.CultureInfo.InvariantCulture;
-		}
-		private System.Object parseConfigElement ( System.String value, System.Int32 defaultvalue ) {
-			try {
-				return System.Int32.Parse(value);
-			} catch ( System.Exception e ) {
-				if ( log.IsErrorEnabled )
-					log.Error("Error parsing integer", e);
-				return defaultvalue;
-			}
-		}
-		private void parseConfigServers ( System.String config_item, System.Collections.Specialized.ListDictionary globalconfig ) {
-			System.Collections.Specialized.NameValueCollection config = null;
-			if ( globalconfig.Contains(config_item) )
-				config = (System.Collections.Specialized.NameValueCollection)globalconfig[config_item];
-			anmar.SharpWebMail.ServerSelector selector = new anmar.SharpWebMail.ServerSelector();
-			if ( config!=null ) {
-				foreach ( System.String item in config.Keys ) {
-					selector.Add(item, config[item]);
-				}
-			}
-			Application.Add(config_item, selector);
 		}
 		private System.Globalization.CultureInfo ParseCulture ( System.String culturename ) {
 			System.Globalization.CultureInfo culture = null;
