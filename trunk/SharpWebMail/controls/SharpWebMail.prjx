@@ -47,6 +47,7 @@
     <File name=".\res\SharpWebMail.fr.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
     <File name=".\res\SharpWebMail.ro.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
     <File name=".\res\SharpWebMail.vi.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.it.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="SharpMimeTools" localcopy="True" />
