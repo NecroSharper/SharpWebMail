@@ -278,10 +278,20 @@ namespace anmar.SharpWebMail
 				msg[8] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.To );
 				msg[9] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.Reply );
 				msg[10] = anmar.SharpMimeTools.SharpMimeTools.parserfc2047Header ( header.Subject );
-				msg[11] = header.Date;
+				System.String date = header.Date;
+				if ( date.Equals(System.String.Empty) && header.Contains("Received") ) {
+					date = header["Received"];
+					if ( date.IndexOf("\r\n")>0 )
+						date = date.Substring(0, date.IndexOf("\r\n"));
+					if ( date.LastIndexOf(';')>0 )
+						date = date.Substring(date.LastIndexOf(';')+1).Trim();
+					else
+						date = System.String.Empty;
+				}
+				msg[11] = date;
 				msg[12] = header.MessageID;
 				msg[13] = header;
-				msg[14] = anmar.SharpMimeTools.SharpMimeTools.parseDate ( header.Date );
+				msg[14] = anmar.SharpMimeTools.SharpMimeTools.parseDate ( date );
 				msg[15] = false;
 				msg[16] = false;
 				if ( msg[6]!=null ) {

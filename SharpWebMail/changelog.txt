@@ -1,3 +1,6 @@
+12/19/2004
+ - [Inbox] When a Date header is not found, try to get the date from the received header.
+
 12/18/2004
  - [New Message] Rewritten so it can send the email using .NET System.Web.Mail namespace or
    opensmtp library. It may be useful for people having problems with MS .NET implementation
