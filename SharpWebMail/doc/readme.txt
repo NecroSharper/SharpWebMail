@@ -1,7 +1,7 @@
   SharpWebMail - ASP.NET Web Mail application written in C#
-    v0.2b     - http://anmar.eu.org/projects/sharpwebmail/
+    v0.3b     - http://anmar.eu.org/projects/sharpwebmail/
 
-Intoduction
+Introduction
 --------------------------------
 SharpWebMail is an ASP.NET Web Mail application that is written in C#.
 It uses a POP3 server as the mailstore and sends mail through a SMTP.
@@ -63,6 +63,7 @@ Dependencies:
  - Microsoft .NET framework 1.1  - http://msdn.microsoft.com/netframework/
  - Log4net - http://log4net.sourceforge.net/
  - FCKeditor - http://www.fredck.com/FCKeditor/
+ - SharpMimeTools - For now distributed only with SharpWebMail
 
 Project files provided for:
  - SharpDevelop - http://www.icsharpcode.net/
@@ -81,6 +82,7 @@ Licence
 History
 --------------------------------
 
+05/29/2004 - version 0.3b   - Released milestone 0.3
 05/15/2004 - version 0.2b   - Released milestone 0.2
 05/03/2004 - version 0.1b   - Released the first public beta
 

@@ -77,22 +77,15 @@ namespace anmar.SharpWebMail.UI
 					if ( ( mm.Disposition==null || !mm.Disposition.Equals("attachment") )
 						&& ( mm.Header.SubType.Equals("plain") || mm.Header.SubType.Equals("html") ) ) {
 						System.Web.UI.WebControls.Label label = new System.Web.UI.WebControls.Label ();
-						// TODO: Sanitize html
 						label.Text = mm.BodyDecoded;
 						if ( mm.IsTextBrowserDisplay ) {
+							label.Text = System.Web.HttpUtility.HtmlEncode (label.Text);
 							label.Text = label.Text.Insert (0, "<pre>");
 							label.Text = label.Text.Insert (label.Text.Length, "</pre>");
 						} else {
 							label.CssClass = "XPFormText";
-							int i = label.Text.IndexOf ("<body");
-							if ( i>-1 ) {
-								i = label.Text.IndexOf ( '>', i );
-								if ( i>-1 )
-									label.Text = label.Text.Remove ( 0, i+1 );
-							}
-							i = label.Text.IndexOf ("</body>");
-							if ( i>0 ) {
-								label.Text = label.Text.Remove ( i, label.Text.Length-i );
+							if ( (int)Application["sanitizer_mode"]==1 ) {
+								label.Text = anmar.SharpWebMail.BasicSanitizer.SanitizeHTML(label.Text, anmar.SharpWebMail.SanitizerMode.CommentBlocks|anmar.SharpWebMail.SanitizerMode.RemoveEvents);
 							}
 						}
 						entity.Controls.Add (label);
@@ -189,7 +182,7 @@ namespace anmar.SharpWebMail.UI
 		protected void Page_Load(System.Object Src, System.EventArgs E ) {
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
-			msgid = Page.Request.QueryString["msgid"];
+			msgid = System.Web.HttpUtility.HtmlEncode (Page.Request.QueryString["msgid"]);
 			this.mainInterface ( );
 		}
 		protected void Page_PreRender( object sender, EventArgs e ) {
@@ -204,18 +197,18 @@ namespace anmar.SharpWebMail.UI
 					// Disable delete button if message is already deleted
 					if ( (bool)details[15]==true )
 						((System.Web.UI.WebControls.ImageButton)this.SharpUI.FindControl("msgtoolbarDelete")).Enabled=false;
-					this.readMessageWindowDateTextLabel.Text = details[14].ToString();
-					this.readMessageWindowFromTextLabel.Text = Server.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (details[4].ToString()).ToString());
-					this.readMessageWindowToTextLabel.Text = Server.HtmlEncode (details[8].ToString());
-					this.readMessageWindowSubjectTextLabel.Text = details[10].ToString();
-					this.newMessageWindowTitle.Text = details[10].ToString();
+					this.readMessageWindowDateTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[14].ToString());
+					this.readMessageWindowFromTextLabel.Text = System.Web.HttpUtility.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (details[4].ToString()).ToString());
+					this.readMessageWindowToTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[8].ToString());
+					this.readMessageWindowSubjectTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[10].ToString());
+					this.newMessageWindowTitle.Text = System.Web.HttpUtility.HtmlEncode (details[10].ToString());
 					if ( this.newMessageWindowTitle.Text.Equals (System.String.Empty) )
 						this.newMessageWindowTitle.Text = this.SharpUI.LocalizedRS.GetString("noSubject");
 					anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
 					System.IO.MemoryStream ms = new System.IO.MemoryStream ();
 					if ( client.getMessage ( ref ms, System.Int32.Parse(details[1].ToString()) ) ) {
 						anmar.SharpMimeTools.SharpMimeMessage mm = new anmar.SharpMimeTools.SharpMimeMessage ( ms );
-						this.readMessageWindowCcTextLabel.Text = Server.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (mm.Header.Cc).ToString());
+						this.readMessageWindowCcTextLabel.Text = System.Web.HttpUtility.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (mm.Header.Cc).ToString());
 						this.decodeMessage ( mm, this.readMessageWindowBodyTextHolder );
 						mm = null;
 						this.SharpUI.Inbox.readMessage ( msgid );

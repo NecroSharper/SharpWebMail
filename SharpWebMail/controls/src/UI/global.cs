@@ -26,6 +26,7 @@ using System;
 namespace anmar.SharpWebMail.UI
 {
 	public class Global : System.Web.HttpApplication {
+		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		public override void Init() {
 		}
@@ -37,6 +38,7 @@ namespace anmar.SharpWebMail.UI
 		}
 
 		public void Application_Error ( Object sender, EventArgs e ) {
+			if ( log.IsErrorEnabled ) log.Error ( "Application_Error", Server.GetLastError() );
 #if !DEBUG
 			Server.ClearError();
 #endif
@@ -86,6 +88,7 @@ namespace anmar.SharpWebMail.UI
 			parseConfig ("mail_server_smtp_port", 25);
 			parseConfig ("pagesize", 10);
 			parseConfig ("login_mode", 1);
+			parseConfig ("sanitizer_mode", 0);
 
 			if ( Application["temppath"]!=null && Application["temppath"].ToString().Length>0) {
 				Application["temppath"] = System.IO.Path.Combine (Server.MapPath("/"), Application["temppath"].ToString());
@@ -93,11 +96,11 @@ namespace anmar.SharpWebMail.UI
 				Application["temppath"] = null;
 			}
 		}
-		private void parseConfig ( System.String key, System.Int32 dflt ) {
+		private void parseConfig ( System.String key, System.Int32 defaultvalue ) {
 			try {
 				Application[key] = System.Int32.Parse(Application[key].ToString());
 			} catch ( System.Exception ) {
-				Application[key] = dflt;
+				Application[key] = defaultvalue;
 			}
 		}
 		private System.Globalization.CultureInfo ParseCulture ( System.String name ) {

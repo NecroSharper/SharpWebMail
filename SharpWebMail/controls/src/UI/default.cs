@@ -161,7 +161,7 @@ namespace anmar.SharpWebMail.UI
 						}
 						pattern += ")";
 						System.Web.UI.HtmlControls.HtmlInputHidden hidden = new System.Web.UI.HtmlControls.HtmlInputHidden();
-						hidden.ID = param;
+						hidden.ID = param.Remove(0, 8);
 						hidden.Value = Value;
 						this.inboxWindowSearchHolder.Controls.Add ( hidden );
 					}

@@ -36,7 +36,7 @@ namespace anmar.SharpWebMail.UI
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
 
-			System.String msgid = Page.Request.QueryString["msgid"];
+			System.String msgid = System.Web.HttpUtility.HtmlEncode (Page.Request.QueryString["msgid"]);
 			if ( msgid != null ) {
 				//Our Inbox
 				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];

@@ -27,25 +27,40 @@ namespace anmar.SharpWebMail.UI
 	public class download : System.Web.UI.Page {
 
 		protected void Page_Load(System.Object Src, System.EventArgs E ) {
-			// Prevent caching, so can't be viewed offline
-			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
-
 			//Our Inbox
 			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
 
-			System.String msgid = Page.Request.QueryString["msgid"];
+			System.String msgid = System.Web.HttpUtility.HtmlEncode (Page.Request.QueryString["msgid"]);
 			System.String name = Page.Request.QueryString["name"];
 			System.String inline = Page.Request.QueryString["i"];
 			if ( msgid != null && name!=null && Session["temppath"]!=null ) {
 				System.Object[] details = inbox[ msgid ];
 				if ( details != null && details.Length>0 ) {
 					System.String path = Session["temppath"].ToString();
-					path = System.IO.Path.Combine (path, msgid);
-					name = System.IO.Path.GetFileName(name);
-					System.IO.FileInfo file = new System.IO.FileInfo (System.String.Format ( "{0}{1}{2}", path, System.IO.Path.DirectorySeparatorChar, name) );
+					try {
+						path = System.IO.Path.Combine (path, msgid);
+					} catch ( System.ArgumentException ) {
+						// Remove invalid chars
+						foreach ( char ichar in System.IO.Path.InvalidPathChars ) {
+							msgid = msgid.Replace ( ichar.ToString(), System.String.Empty );
+						}
+						path = System.IO.Path.Combine (path, msgid);
+					}
+					try {
+						name = System.IO.Path.GetFileName(name);
+					} catch ( System.ArgumentException ) {
+						// Remove invalid chars
+						foreach ( char ichar in System.IO.Path.InvalidPathChars ) {
+							name = name.Replace ( ichar.ToString(), System.String.Empty );
+						}
+						name = System.IO.Path.GetFileName(name);
+					}
+					System.IO.FileInfo file = new System.IO.FileInfo ( System.IO.Path.Combine (path, name) );
 					System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo ( path );
 					if ( dir.Exists && file.Exists && dir.FullName.Equals (new System.IO.DirectoryInfo (file.Directory.FullName).FullName) ) {
-						//TODO: return correct Content-Type
+						Page.Response.Clear();
+						//FIXME: return correct Content-Type
+						Response.AppendHeader("Content-Type", "application/octet-stream");
 						System.String header;
 						if ( inline!=null && inline.Equals("1") )
 							header = "inline";
