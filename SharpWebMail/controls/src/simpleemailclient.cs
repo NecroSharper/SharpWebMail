@@ -58,6 +58,10 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
+		protected bool responseEndOnEnd;
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.String responseEnd;
 		/// <summary>
 		/// 
@@ -121,7 +125,7 @@ namespace anmar.SharpWebMail
 				
 				if (!error) {
 					this.connected = true;
-					error = !client.readResponse( ref response, responseEndSL );
+					error = !client.readResponse( ref response, responseEndSL, true );
 					error = (error)?true:!this.evaluateresponse( response );
 					this.lastResponse = response;
 				}
@@ -426,7 +430,7 @@ namespace anmar.SharpWebMail
 				// Send cmd
 				error = !client.sendCommand( cmd, commandEnd );
 				// Read Response
-				error = (error)?true:!client.readResponse(ref response, responseEndSL);
+				error = (error)?true:!client.readResponse(ref response, responseEndSL, true);
 				// Evaluate the result
 				error = (error)?true:!this.evaluateresponse(response);
 				if ( error || !command.Equals(anmar.SharpWebMail.EmailClientCommand.Logout) ) {
@@ -453,7 +457,7 @@ namespace anmar.SharpWebMail
 				// Send cmd
 				error = !client.sendCommand( cmd, commandEnd );
 				// Read Response
-				error = (error)?true:!client.readResponse( response, ((SLReponse)?responseEndSL:responseEnd));
+				error = (error)?true:!client.readResponse( response, ((SLReponse)?responseEndSL:responseEnd), (SLReponse||this.responseEndOnEnd));
 				// Get the last response string from a multiline response
 				this.parseLastResponse( response, SLReponse);
 				// Evaluate the result

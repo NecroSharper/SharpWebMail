@@ -1,7 +1,15 @@
+08/17/2004
+ - Fix: Small speedup reading of network data. Avoids unnecessary tests to find
+   command ends when there is data available for reading.
+ - Fix: Generic tcpclient now determines the response end in a way more compatible
+   with imap responses.
+ - Fix: randomize tag for imap commands.
+ - Released as version 0.6b (260)
+
 08/15/2004
- - Search code does not rely on transferring Form to the inbox page. This makes
+ - Fix: Search code does not rely on transferring Form to the inbox page. This makes
    the search page work in mono.
- - Commented the <location> directives added on 07/14/2004 for xsp, as they make
+ - TempFix: Commented the <location> directives added on 07/14/2004 for xsp, as they make
    it throw an exception with search page. With xsp the login page does not load
    images on login page, with mod_mono images as loaded if apache handles these
    queries (mod_mono configured with AddHandler instead of SetHandler).
