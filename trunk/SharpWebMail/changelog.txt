@@ -1,3 +1,6 @@
+03/02/2005
+ - [New Message] Updated FCKEditor config to 2.0rc3.
+
 02/27/2005
  - [Config] Simplified the log4net default configuration so it's easier to enable logging.
  - [Config] Changed the <servers> section syntax, though the old one is already parsed.
