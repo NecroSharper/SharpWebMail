@@ -30,7 +30,7 @@ namespace anmar.SharpWebMail.UI
 		protected static System.Globalization.CultureInfo invariant = null;
 		protected static System.Collections.Specialized.HybridDictionary availablecultures;
 		protected static System.Resources.ResourceManager resources = null;
-		private System.Collections.Hashtable configOptions = new System.Collections.Hashtable();
+		private System.Collections.Hashtable configOptions = System.Collections.Specialized.CollectionsUtil.CreateCaseInsensitiveHashtable();
 
 		public override void Init() {
 		}
@@ -100,6 +100,8 @@ namespace anmar.SharpWebMail.UI
 			this.configOptions.Add ( "sharpwebmail/read/message/temppath", "" );
 			this.configOptions.Add ( "sharpwebmail/send/message/sanitizer_mode", 0 );
 			this.configOptions.Add ( "sharpwebmail/send/message/temppath", "" );
+			this.configOptions.Add ( "sharpwebmail/send/addressbook/type", "none" );
+			this.configOptions.Add ( "sharpwebmail/send/addressbook/pagesize", 10 );
 
 			Application["product"] = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 			Application["version"] = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
@@ -112,6 +114,7 @@ namespace anmar.SharpWebMail.UI
 			initConfigSection("sharpwebmail/read/inbox");
 			initConfigSection("sharpwebmail/read/message");
 			initConfigSection("sharpwebmail/send/message");
+			initConfigSection("sharpwebmail/send/addressbook");
 
 			// Set defaults for unset config options
 			foreach ( System.String item in this.configOptions.Keys ) {
@@ -122,7 +125,7 @@ namespace anmar.SharpWebMail.UI
 			parseConfigServers ("sharpwebmail/send/servers");
 
 			TestAvailableCultures();
-			Application["AvailableCultures"] = availablecultures;
+			Application["AvailableCultures"] = new System.Collections.SortedList(availablecultures);
 			initInvariantCulture();
 
 			Application["sharpwebmail/read/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/read/message/temppath"]);

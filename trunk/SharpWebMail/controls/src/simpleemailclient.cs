@@ -197,6 +197,7 @@ namespace anmar.SharpWebMail
 				askserver = (!error&&list.Count>0)?!askserver:askserver;
 			}
 			if ( askserver ) {
+				System.Collections.Hashtable messages = new System.Collections.Hashtable();
 				error = !this.connect();
 				error = (error)?error:!this.login ( this.username, this.password );
 				error = (error)?error:!this.status ( ref total, ref totalbytes );
@@ -204,15 +205,20 @@ namespace anmar.SharpWebMail
 				error = (error)?error:!this.getListToIndex ( list, total, inbox, npage, npagesize );
 
 				if ( !error && total>0 && list.Count>0 ) {
-					anmar.SharpMimeTools.SharpMimeHeader header = null;
+					System.IO.MemoryStream header = null;
 					foreach ( System.Collections.DictionaryEntry msg in list ) {
 						error = (error)?error:!this.getMessageHeader ( out header, (int) msg.Key );
-						if ( !error ) {
-							inbox.newMessage ( msg.Value.ToString(), header );
-						}
+						if ( !error )
+							messages.Add(msg.Value, header);
 					}
 				}
 				this.quit();
+				foreach ( System.Collections.DictionaryEntry item in messages ) {
+					System.IO.MemoryStream stream = this.getStreamDataPortion(item.Value as System.IO.MemoryStream);
+					anmar.SharpMimeTools.SharpMimeHeader header = new anmar.SharpMimeTools.SharpMimeHeader( stream, stream.Position );
+					header.Close();
+					inbox.newMessage ( item.Key.ToString(), header );
+				}
 			}
 			return !error;
 		}
@@ -276,17 +282,10 @@ namespace anmar.SharpWebMail
 		/// <param name="Header"></param>
 		/// <param name="mindex"></param>
 		/// <returns></returns>
-		protected bool getMessageHeader ( out anmar.SharpMimeTools.SharpMimeHeader Header, int mindex ) {
+		protected bool getMessageHeader ( out System.IO.MemoryStream stream, int mindex ) {
 			bool error = false;
-			System.IO.MemoryStream header = new System.IO.MemoryStream ();
-			Header = null;
-
-			error = (error)?error:!this.header ( mindex, 0, header );
-			if (!error) {
-				header = this.getStreamDataPortion(header);
-				Header = new anmar.SharpMimeTools.SharpMimeHeader( header, header.Position );
-			}
-
+			stream = new System.IO.MemoryStream ();
+			error = (error)?error:!this.header ( mindex, 0, stream );
 			return !error;
 		}
 		/// <summary>

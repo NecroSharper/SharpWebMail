@@ -1,3 +1,13 @@
+10/24/2004
+ - The culture names in login page are now sorted.
+ - Make the input boxes of newmessage page larger.
+ - Added a basic Address Book implementation. It does a simple query to a ldap server
+   and presents the results in a paged table. By clicking on an entry it's added to the
+   'To' input box.
+ - Adjust sleeps of the tcp client.
+ - The messages' headers are now parsed after the mail session has finished instead of
+   parsing each one after retrieved.
+
 10/22/2004
  - Added Italian translation. Thanks to Antonello Franzil.
 
