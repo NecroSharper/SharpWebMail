@@ -41,6 +41,7 @@ namespace anmar.SharpWebMail
 		/// </summary>
 		protected System.String tag;
 		private bool selected = false;
+		private System.Random taggen;
 
 		/// <summary>
 		/// 
@@ -52,10 +53,10 @@ namespace anmar.SharpWebMail
 		public SimpleIMAPClient( System.String host, System.Int32 port, System.String user, System.String pass ) : base(host, port, user, pass) {
 			this.folder = "INBOX";
 			this.server_delimiter = "/";
-			this.tag = "a001";
-			commandEnd = "\r\n";
-			responseEnd = " completed\r\n";
-			responseEndSL = "\r\n";
+			this.taggen = new System.Random();
+			this.commandEnd = "\r\n";
+			this.responseEndSL = "\r\n";
+			this.responseEndOnEnd = false;
 		}
 		/// <summary>
 		/// 
@@ -68,10 +69,10 @@ namespace anmar.SharpWebMail
 		public SimpleIMAPClient( System.String host, System.Int32 port, System.String user, System.String pass, System.Double timeout ) : base(host, port, user, pass, timeout) {
 			this.folder = "INBOX";
 			this.server_delimiter = "/";
-			this.tag = "a001";
-			commandEnd = "\r\n";
-			responseEnd = " completed\r\n";
-			responseEndSL = "\r\n";
+			this.taggen = new System.Random();
+			this.commandEnd = "\r\n";
+			this.responseEndSL = "\r\n";
+			this.responseEndOnEnd = false;
 		}
 		/// <summary>
 		/// 
@@ -81,6 +82,7 @@ namespace anmar.SharpWebMail
 		/// <returns></returns>
 		protected override System.String buildcommand ( anmar.SharpWebMail.EmailClientCommand cmd, params System.Object[] args ) {
 			System.String command = System.String.Empty;
+			this.randomTag();
 			switch ( cmd ) {
 				case anmar.SharpWebMail.EmailClientCommand.Delete:
 					if ( args.Length==1 )
@@ -172,6 +174,7 @@ namespace anmar.SharpWebMail
 		protected override bool deletemessages ( System.Data.DataRow[] result ) {
 			bool error = !base.deletemessages( result );
 			if ( !error ) {
+				this.randomTag();
 				System.IO.MemoryStream response = new System.IO.MemoryStream();
 				System.String cmd = System.String.Format("{0} EXPUNGE ", this.tag);
 				error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.Other, cmd, response, false );
@@ -329,6 +332,10 @@ namespace anmar.SharpWebMail
 			}
 			return !error;
 		}
+		private void randomTag () {
+			this.tag = System.String.Format ("swm{0}", (int)(this.taggen.NextDouble()*10000));
+			this.responseEnd = this.tag + " ";
+		}
 		/// <summary>
 		/// 
 		/// </summary>
@@ -344,6 +351,7 @@ namespace anmar.SharpWebMail
 		private bool select () {
 			bool error = false;
 			if ( !this.selected ) {
+				this.randomTag();
 				System.IO.MemoryStream response = new System.IO.MemoryStream();
 				System.String cmd = System.String.Format("{0} SELECT {1}", this.tag, this.folder);
 				error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.Other, cmd, response, false );

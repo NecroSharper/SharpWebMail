@@ -1,5 +1,5 @@
   SharpWebMail - ASP.NET Web Mail application written in C#
-    v0.5b     - http://anmar.eu.org/projects/sharpwebmail/
+    v0.6b     - http://anmar.eu.org/projects/sharpwebmail/
 
 Introduction
 --------------------------------
@@ -18,7 +18,7 @@ Multiple POP3 and IMAP servers can be configured to read mail from.
 
 Tries to minimize the queries to the email server caching message info
 
-Authentication is handled by the POP3 server
+Authentication is handled by your email server
 
 Sends mail through a SMTP server
 
@@ -39,6 +39,8 @@ Multilingual user interface
 XP look & feel
 
 Tested with IE6 and Mozilla FireFox 0.9, but it should work with other versions
+
+For a full set of features visit <http://anmar.eu.org/projects/sharpwebmail/features.html>
 
 Installation requisites
 --------------------------------
@@ -62,6 +64,7 @@ Building
 
 Dependencies:
  - Microsoft .NET framework 1.1  - http://msdn.microsoft.com/netframework/
+   or Mono - http://www.mono-project.com/
  - Log4net - http://logging.apache.org/log4net/
  - FCKeditor - http://www.fckeditor.net/
  - SharpMimeTools - For now distributed only with SharpWebMail
@@ -83,6 +86,7 @@ Licence
 History
 --------------------------------
 
+08/17/2004 - version 0.6b   - Released milestone 0.6
 08/11/2004 - version 0.5b   - Released milestone 0.5
 07/21/2004 - version 0.4b   - Released milestone 0.4
 05/29/2004 - version 0.3b   - Released milestone 0.3

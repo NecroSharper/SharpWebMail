@@ -86,7 +86,7 @@ namespace anmar.SharpWebMail
 		protected void init () {
 			client = new System.Net.Sockets.TcpClient();
 		}
-		public bool readResponse ( System.IO.MemoryStream response, System.String waitFor ) {
+		public bool readResponse ( System.IO.MemoryStream response, System.String waitFor, bool machresponseend ) {
 			bool error = false;
 			System.Net.Sockets.NetworkStream ns = null;
 
@@ -94,11 +94,11 @@ namespace anmar.SharpWebMail
 			error = !this.getStream( ref ns );
 
 			//Get response from NetworkStream
-			error = ( error )?error:!readBytes( ns, response, waitFor );
+			error = ( error )?error:!readBytes( ns, response, waitFor, machresponseend );
 
 			return !error;
 		}
-		public bool readResponse ( ref System.String response, System.String waitFor ) {
+		public bool readResponse ( ref System.String response, System.String waitFor, bool machresponseend ) {
 			bool error = false;
 			System.Net.Sockets.NetworkStream ns = null;
 
@@ -106,11 +106,11 @@ namespace anmar.SharpWebMail
 			error = !this.getStream( ref ns );
 
 			//Get response from NetworkStream
-			error = ( error )?error:!this.readString( ns, ref response, waitFor );
+			error = ( error )?error:!this.readString( ns, ref response, waitFor, machresponseend );
 
 			return !error;
 		}
-		protected bool readBytes ( System.Net.Sockets.NetworkStream ns, System.IO.MemoryStream response, System.String waitFor ) {
+		protected bool readBytes ( System.Net.Sockets.NetworkStream ns, System.IO.MemoryStream response, System.String waitFor, bool machresponseend ) {
 			bool error = false;
 			byte[] readBytes = new byte[client.ReceiveBufferSize];
 			int nbytes = 0;
@@ -140,10 +140,27 @@ namespace anmar.SharpWebMail
 				if ( !error && nbytes>0 ) {
 					if ( log.IsDebugEnabled ) log.Debug ( "Read " + nbytes + " bytes" );
 					response.Write( readBytes, 0, nbytes );
-					if ( response.Length>waitFor.Length ) {
-						response.Seek(response.Length - waitFor.Length, System.IO.SeekOrigin.Begin);
-						response.Read(readBytes,  0, waitFor.Length);
-						lastBoundary = System.Text.Encoding.ASCII.GetString(readBytes, 0, waitFor.Length);
+					// Only test waitfor secuence if there is no data for reading
+					// and there are enouth data available for comparing
+					if ( !ns.DataAvailable && response.Length>waitFor.Length ) {
+						// The waitfor text must be the last portion of the response
+						if ( machresponseend ) {
+							response.Seek(response.Length - waitFor.Length, System.IO.SeekOrigin.Begin);
+							response.Read(readBytes,  0, waitFor.Length);
+							lastBoundary = System.Text.Encoding.ASCII.GetString(readBytes, 0, waitFor.Length);
+						// The waitfor text must be in the begining of the last line of the response
+						} else {
+							response.Seek(0, System.IO.SeekOrigin.Begin);
+							System.IO.StreamReader reader = new System.IO.StreamReader(response);
+							System.String line = System.String.Empty;
+							for ( System.String tmp=reader.ReadLine(); tmp!=null ; line=tmp, tmp=reader.ReadLine() ) {}
+							if ( line!=null && line.Length>=waitFor.Length )
+								lastBoundary = line.Substring(0, waitFor.Length);
+							reader.DiscardBufferedData();
+							reader=null;
+							response.Seek (0, System.IO.SeekOrigin.End);
+							log.Error("Ultima respuesta: " + lastBoundary);
+						}
 					}
 					// Reset timer
 					aTimer.Interval = this.timeoutResponse;
@@ -154,12 +171,12 @@ namespace anmar.SharpWebMail
 			error = (error||response.Length==0)?true:false;
 			return !error;
 		}
-		protected bool readString ( System.Net.Sockets.NetworkStream ns, ref System.String response, System.String waitFor) {
+		protected bool readString ( System.Net.Sockets.NetworkStream ns, ref System.String response, System.String waitFor, bool machresponseend) {
 			bool error = false;
 			if ( log.IsDebugEnabled ) log.Debug ( "Reading response string" );
 			response = System.String.Empty;
 			System.IO.MemoryStream stream = new System.IO.MemoryStream();
-			error = !this.readBytes(ns, stream, waitFor);
+			error = !this.readBytes(ns, stream, waitFor, machresponseend);
 			if ( !error ) {
 				response = System.Text.Encoding.ASCII.GetString(stream.GetBuffer(), 0, (int)stream.Length );
 				response = response.Trim();
