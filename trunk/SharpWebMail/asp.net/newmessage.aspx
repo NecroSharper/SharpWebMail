@@ -15,10 +15,10 @@
 		if ( typeof (oFrame)=='undefined' )
 			oFrame = window.frames[0];
 		if ( typeof (oFrame)=='object' ) {
-			for ( var i=0; i<window.document.sharpwebmailform.format.length; i++ ) {
-				if ( window.document.sharpwebmailform.format[i].value=="html" ) {
-					window.document.sharpwebmailform.format[i].disabled=false;
-					window.document.sharpwebmailform.format[i].checked=true;
+			for ( var i=0; i<window.document.forms[0].format.length; i++ ) {
+				if ( window.document.forms[0].format[i].value=="html" ) {
+					window.document.forms[0].format[i].disabled=false;
+					window.document.forms[0].format[i].checked=true;
 					break;
 				}
 			}
