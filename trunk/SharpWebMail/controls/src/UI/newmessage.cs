@@ -310,10 +310,9 @@ namespace anmar.SharpWebMail.UI
 			System.String message = null;
 			OpenSmtp.Mail.MailMessage mailMessage = new OpenSmtp.Mail.MailMessage();
 			mailMessage.From = new OpenSmtp.Mail.EmailAddress(this.GetFromAddress(), this.fromname.Value);
-			System.Text.RegularExpressions.Regex email = new System.Text.RegularExpressions.Regex(@"(" + anmar.SharpMimeTools.ABNF.address + @")");
-			System.String[] tokens = email.Split(this.toemail.Value);
+			System.String[] tokens = anmar.SharpMimeTools.ABNF.address_regex.Split(this.toemail.Value);
 			foreach ( System.String token in tokens ) {
-				if ( email.IsMatch(token ) )
+				if ( anmar.SharpMimeTools.ABNF.address_regex.IsMatch(token ) )
 					mailMessage.To.Add (new OpenSmtp.Mail.EmailAddress(token.Trim()));
 			}
 			mailMessage.Subject = this.subject.Value.Trim();
