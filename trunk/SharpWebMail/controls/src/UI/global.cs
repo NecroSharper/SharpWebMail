@@ -153,7 +153,7 @@ namespace anmar.SharpWebMail.UI
 			if ( invariant==null )
 				ParseInvariant("en");
 			if ( invariant==null )
-				ParseInvariant(System.String.Empty);
+				invariant = System.Globalization.CultureInfo.InvariantCulture;
 		}
 		private System.Object parseConfigElement ( System.String value, System.Int32 defaultvalue ) {
 			try {
