@@ -1,3 +1,11 @@
+12/12/2004
+ - [New Message] .NET 2.0 does not set name property in forms, so js code expecting this does
+   not work.
+ - [New Message] System.Web.UI.Page has a Header prop in .NET 2.0, so stop using this name for
+   a field here.
+ - [Project] Create specific build targets for 1.1.
+ - [nant] Added nant build targets for .NET 2.0 and Mono 2.0
+
 12/08/2004
  - [Config] Allow more value types in config file.
  - [Login] Allow login credentials to pass in the QueryString to login page.

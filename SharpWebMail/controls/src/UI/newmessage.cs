@@ -32,7 +32,7 @@ namespace anmar.SharpWebMail.UI
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		private static System.String bodyStart = "<html><head><title></title></head><body bgcolor=\"#FFFFFF\" text=\"#000000\" leftmargin=\"0\" topmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">";
 		private static System.String bodyEnd = "</body></html>";
-		private  anmar.SharpMimeTools.SharpMimeHeader Header=null;
+		private  anmar.SharpMimeTools.SharpMimeHeader _headers=null;
 		private int UI_case=0;
 		
 		#endregion General variables
@@ -190,7 +190,7 @@ namespace anmar.SharpWebMail.UI
 			if ( !guid.Equals( System.Guid.Empty) ) {
 				System.Object[] details = inbox[ guid ];
 				if ( details != null ) {
-					this.Header = (anmar.SharpMimeTools.SharpMimeHeader) details[13];
+					this._headers = (anmar.SharpMimeTools.SharpMimeHeader) details[13];
 					if ( !this.IsPostBack ) {
 						this.subject.Value = System.String.Format ("{0}:", this.SharpUI.LocalizedRS.GetString("replyPrefix"));
 						if ( details[10].ToString().ToLower().IndexOf (this.subject.Value.ToLower())!=-1 ) {
@@ -252,16 +252,16 @@ namespace anmar.SharpWebMail.UI
 				mailMessage.Body = FCKEditor.Value;
 			}
 
-			if ( this.Header != null ) {
+			if ( this._headers != null ) {
 				// RFC 2822 3.6.4. Identification fields
-				if ( this.Header["Message-ID"]!=null ) {
-					mailMessage.Headers["In-Reply-To"] = this.Header["Message-ID"];
-					mailMessage.Headers["References"] = this.Header["Message-ID"];
+				if ( this._headers["Message-ID"]!=null ) {
+					mailMessage.Headers["In-Reply-To"] = this._headers["Message-ID"];
+					mailMessage.Headers["References"] = this._headers["Message-ID"];
 				}
-				if ( this.Header["References"]!=null ) {
-					mailMessage.Headers["References"] = System.String.Format ("{0} {1}", this.Header["References"], mailMessage.Headers["References"]).Trim();
-				} else if ( this.Header["In-Reply-To"]!=null && this.Header["In-Reply-To"].IndexOf('>')==this.Header["In-Reply-To"].LastIndexOf('>') ) {
-					mailMessage.Headers["References"] = System.String.Format ("{0} {1}", this.Header["In-Reply-To"], mailMessage.Headers["References"]).Trim();
+				if ( this._headers["References"]!=null ) {
+					mailMessage.Headers["References"] = System.String.Format ("{0} {1}", this._headers["References"], mailMessage.Headers["References"]).Trim();
+				} else if ( this._headers["In-Reply-To"]!=null && this._headers["In-Reply-To"].IndexOf('>')==this._headers["In-Reply-To"].LastIndexOf('>') ) {
+					mailMessage.Headers["References"] = System.String.Format ("{0} {1}", this._headers["In-Reply-To"], mailMessage.Headers["References"]).Trim();
 				}
 			}
 			mailMessage.Headers["X-Mailer"] = System.String.Format ("{0} {1}", Application["product"], Application["version"]);

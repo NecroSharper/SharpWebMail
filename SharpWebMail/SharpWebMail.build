@@ -109,11 +109,14 @@
 	<target name="set-net-config" />
 	<!-- Set default .NET 1.1 config values  -->
 	<target name="set-net-1.1-config" depends="set-net-config" />
+	<!-- Set default .NET 2.0 config values  -->
+	<target name="set-net-2.0-config" depends="set-net-config" />
 	<!-- Set default Mono config values  -->
 	<target name="set-mono-config">
 		<property name="build.defines" value="${build.defines},MONO" />
 	</target>
 	<!-- Set default Mono 1.0 config values  -->
 	<target name="set-mono-1.0-config" depends="set-mono-config" />
-	
+	<!-- Set default Mono 2.0 config values  -->
+	<target name="set-mono-2.0-config" depends="set-mono-config" />
 </project>
