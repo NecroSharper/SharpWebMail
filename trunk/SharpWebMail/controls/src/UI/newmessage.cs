@@ -486,7 +486,7 @@ namespace anmar.SharpWebMail.UI
 					FCKEditor.Value = anmar.SharpWebMail.BasicSanitizer.SanitizeHTML(FCKEditor.Value, anmar.SharpWebMail.SanitizerMode.CommentBlocks|anmar.SharpWebMail.SanitizerMode.RemoveEvents);
 				}
 				anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/send/servers"];
-				anmar.SharpWebMail.EmailServerInfo server = selector.Select(User.Identity.Name);
+				anmar.SharpWebMail.EmailServerInfo server = selector.Select(User.Identity.Name, true);
 				if ( server!=null && ( server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.Smtp) 
 				                      || server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.SmtpAuth) ) ) {
 					if ( Application["sharpwebmail/send/message/smtp_engine"].Equals("opensmtp") )

@@ -53,8 +53,8 @@ namespace anmar.SharpWebMail
 								ParseNode( parent, context, item, config, sectionname );
 							break;
 						case "servers":
-							System.Configuration.NameValueSectionHandler namevaluesection = new System.Configuration.NameValueSectionHandler();
-							config.Add(sectionname, ParseConfigServers(namevaluesection.Create(parent, context, item) as System.Collections.Specialized.NameValueCollection));
+							if ( item.HasChildNodes )
+								config.Add(sectionname, ParseConfigServers(item.ChildNodes));
 							break;
 						case "addressbook":
 							if ( !config.Contains(sectionname) )
@@ -84,6 +84,7 @@ namespace anmar.SharpWebMail
 			config.Add ( "sharpwebmail/login/append", System.String.Empty );
 			config.Add ( "sharpwebmail/login/enablequerystringlogin", false );
 			config.Add ( "sharpwebmail/login/mode", 1 );
+			config.Add ( "sharpwebmail/login/serverselection", System.String.Empty );
 			config.Add ( "sharpwebmail/login/title", System.String.Empty );
 			config.Add ( "sharpwebmail/read/inbox/pagesize", 10 );
 			config.Add ( "sharpwebmail/read/inbox/stat", 2 );
@@ -115,10 +116,24 @@ namespace anmar.SharpWebMail
 				return defaultvalue;
 			}
 		}
-		private anmar.SharpWebMail.ServerSelector ParseConfigServers ( System.Collections.Specialized.NameValueCollection configsection ) {
+		private anmar.SharpWebMail.ServerSelector ParseConfigServers ( System.Xml.XmlNodeList list ) {
 			anmar.SharpWebMail.ServerSelector selector = new anmar.SharpWebMail.ServerSelector();
-			foreach ( System.String item in configsection.Keys ) {
-				selector.Add(item, configsection[item]);
+			foreach ( System.Xml.XmlNode item in list ) {
+				if ( item.NodeType.Equals(System.Xml.XmlNodeType.Element) && (item.LocalName.Equals("server") || item.LocalName.Equals("add")) ) {
+					System.Xml.XmlElement element = (System.Xml.XmlElement)item;
+					if ( element.HasAttribute("key") && element.HasAttribute("value") ) // Old format
+						selector.Add(element.GetAttribute("key"), element.GetAttribute("value"));
+					else if ( element.HasAttribute("protocol") && element.HasAttribute("host") && element.HasAttribute("port") ) { // New format
+						anmar.SharpWebMail.EmailServerInfo server = new anmar.SharpWebMail.EmailServerInfo(element.GetAttribute("protocol"), element.GetAttribute("host"), element.GetAttribute("port"));
+						if ( element.HasAttribute("regexp") )
+							server.SetCondition (element.GetAttribute("regexp"));
+						if ( element.HasAttribute("name") )
+							server.Name = element.GetAttribute("name");
+
+						if ( server.IsValid() )
+							selector.Add(server);
+					}
+				}
 			}
 			return selector;
 		}

@@ -29,8 +29,10 @@ namespace anmar.SharpWebMail
 	/// </summary>
 	public class EmailServerInfo {
 		private static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private System.Text.RegularExpressions.Regex _condition = null;
 		private anmar.SharpWebMail.ServerProtocol _protocol;
 		private System.String _host;
+		private System.String _name = null;
 		private int _port;
 
 		public EmailServerInfo ( anmar.SharpWebMail.ServerProtocol protocol, System.String host, int port ) {
@@ -38,9 +40,27 @@ namespace anmar.SharpWebMail
 			this._host = host;
 			this._port = port;
 		}
+		public EmailServerInfo ( System.String protocol, System.String host, System.String port ) {
+			this._protocol = anmar.SharpWebMail.EmailServerInfo.ParseProtocol(protocol);
+			this._host = anmar.SharpWebMail.EmailServerInfo.ParseHost(host);
+			this._port = anmar.SharpWebMail.EmailServerInfo.ParsePort(port, this._protocol);
+		}
+		public System.Text.RegularExpressions.Regex Condition {
+			get {
+				return this._condition;
+			}
+		}
 		public System.String Host {
 			get {
 				return this._host;
+			}
+		}
+		public System.String Name {
+			get {
+				return this._name;
+			}
+			set {
+				this._name = value;
 			}
 		}
 		public int Port {
@@ -63,6 +83,9 @@ namespace anmar.SharpWebMail
 					return 25;
 			}
 			return 0;
+		}
+		public bool IsValid () {
+			return ( !this._protocol.Equals(anmar.SharpWebMail.ServerProtocol.Unknown) && this._port>0 && this._host!=null && (this._condition!=null || this._name!=null) );
 		}
 		public static anmar.SharpWebMail.EmailServerInfo Parse ( System.String value ) {
 			anmar.SharpWebMail.EmailServerInfo server = null;
@@ -109,6 +132,22 @@ namespace anmar.SharpWebMail
 				protocol = anmar.SharpWebMail.ServerProtocol.Unknown;
 			}
 			return protocol;
+		}
+		public void SetCondition ( System.String pattern ) {
+			try {
+				if ( pattern.Equals("*") )
+					pattern = ".*";
+				this._condition = new System.Text.RegularExpressions.Regex(pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase|System.Text.RegularExpressions.RegexOptions.ECMAScript);
+			} catch ( System.Exception e ) {
+				if ( log.IsErrorEnabled )
+					log.Error(System.String.Format("Error parsing pattern: {0}", pattern), e);
+			}
+		}
+		public override System.String ToString () {
+			if ( this._name!=null )
+				return this._name;
+			else
+				return this._host;
 		}
 	}
 	/// <summary>

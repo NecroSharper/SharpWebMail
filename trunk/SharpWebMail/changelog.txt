@@ -1,3 +1,11 @@
+02/27/2005
+ - [Config] Simplified the log4net default configuration so it's easier to enable logging.
+ - [Config] Changed the <servers> section syntax, though the old one is already parsed.
+ - [Login] Now it's possible to select the mail server manually.
+ - [Config] Added the option serverselection to login section that gives control over the above.
+ - [Inbox] Bugfix: The purge code was generating an exception when updating the list of messages with the
+   latest server content.
+ 
 01/23/2005
  - [New Message] Use the static regular expression from SharpMimeTools.
 

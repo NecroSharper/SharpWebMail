@@ -41,6 +41,7 @@ namespace anmar.SharpWebMail.UI
 		protected System.Web.UI.HtmlControls.HtmlForm LoginForm;
 		protected System.Web.UI.WebControls.Literal loginWindowHeadTitle;
 		protected System.Web.UI.HtmlControls.HtmlSelect selectculture;
+		protected System.Web.UI.HtmlControls.HtmlSelect selectserver;
 		protected System.Web.UI.WebControls.RegularExpressionValidator usernameValidator;
 
 		protected System.String PrepareLogin ( System.String user ) {
@@ -79,7 +80,12 @@ namespace anmar.SharpWebMail.UI
 				if ( this.IsValid ) {
 					this.username.Value=this.PrepareLogin(this.username.Value);
 					anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/read/servers"];
-					anmar.SharpWebMail.IEmailClient client = anmar.SharpWebMail.EmailClientFactory.CreateEmailClient(selector.Select(this.username.Value), this.username.Value, password.Value );
+					anmar.SharpWebMail.EmailServerInfo server = null;
+					if ( selectserver!=null && selectserver.Visible )
+						server = selector.Select(this.selectserver.Value, false);
+					else
+						server = selector.Select(this.username.Value, true);
+					anmar.SharpWebMail.IEmailClient client = anmar.SharpWebMail.EmailClientFactory.CreateEmailClient(server, this.username.Value, password.Value );
 					anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
 					System.String folder = Page.Request.QueryString["mode"];
 					if ( folder==null )
@@ -120,15 +126,25 @@ namespace anmar.SharpWebMail.UI
 		 * Page Events
 		*/
 		protected void Page_Init () {
-			if ( selectculture!=null && !this.IsPostBack ) {
-				selectculture.DataSource = Application["AvailableCultures"];
-				selectculture.DataTextField = "Key";
-				selectculture.DataValueField = "Value";
-				selectculture.DataBind();
-				if ( selectculture.Items.Count==0 )
-					selectculture.Visible = false;
-				else
-					selectculture.Value = Session["effectiveculture"].ToString();
+			if ( !this.IsPostBack ) {
+				if ( selectculture!=null ) {
+					selectculture.DataSource = Application["AvailableCultures"];
+					selectculture.DataTextField = "Key";
+					selectculture.DataValueField = "Value";
+					selectculture.DataBind();
+					if ( selectculture.Items.Count==0 )
+						selectculture.Visible = false;
+					else
+						selectculture.Value = Session["effectiveculture"].ToString();
+				}
+				if ( selectserver!=null && Application["sharpwebmail/login/serverselection"]!=null && Application["sharpwebmail/login/serverselection"].Equals("manual") ) {
+					anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/read/servers"];
+					selectserver.DataSource = selector.Servers;
+					selectserver.DataTextField = "Name";
+					selectserver.DataBind();
+					if ( selectserver.Items.Count!=0 )
+						selectserver.Visible = true;
+				}
 			}
 		}
 		protected void Page_Load ( System.Object sender, System.EventArgs args ) {

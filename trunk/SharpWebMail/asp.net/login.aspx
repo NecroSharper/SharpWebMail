@@ -37,6 +37,13 @@
             </td>
           </tr>
           <tr> 
+            <td></td>
+            <td> 
+              <select id="selectserver" runat="server" Visible="false" style="XPInput" />
+            </td>
+            <td></td>
+          </tr>
+          <tr> 
             <td> <asp:Label EnableViewState="true" id="loginWindowPassword" CssClass="XPFormLabel" runat="server" /></td>
             <td> 
               <input id="password" type="password" runat="server" style="XPInput" size="25" name="password" />

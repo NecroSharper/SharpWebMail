@@ -29,35 +29,38 @@ namespace anmar.SharpWebMail
 	/// </summary>
 	public class ServerSelector {
 		private static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		private System.Collections.Specialized.HybridDictionary _servers;
+		private System.Collections.ArrayList _servers;
 		public ServerSelector () {
-			this._servers = new System.Collections.Specialized.HybridDictionary();
+			this._servers = new System.Collections.ArrayList();
+		}
+		public System.Collections.ICollection Servers {
+			get {
+				return this._servers;
+			}
 		}
 		public void Add ( System.Object key, System.Object value ) {
 			if ( key==null || value ==null )
 				throw new System.ArgumentNullException();
 
-			System.Text.RegularExpressions.Regex condition = this.ParseCondition(key.ToString());
 			anmar.SharpWebMail.EmailServerInfo server = anmar.SharpWebMail.EmailServerInfo.Parse(value.ToString());
-			if ( condition!=null && server!=null )
-				this._servers.Add (condition, server);
-		}
-		private System.Text.RegularExpressions.Regex ParseCondition ( System.String pattern ) {
-			System.Text.RegularExpressions.Regex condition = null;
-			try {
-				if ( pattern.Equals("*") )
-					pattern = ".*";
-				condition = new System.Text.RegularExpressions.Regex(pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase|System.Text.RegularExpressions.RegexOptions.ECMAScript);
-			} catch ( System.Exception e ) {
-				if ( log.IsErrorEnabled )
-					log.Error(System.String.Format("Error parsing pattern: {0}", pattern), e);
+			if ( server!=null ) {
+				server.SetCondition(key.ToString());
+				if ( server.IsValid() )
+					this._servers.Add (server);
 			}
-			return condition;
 		}
-		public anmar.SharpWebMail.EmailServerInfo Select ( System.String key ) {
-			foreach( System.Collections.DictionaryEntry item in this._servers ) {
-				if ( ((System.Text.RegularExpressions.Regex)item.Key).IsMatch(key) )
-					return (anmar.SharpWebMail.EmailServerInfo)item.Value;
+		public void Add ( anmar.SharpWebMail.EmailServerInfo server ) {
+			if ( server==null || !server.IsValid() )
+				throw new System.ArgumentNullException();
+			this._servers.Add (server);
+		}
+		public anmar.SharpWebMail.EmailServerInfo Select ( System.String key, bool match ) {
+			foreach( anmar.SharpWebMail.EmailServerInfo item in this._servers ) {
+				if ( item.Condition!=null && match ) {
+					if ( item.Condition.IsMatch(key) )
+						return item;
+				} else if ( !match && item.Name!=null && item.Name.Equals(key) )
+					return item;
 			}
 			return null;
 		}

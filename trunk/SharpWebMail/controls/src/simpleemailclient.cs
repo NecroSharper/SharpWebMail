@@ -240,7 +240,8 @@ namespace anmar.SharpWebMail
 			uidlist =  null;
 
 			//Determine what messages we have to index
-			error = (error)?error:!inbox.buildMessageList ( msgs, npage, npagesize );
+			if ( msgs!=null )
+				error = (error)?error:!inbox.buildMessageList ( msgs, npage, npagesize );
 
 			return !error;
 		}

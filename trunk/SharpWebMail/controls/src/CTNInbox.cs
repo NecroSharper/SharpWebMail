@@ -190,7 +190,7 @@ namespace anmar.SharpWebMail
 				tmpkey = (int)this.inbox_view[i][1];
 				tmpvalue = this.inbox_view[i][3].ToString();
 				// We want to get headers only if we do not have them
-				if ( !msgs.ContainsKey (tmpkey) && this.inbox_view[i][13].Equals(System.DBNull.Value) ) {
+				if ( msgs!=null && !msgs.ContainsKey (tmpkey) && this.inbox_view[i][13].Equals(System.DBNull.Value) ) {
 					msgs.Add( this.inbox_view[i][1], this.inbox_view[i][3].ToString() );
 				}
 			}
