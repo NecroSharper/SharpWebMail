@@ -1,3 +1,10 @@
+08/24/2004
+ - Cache the user's full name (and email in login mode 2) after it fills in
+   the information the first time.
+
+08/19/2004
+ - Version number set to 0.7
+
 08/17/2004
  - Fix: Small speedup reading of network data. Avoids unnecessary tests to find
    command ends when there is data available for reading.
