@@ -46,7 +46,7 @@
 					</HeaderTemplate>
 					<ItemTemplate>
 						<asp:Label runat="server"
-							Text='<%# ((System.Data.DataRowView)Container.DataItem)["msgnum"] %>' />
+							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)["msgnum"].ToString()) %>' />
 					</ItemTemplate>
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
@@ -62,7 +62,7 @@
 							/>
 					</HeaderTemplate>
 					<ItemTemplate>
-						<asp:HyperLink id="inboxItemFromLink" Text='<%# ((((System.Data.DataRowView)Container.DataItem)["FromName"].ToString().Length>0)?((System.Data.DataRowView)Container.DataItem)["FromName"]:((System.Data.DataRowView)Container.DataItem)["FromEmail"]) %>' NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "uidl", "newmessage.aspx?msgid={0:G}") %>' Target="_self" runat="server" />
+						<asp:HyperLink id="inboxItemFromLink" Text='<%# System.Web.HttpUtility.HtmlEncode ((((((System.Data.DataRowView)Container.DataItem)["FromName"].ToString().Length>0)?((System.Data.DataRowView)Container.DataItem)["FromName"]:((System.Data.DataRowView)Container.DataItem)["FromEmail"])).ToString()) %>' NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "uidl", "newmessage.aspx?msgid={0:G}") %>' Target="_self" runat="server" />
 					</ItemTemplate>
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
@@ -78,7 +78,7 @@
 							/>
 					</HeaderTemplate>
 					<ItemTemplate>
-						<asp:HyperLink id="inboxItemSubjectLink" Text='<%# ((System.Data.DataRowView)Container.DataItem)["Subject"] %>' NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "uidl", "readmessage.aspx?msgid={0:G}") %>' Target="_self" runat="server" />
+						<asp:HyperLink id="inboxItemSubjectLink" Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)["Subject"].ToString()) %>' NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "uidl", "readmessage.aspx?msgid={0:G}") %>' Target="_self" runat="server" />
 					</ItemTemplate>
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
@@ -95,7 +95,7 @@
 					</HeaderTemplate>
 					<ItemTemplate>
 						<asp:Label runat="server"
-							Text='<%# ((System.Data.DataRowView)Container.DataItem)["Date"] %>' />
+							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)["Date"].ToString()) %>' />
 					</ItemTemplate>
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
@@ -112,7 +112,7 @@
 					</HeaderTemplate>
 					<ItemTemplate>
 						<asp:Label runat="server"
-							Text='<%# ((System.Data.DataRowView)Container.DataItem)["size"] %>' />
+							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)["size"].ToString()) %>' />
 					</ItemTemplate>
 				</asp:TemplateColumn>
 			</Columns>

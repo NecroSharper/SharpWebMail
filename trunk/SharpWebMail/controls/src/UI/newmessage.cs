@@ -98,7 +98,16 @@ namespace anmar.SharpWebMail.UI
 				System.IO.DirectoryInfo basedir = new System.IO.DirectoryInfo(path);
 				if ( basedir.Exists ) {
 					foreach ( System.String part in parts ) {
-						path = System.IO.Path.Combine (path, part);
+						try {
+							path = System.IO.Path.Combine (path, part);
+						} catch ( System.ArgumentException ) {
+							// Remove invalid chars
+							System.String tmppart = part;
+							foreach ( char ichar in System.IO.Path.InvalidPathChars ) {
+								tmppart = tmppart.Replace ( ichar.ToString(), System.String.Empty );
+							}
+							path = System.IO.Path.Combine (path, tmppart);
+						}
 					}
 					System.IO.FileInfo file = new System.IO.FileInfo ( path );
 					System.IO.DirectoryInfo filedir = new System.IO.DirectoryInfo (file.Directory.FullName);
@@ -144,7 +153,7 @@ namespace anmar.SharpWebMail.UI
 			this.SharpUI.nextPageImageButton.Enabled = false;
 			this.SharpUI.prevPageImageButton.Enabled = false;
 
-			System.String msgid = Page.Request.QueryString["msgid"];
+			System.String msgid = System.Web.HttpUtility.HtmlEncode (Page.Request.QueryString["msgid"]);
 			if ( msgid != null ) {
 				System.Object[] details = inbox[ msgid ];
 				if ( details != null ) {
@@ -186,7 +195,7 @@ namespace anmar.SharpWebMail.UI
 			bool error = false;
 			message = null;
 
-			System.Web.Mail.SmtpMail.SmtpServer = (System.String)Application["mail_server_smtp"]; //+ ":" + Application["mail_server_smtp_port"];
+			System.Web.Mail.SmtpMail.SmtpServer = (System.String)Application["mail_server_smtp"];
 
 			System.Web.Mail.MailMessage mailMessage = new System.Web.Mail.MailMessage();
 			mailMessage.To = this.toemail.Value;
@@ -347,6 +356,9 @@ namespace anmar.SharpWebMail.UI
 			this.UI_case = 1;
 			System.String message;
 			if ( this.IsValid ) {
+				if ( (int)Application["sanitizer_mode"]==1 ) {
+					FCKEditor.Value = anmar.SharpWebMail.BasicSanitizer.SanitizeHTML(FCKEditor.Value, anmar.SharpWebMail.SanitizerMode.CommentBlocks|anmar.SharpWebMail.SanitizerMode.RemoveEvents);
+				}
 				if ( this.sendMail( out message ) ) {
 					message = this.SharpUI.LocalizedRS.GetString("newMessageSent");
 				}
