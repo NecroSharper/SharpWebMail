@@ -87,27 +87,27 @@
 						<asp:panel id="newMessagePanel" runat="server"> 
                           <table align="center" width="97%">
                             <tr> 
-                              <td align="right" nowrap width="1%"> <asp:Label id="newMessageWindowFromNameLabel" CssClass="XPFormLabel" runat="server"/></td>
+                              <td align="right" nowrap width="1%"><asp:Label id="newMessageWindowFromNameLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <input id="fromname" type="text" runat="server" value="" style="XPInput" name="text" />
+                                <input id="fromname" type="text" runat="server" value="" class="XPInputEX" name="text" />
 								<ASP:RequiredFieldValidator id="ReqfromnameValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="fromname" /> 
                               </td>
                               <td> </td>
                             </tr>
                             <tr> 
-                              <td align="right" nowrap> <asp:Label id="newMessageWindowFromEmailLabel" CssClass="XPFormLabel" runat="server"/></td>
+                              <td align="right" nowrap><asp:Label id="newMessageWindowFromEmailLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> <asp:Label id="newMessageWindowFromEmail" CssClass="XPFormLabel" runat="server"/>
 							  <asp:panel id="newMessageFromPanel" runat="server" Visible="false">
-							     <input id="fromemail" type="text" runat="server" value="" style="XPInput" name="text" />
+							     <input id="fromemail" type="text" runat="server" value="" class="XPInputEX" name="text" />
 								 <ASP:RegularExpressionValidator id="fromemailValidator" ValidationExpression=".+" ControlToValidate="fromemail" runat="server" ErrorMessage="*" Display="Static" /> 
 							  </asp:panel>
                               </td>
                               <td></td>
                             </tr>
                             <tr> 
-                              <td align="right" nowrap> <asp:Label id="newMessageWindowToEmailLabel" CssClass="XPFormLabel" runat="server"/></td>
+                              <td align="right" nowrap><asp:HyperLink id="newMessageWindowToEmailLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <input id="toemail" type="text" runat="server" value="" style="XPInput" name="text" />
+                                <input id="toemail" type="text" runat="server" value="" class="XPInputEX" name="text" />
 								<ASP:RequiredFieldValidator id="ReqemailValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="toemail" /> 
                                 <ASP:RegularExpressionValidator id="toemailValidator" ValidationExpression=".+" ControlToValidate="toemail" runat="server" ErrorMessage="*" Display="Static" /> 
                               </td>
@@ -116,7 +116,7 @@
                             <tr> 
                               <td align="right" nowrap><asp:Label id="newMessageWindowSubjectLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <input id="subject" type="text" runat="server" value="" style="XPInput" name="text" />
+                                <input id="subject" type="text" runat="server" value="" class="XPInputEX" name="text" />
 								<ASP:RequiredFieldValidator id="ReqsubjectValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="subject" /> 
                               </td>
                               <td> </td>

@@ -121,9 +121,10 @@ namespace anmar.SharpWebMail.UI
 					continue;
 				if ( childcontrol is System.Web.UI.WebControls.Button )
 					((System.Web.UI.WebControls.Button)childcontrol).Text = label;
-				else if ( childcontrol is System.Web.UI.WebControls.HyperLink )
+				else if ( childcontrol is System.Web.UI.WebControls.HyperLink ) {
 					((System.Web.UI.WebControls.HyperLink)childcontrol).ToolTip = label;
-				else if ( childcontrol is System.Web.UI.WebControls.ImageButton )
+					((System.Web.UI.WebControls.HyperLink)childcontrol).Text = label;
+				}else if ( childcontrol is System.Web.UI.WebControls.ImageButton )
 					((System.Web.UI.WebControls.ImageButton)childcontrol).ToolTip = label;
 				else if ( childcontrol is System.Web.UI.WebControls.Label )
 					((System.Web.UI.WebControls.Label)childcontrol).Text = label;

@@ -123,7 +123,7 @@ namespace anmar.SharpWebMail
 			aTimer.AutoReset = false;
 			aTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.stopWaiting);
 
-			for ( aTimer.Enabled = true; !error && ns.CanRead && ns.CanWrite && !ns.DataAvailable && aTimer.Enabled ; ){System.Threading.Thread.Sleep(100);}
+			for ( aTimer.Enabled = true; !error && ns.CanRead && ns.CanWrite && !ns.DataAvailable && aTimer.Enabled ; ){System.Threading.Thread.Sleep(50);}
 
 			// If I can read from NetworkStream and there is
 			// some data, I get it
@@ -132,7 +132,7 @@ namespace anmar.SharpWebMail
 					if ( ns.DataAvailable )
 						nbytes = ns.Read( readBytes, 0, client.ReceiveBufferSize );
 					else
-						System.Threading.Thread.Sleep(500);
+						System.Threading.Thread.Sleep(50);
 				} catch ( System.IO.IOException e ) {
 					error = true;
 					nbytes = 0;

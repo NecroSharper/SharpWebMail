@@ -96,6 +96,9 @@
 .XPInput {
 	width: 150;
 }
+.XPInputEX {
+	width: 300;
+}
 .XPPanel {
 	background-color: #D6D3CE;
 	font-family: "Trebuchet MS" , Arial;
