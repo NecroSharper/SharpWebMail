@@ -1,3 +1,6 @@
+10/05/2004
+ - Now it is possible to select the language of the interface in the login screen.
+
 10/02/2004
  - Updated cultures_neutral.txt and cultures_specific.txt to reflect .NET 1.1 SP1
    changes.
