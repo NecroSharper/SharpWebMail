@@ -1,3 +1,6 @@
+01/23/2005
+ - [New Message] Use the static regular expression from SharpMimeTools.
+
 01/22/2005
  - [i18n] Added Polish translation. Thanks to Roman Dmowski.
 
