@@ -1,3 +1,8 @@
+12/28/2004
+ - [Inbox] Bugfix: Using an enumerator when we want to delete items is not a wise idea.
+ - [nant] Change location of bin folder.
+ - [Project] Change location of bin folder.
+
 12/21/2004
  - [New Message] Updated FCKEditor config to 2.0rc2.
 

@@ -14,7 +14,9 @@
 		<exclude name="**debug**" />
 	</fileset>
 	<fileset id="build.files.general">
+		<include name="${build.basedir}/Makefile" />
 		<include name="${build.basedir}/SharpWebMail.cmbx" />
+		<include name="${build.basedir}/SharpWebMail.build" />
 		<include name="${build.basedir}/controls/SharpWebMail.prjx" />
 	</fileset>
 	<fileset id="build.files.docs">
@@ -93,10 +95,10 @@
 		<call target="set-framework-config" />
 	</target>
 	<target name="set-folders">
-		<property name="build.dir" value="${build.basedir}/controls/bin/${framework::get-family(framework::get-target-framework())}/${framework::get-version(framework::get-target-framework())}/${build.config}" />
+		<property name="build.dir" value="${build.basedir}/bin/${framework::get-family(framework::get-target-framework())}/${framework::get-version(framework::get-target-framework())}/${build.config}" />
 		<property name="build.aspdir" value="${build.basedir}/asp.net" />
 		<property name="build.res" value="${build.basedir}/controls/res" />
-		<property name="build.ref" value="${build.basedir}/controls/bin/${framework::get-family(framework::get-target-framework())}/${framework::get-version(framework::get-target-framework())}" />
+		<property name="build.ref" value="${build.basedir}/bin/${framework::get-family(framework::get-target-framework())}/${framework::get-version(framework::get-target-framework())}" />
 	</target>
 
 	<!-- Framework targets -->
