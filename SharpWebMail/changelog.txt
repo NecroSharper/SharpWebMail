@@ -1,3 +1,17 @@
+12/18/2004
+ - [New Message] Rewritten so it can send the email using .NET System.Web.Mail namespace or
+   opensmtp library. It may be useful for people having problems with MS .NET implementation
+   as it depends on CDO.
+ - [New Message] Added support for SMTP AUTH when using opensmtp as the engine.
+ - [Config] Added new option to select the smtp engine used (the .NET one or opensmtp).
+ - [Config] Added config support for smtpauth value in server protocol fields.
+ - [nant] Added opensmtp assembly to the build process.
+ - Adjust Makefile
+ - [New Message] Revert to FCKEditor 2.0b2 assembly as the one from rc1 does not work when 
+   FCKEditor is not a top level control.
+ - [New Message] Use the correct address separator in To field.
+ - [Address Book] Use the correct address separator.
+
 12/12/2004
  - [New Message] .NET 2.0 does not set name property in forms, so js code expecting this does
    not work.

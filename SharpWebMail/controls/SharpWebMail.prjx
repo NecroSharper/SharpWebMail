@@ -60,6 +60,7 @@
     <Reference type="Project" refto="SharpMimeTools" localcopy="True" />
     <Reference type="Assembly" refto=".\bin\log4net.dll" localcopy="True" />
     <Reference type="Assembly" refto=".\bin\FredCK.FCKeditorV2.dll" localcopy="True" />
+    <Reference type="Assembly" refto=".\bin\OpenSmtp.dll" localcopy="True" />
   </References>
   <DeploymentInformation target="" script="" strategy="Assembly" />
   <Configuration runwithwarnings="False" name="Debug">

@@ -40,7 +40,7 @@ Multilingual user interface
 
 XP look & feel
 
-Tested with IE6 and Mozilla FireFox 0.10, but it should work with other versions
+Tested with IE6 and Mozilla FireFox 1.0, but it should work with other versions
 
 For a full set of features visit <http://anmar.eu.org/projects/sharpwebmail/features.html>
 
@@ -48,7 +48,7 @@ Installation requisites
 --------------------------------
 
 Requisites on installation machine:
- - Microsoft .NET Framework 1.1 or Mono runtime
+ - Microsoft .NET Framework 1.1 or later or Mono runtime
  - An ASP.NET capable server (IIS or Apache + mod_mono)
 
 Other requisites:
@@ -64,11 +64,14 @@ tweak web.config settings.
 Building
 --------------------------------
 
+Full instructions can be found in <http://anmar.eu.org/projects/sharpwebmail/development.html>
+
 Dependencies:
  - Microsoft .NET framework 1.1  - http://msdn.microsoft.com/netframework/
    or Mono - http://www.mono-project.com/
  - Log4net - http://logging.apache.org/log4net/
  - FCKeditor - http://www.fckeditor.net/
+ - OpenSmtp - http://sourceforge.net/projects/opensmtp-net/
  - SharpMimeTools - For now distributed only with SharpWebMail
 
 Project files provided for:
