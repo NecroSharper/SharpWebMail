@@ -23,10 +23,19 @@
                         <td width="100%" class="XPPanel" valign="middle"> 
                           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="XPPanelTitle" align="left">
                             <tr>
-                              <td width="100%" class="XPPanel"><asp:Label id="newMessageWindowTitle" runat="server"/></td>
-                              <td align="right" nowrap><img src="images/PanelClose.gif" width="11" height="11" align="middle"><img src="images/spacer.gif" width="3" height="14"></td>
-                          </tr>
-                        </table>
+                              <td width="80%" align="left" class="XPPanel"><asp:Label id="newMessageWindowTitle" runat="server"/></td>
+							  <td width="20%" align="right" class="XPPanel">
+                                <table width="100%"  border="0">
+                                  <tr>
+								    <td width="100%"><img src="images/spacer.gif" width="1" height="1"></td>
+                                    <td>
+                                      <asp:ImageButton runat="server" ID="msgtoolbarCancel" OnCommand="msgtoolbarCommand" CommandName="cancel" causesvalidation="false"
+                                           ImageUrl="images/msgtoolbar_delete.gif"/>
+                                     </td>
+                                  </tr>
+                                </table></td>
+                            </tr>
+                          </table>
                         </td>
                         <td class="XPPanelTitleBorderRight"><img src="images/spacer.gif" width="6" height="4"></td>
                       </tr>
@@ -37,20 +46,24 @@
                       </tr>
                       <tr> 
                         <td class="XPPanelBorder"><img src="images/spacer.gif" width="6" height="4"></td>
-                        <td width="100%" class="XPWindowBackground"> <asp:panel id="newMessagePanel" runat="server"> 
+                        <td width="100%" class="XPWindowBackground">
+						<asp:panel id="newMessagePanel" runat="server"> 
                           <table align="center" width="97%">
                             <tr> 
                               <td align="right" nowrap width="1%"> <asp:Label id="newMessageWindowFromNameLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
                                 <input id="fromname" type="text" runat="server" value="" style="XPInput" name="text" />
-								<ASP:RequiredFieldValidator id="ReqfromnameValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="fromname"></ASP:RequiredFieldValidator> 
-                                <ASP:RegularExpressionValidator id="fromnameValidator" ValidationExpression="^\w[A-z0-9 ]+\w$" ControlToValidate="fromname" runat="server" ErrorMessage="*" Display="Static"></ASP:RegularExpressionValidator> 
+								<ASP:RequiredFieldValidator id="ReqfromnameValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="fromname" /> 
                               </td>
                               <td> </td>
                             </tr>
                             <tr> 
                               <td align="right" nowrap> <asp:Label id="newMessageWindowFromEmailLabel" CssClass="XPFormLabel" runat="server"/></td>
-                              <td> <asp:Label id="email" CssClass="XPFormLabel" runat="server"/> 
+                              <td> <asp:Label id="newMessageWindowFromEmail" CssClass="XPFormLabel" runat="server"/>
+							  <asp:panel id="newMessageFromPanel" runat="server" Visible="false">
+							     <input id="fromemail" type="text" runat="server" value="" style="XPInput" name="text" />
+								 <ASP:RegularExpressionValidator id="fromemailValidator" ValidationExpression=".+" ControlToValidate="fromemail" runat="server" ErrorMessage="*" Display="Static" /> 
+							  </asp:panel>
                               </td>
                               <td></td>
                             </tr>
@@ -58,8 +71,8 @@
                               <td align="right" nowrap> <asp:Label id="newMessageWindowToEmailLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
                                 <input id="toemail" type="text" runat="server" value="" style="XPInput" name="text" />
-								<ASP:RequiredFieldValidator id="ReqemailValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="toemail"></ASP:RequiredFieldValidator> 
-                                <ASP:RegularExpressionValidator id="toemailValidator" ValidationExpression="^^[A-z0-9_\-]+[@][A-z0-9_\-]+([.][A-z0-9_\-]+){0,}[.][A-z]{2,4}$" ControlToValidate="toemail" runat="server" ErrorMessage="*" Display="Static"></ASP:RegularExpressionValidator> 
+								<ASP:RequiredFieldValidator id="ReqemailValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="toemail" /> 
+                                <ASP:RegularExpressionValidator id="toemailValidator" ValidationExpression=".+" ControlToValidate="toemail" runat="server" ErrorMessage="*" Display="Static" /> 
                               </td>
                               <td> </td>
                             </tr>
@@ -67,13 +80,12 @@
                               <td align="right" nowrap><asp:Label id="newMessageWindowSubjectLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
                                 <input id="subject" type="text" runat="server" value="" style="XPInput" name="text" />
-								<ASP:RequiredFieldValidator id="ReqsubjectValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="subject"></ASP:RequiredFieldValidator> 
-                                <ASP:RegularExpressionValidator id="subjectValidator" ValidationExpression="^[^ '][^']+[^ ]$" ControlToValidate="subject" runat="server" ErrorMessage="*" Display="Static"></ASP:RegularExpressionValidator> 
+								<ASP:RequiredFieldValidator id="ReqsubjectValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="subject" /> 
                               </td>
                               <td> </td>
                             </tr>
                             <tr> 
-                              <td nowrap><asp:button id="newMessageWindowAttachmentsButton" causesvalidation="false" onClick="Attachments_Click" runat="server" text="Send"></asp:button></td>
+                              <td nowrap><asp:button id="newMessageWindowAttachmentsButton" causesvalidation="false" onClick="Attachments_Click" runat="server" text="Send" /></td>
                               <td>
                               <asp:DataList id="newMessageWindowAttachmentsAddedList"
                                    CellPadding="0"
@@ -92,17 +104,18 @@
                             </tr>
                             <tr> 
                               <td colspan="2" height="200">
-                                  <FredCK:FCKeditor id="FCKEditor" height="210" runat="server" BasePath="fcke/"></FredCK:FCKeditor>
+                                  <FredCK:FCKeditor id="FCKEditor" height="210" runat="server" BasePath="fcke/" />
                               </td>
                               <td></td>
                             </tr>
                             <tr> 
-                              <td colspan="2" align="center"><asp:button id="newMessageWindowSendButton" onClick="Send_Click" runat="server" text="Send"></asp:button> 
+                              <td colspan="2" align="center"><asp:button id="newMessageWindowSendButton" onClick="Send_Click" runat="server" text="Send" /> 
                               </td>
                               <td>&nbsp;</td>
                             </tr>
                           </table>
-                          </asp:panel> <asp:panel id="confirmationPanel" runat="server"> 
+                          </asp:panel>
+						  <asp:panel id="confirmationPanel" runat="server"> 
                           <table align="center">
                             <tr> 
                               <td></td>
@@ -112,11 +125,11 @@
                             </tr>
                           </table>
                           </asp:panel>
-                          </asp:panel> <asp:panel id="attachmentsPanel" runat="server"> 
+                          <asp:panel id="attachmentsPanel" runat="server"> 
                           <table align="center">
                             <tr> 
                               <td></td>
-                              <td nowrap align="left"><asp:CheckBoxList id="newMessageWindowAttachmentsList" RepeatColumns="2" runat="server" CssClass="XPDownload"></asp:CheckBoxList>
+                              <td nowrap align="left"><asp:CheckBoxList id="newMessageWindowAttachmentsList" RepeatColumns="2" runat="server" CssClass="XPDownload" />
                               </td>
                               <td> </td>
                             </tr>
@@ -131,7 +144,7 @@
                             </tr>
                             <tr> 
                               <td></td>
-                              <td align="center"><asp:button id="newMessageWindowAttachmentAddButton" onClick="AttachmentAdd_Click" runat="server" Text="Add"></asp:button>
+                              <td align="center"><asp:button id="newMessageWindowAttachmentAddButton" onClick="AttachmentAdd_Click" runat="server" Text="Add" />
                               </td>
                               <td> </td>
                             </tr>
@@ -140,7 +153,7 @@
                             </tr>
                             <tr> 
                               <td></td>
-                              <td align="center"><asp:button id="newMessageWindowAttachButton" causesvalidation="false" onClick="Attach_Click" runat="server" text="Attach"></asp:button>
+                              <td align="center"><asp:button id="newMessageWindowAttachButton" causesvalidation="false" onClick="Attach_Click" runat="server" text="Attach" />
                               </td>
                               <td> </td>
                             </tr>

@@ -69,6 +69,14 @@ namespace anmar.SharpWebMail
 			}
 			return !error;
 		}
+		protected bool dele ( int mindex ) {
+			bool error = false;
+
+			// Send DEL for mindex message
+			error = !this.sendCommand( "DELE " + mindex );
+
+			return !error;
+		}
 		protected bool disconnect () {
 			bool error = false;
 
@@ -194,6 +202,23 @@ namespace anmar.SharpWebMail
 					} catch (Exception) {
 					}
 				}
+			}
+			return !error;
+		}
+		public bool purgeInbox ( anmar.SharpWebMail.CTNInbox inbox, bool all ) {
+			bool error = false;
+			System.String filter;
+			if ( all )
+				filter = "";
+			else
+				filter = "delete=true";
+			System.Data.DataRow[] result = inbox.getInbox.Select(filter);
+			if ( result.GetLength(0)>0 ) {
+				error = !this.connect();
+				error = (error)?true:!this.login ( this.username, this.password );
+				foreach ( System.Data.DataRow msg in result )
+					error = (error)?error:!this.dele ( (int)msg[1] );
+				this.quit();
 			}
 			return !error;
 		}

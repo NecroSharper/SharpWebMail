@@ -34,12 +34,12 @@
 			<Columns>
 				<asp:TemplateColumn>
 					<HeaderTemplate>
-						<asp:ImageButton id=SortButtoNumberUp runat="server"
+						<asp:ImageButton id="SortButtoNumberUp" runat="server"
 							CommandName="sort" CommandArgument="msgnum ASC"
 							ImageUrl="images/sort_up.gif"
 							/>
 						<asp:Label id="inboxHeaderNumber" Text="<%# InboxDataGrid.Columns[0].HeaderText %>" runat="server" />
-						<asp:ImageButton id=SortButtoNumberDown runat="server"
+						<asp:ImageButton id="SortButtoNumberDown" runat="server"
 							CommandName="sort" CommandArgument="msgnum DESC"
 							ImageUrl="images/sort_down.gif"
 							/>
@@ -51,12 +51,12 @@
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
 					<HeaderTemplate>
-						<asp:ImageButton id=SortButtonFromUp runat="server"
+						<asp:ImageButton id="SortButtonFromUp" runat="server"
 							CommandName="sort" CommandArgument="FromName ASC"
 							ImageUrl="images/sort_up.gif"
 							/>
 						<asp:Label id="inboxHeaderFrom" Text="<%# InboxDataGrid.Columns[1].HeaderText %>" runat="server" />
-						<asp:ImageButton id=SortButtonFromDown runat="server"
+						<asp:ImageButton id="SortButtonFromDown" runat="server"
 							CommandName="sort" CommandArgument="FromName DESC"
 							ImageUrl="images/sort_down.gif"
 							/>
@@ -67,12 +67,12 @@
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
 					<HeaderTemplate>
-						<asp:ImageButton id=SortButtonSubjectUp runat="server"
+						<asp:ImageButton id="SortButtonSubjectUp" runat="server"
 							CommandName="sort" CommandArgument="Subject ASC"
 							ImageUrl="images/sort_up.gif"
 							/>
 						<asp:Label id="inboxHeaderSubject" Text="<%# InboxDataGrid.Columns[2].HeaderText %>" runat="server" />
-						<asp:ImageButton id=SortButtonSubjectDown runat="server"
+						<asp:ImageButton id="SortButtonSubjectDown" runat="server"
 							CommandName="sort" CommandArgument="Subject DESC"
 							ImageUrl="images/sort_down.gif"
 							/>
@@ -83,12 +83,12 @@
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
 					<HeaderTemplate>
-						<asp:ImageButton id=SortButtonDateUp runat="server"
+						<asp:ImageButton id="SortButtonDateUp" runat="server"
 							CommandName="sort" CommandArgument="Date ASC"
 							ImageUrl="images/sort_up.gif"
 							/>
 						<asp:Label id="inboxHeaderDate" Text="<%# InboxDataGrid.Columns[3].HeaderText %>" runat="server" />
-						<asp:ImageButton id=SortButtonDateDown runat="server"
+						<asp:ImageButton id="SortButtonDateDown" runat="server"
 							CommandName="sort" CommandArgument="Date DESC"
 							ImageUrl="images/sort_down.gif"
 							/>
@@ -100,12 +100,12 @@
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
 					<HeaderTemplate>
-						<asp:ImageButton id=SortButtonSizeUp runat="server"
+						<asp:ImageButton id="SortButtonSizeUp" runat="server"
 							CommandName="sort" CommandArgument="size ASC"
 							ImageUrl="images/sort_up.gif"
 							/>
 						<asp:Label id="inboxHeaderSize" Text="<%# InboxDataGrid.Columns[4].HeaderText %>" runat="server" />
-						<asp:ImageButton id=SortButtonSizeDown runat="server"
+						<asp:ImageButton id="SortButtonSizeDown" runat="server"
 							CommandName="sort" CommandArgument="size DESC"
 							ImageUrl="images/sort_down.gif"
 							/>

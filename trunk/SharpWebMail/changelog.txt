@@ -1,3 +1,77 @@
+05/15/2004 - version 0.2b
+ - Disable forward button until it is implemented
+ - Bugfix: Cancel button on readmessage page was launching form validation
+ - Add undelete method to inbox class for future use
+ - Bugfix: When deleting a message the message count was set before we had
+   deleted the message, so it was out of sync
+ - Bugfix: When refreshing inbox state, the message count was set before we had
+   the new data
+ - Minor code cleanups
+ - Released as version 0.2b (163)
+
+05/12/2004
+ - Fix some warnings compiling with mono 0.91
+ - Add tooltip texts to all icons
+ - Trash page implemented. Deleted messages are shown there.
+ - Close icon when composing a new mail now discards changes on mail
+ - Login window title is set to system_name configuration setting
+
+05/12/2004
+ - Messages marked for deletion are deleted on logout
+ - The regular expression for email addresses covers better the addr-spec
+   specification
+ - Login process removes unnecessary spaces allowed by addr-spec but probably not
+   a good idea to send them to POP3 server
+ - Fixed several typos
+
+05/11/2004
+ - Send size parameter in content-disposition header when downloading
+   attachments
+ - View headers implemented
+ - Toolbar added to readmessage page. Reply, forward and delete buttons added.
+ 	- Reply implemented
+ 	- Delete implemented (messages are marked for deletion)
+ - Minor changes to the inbox caching code, so it into account deleted messages
+
+05/10/2004
+ - FCKEditor updated to version 1.6
+ - Added ReleaseMono and DebugMono configs to project
+ 
+05/09/2004
+ - Added cultures_neutral.txt and cultures_specific.txt documents as references
+   of existing cultures for building resource files
+ - Ask for auto generation of filename on attachments
+ - Small code cleanups
+ - Allow caching of inbox page so IE back and next buttons work properly
+ - Allow caching of search page so IE back and next buttons work properly
+ - Added login_mode and login_mode_append config directives.
+ - Implemented 3 login modes:
+       1-> Full email required for login
+       2-> Username that is not an email address is allowed. So users
+           have to insert their email address when sending mails
+       3-> Any username is allowed but login_mode_append string is added
+           to the username to compose the email address
+ - The label for username box on login page changes depending on login_mode
+ - The regular expression for email addresses follows RFC 2822 definition
+ - When sending mail multiple "To" addresses are now allowed
+ - Removed unnecessary restrictions on From and Subject textboxes
+ 
+
+05/07/2004
+ - FCKEditor updated to version 1.5
+ - Bugfix: dots not being allowed on email addresses
+
+05/06/2004
+ - Serbian UI translation added. Thanks to Zoran Subic
+ - Generalized the creation of satellite assemblies. Now it creates one
+   for every resource file found on res folder
+ - Project files updated to current version of SharpDevelop
+
+05/04/2004
+ - Version number set to 0.2
+ - When writing attachments to disk, use new method implemented
+   in SharpMimeTools
+ - Added docs (readme and todo) to project
 
 05/03/2004 - version 0.1b
  - Better handling of config settings

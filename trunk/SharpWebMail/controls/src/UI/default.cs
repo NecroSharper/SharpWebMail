@@ -29,6 +29,7 @@ namespace anmar.SharpWebMail.UI
 		// General variables
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		protected bool resetsearch = false;
+		protected bool refresh = false;
 		protected System.String sort = "msgnum DESC";
 		protected anmar.SharpWebMail.UI.globalUI SharpUI;
 
@@ -48,20 +49,23 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		protected void bindInbox () {
-			//Our Inbox
-			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+			anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
 
 			System.String pattern;
 			if ( this.searchPattern ( out pattern ) ) {
-				anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
-				if ( client.getInboxIndex ( inbox, 0, inbox.Count , false ) ) {
-					Session["client"] = client;
-				}
-				client = null;
+				if ( client!=null )
+					client.getInboxIndex ( this.SharpUI.Inbox, 0, this.SharpUI.Inbox.Count , false );
+			} else {
+				// Ask for new messages if necessary
+				if ( client!=null ) 
+					client.getInboxIndex ( this.SharpUI.Inbox, this.InboxDataGrid.CurrentPageIndex, (int) Application["pagesize"], this.refresh );
+				// Update message count
+				if ( this.refresh )
+					this.SharpUI.setVariableLabels();
 			}
 			this.buildDataGrid ();
-			System.Data.DataView tmpV = new System.Data.DataView (inbox.getInbox);
-			this.sort = inbox.sortExpression;
+			System.Data.DataView tmpV = new System.Data.DataView ( this.SharpUI.Inbox.getInbox );
+			this.sort = this.SharpUI.Inbox.sortExpression;
 			if ( this.sort==null || this.sort.Length==0 ) {
 				this.sort = "msgnum DESC";
 			}
@@ -70,10 +74,10 @@ namespace anmar.SharpWebMail.UI
 			this.InboxDataGrid.DataSource = tmpV;
 			this.InboxDataGrid.DataBind();
 
-			this.mainInterface ( inbox );
+			this.mainInterface ( );
 
-			Session["inbox"] = inbox;
-			inbox = null;
+			Session["client"] = client;
+			client = null;
 		}
 		/// <summary>
 		/// 
@@ -104,24 +108,28 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void mainInterface ( anmar.SharpWebMail.CTNInbox inbox ) {
+		protected void mainInterface ( ) {
 
 			// Disable some things
 			if ( this.InboxDataGrid.CurrentPageIndex == 0 ){
-				this.SharpUI.prevPageButton.Enabled = false;
+				this.SharpUI.prevPageImageButton.Enabled = false;
 			} else {
-				this.SharpUI.prevPageButton.Enabled = true;
+				this.SharpUI.prevPageImageButton.Enabled = true;
 			}
 			if ( this.InboxDataGrid.CurrentPageIndex == (this.InboxDataGrid.PageCount-1) ) {
-				this.SharpUI.nextPageButton.Enabled = false;
+				this.SharpUI.nextPageImageButton.Enabled = false;
 			} else {
-				this.SharpUI.nextPageButton.Enabled = true;
+				this.SharpUI.nextPageImageButton.Enabled = true;
 			}
 		}
 		protected bool searchPattern ( out System.String pattern ) {
 			bool forcecache = false;
 			System.String Value, format, searchtype;
-			pattern = "delete=false";
+			System .String mode = Page.Request.QueryString["mode"];
+			if ( mode!=null && mode.Equals("trash") )
+				pattern = "delete=true";
+			else
+				pattern = "delete=false";
 			searchtype = "OR";
 			if ( this.resetsearch == false ) {
 				foreach ( System.String param in Request.Form ) {
@@ -244,14 +252,7 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		protected void refreshPageButton_Click ( Object sender, System.Web.UI.ImageClickEventArgs e ) {
-			anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
-			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-			if ( client!=null && client.getInboxIndex ( inbox, this.InboxDataGrid.CurrentPageIndex, (int) Application["pagesize"], true ) ) {
-				Session["inbox"] = inbox;
-				Session["client"] = client;
-			}
-			inbox = null;
-			client = null;
+			this.refresh = true;
 		}
 		/*
 		 * Page Events
@@ -260,15 +261,13 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		protected void Page_Load(System.Object Src, System.EventArgs E ) {
-			// Prevent caching, so can't be viewed offline
-			Response.Cache.SetCacheability( System.Web.HttpCacheability.NoCache );
 			if ( this.InboxDataGrid == null ) {
 				this.InboxDataGrid=(System.Web.UI.WebControls.DataGrid )this.SharpUI.FindControl("InboxDataGrid");
 				this.inboxWindowSearchHolder=(System.Web.UI.WebControls.PlaceHolder)this.SharpUI.FindControl("inboxWindowSearchHolder");
 			}
-			this.SharpUI.nextPageButton.Click += new System.Web.UI.ImageClickEventHandler(nextPageButton_Click);
-			this.SharpUI.prevPageButton.Click += new System.Web.UI.ImageClickEventHandler(prevPageButton_Click);
-			this.SharpUI.refreshPageButton.Click += new System.Web.UI.ImageClickEventHandler(refreshPageButton_Click);
+			this.SharpUI.nextPageImageButton.Click += new System.Web.UI.ImageClickEventHandler(nextPageButton_Click);
+			this.SharpUI.prevPageImageButton.Click += new System.Web.UI.ImageClickEventHandler(prevPageButton_Click);
+			this.SharpUI.refreshPageImageButton.Click += new System.Web.UI.ImageClickEventHandler(refreshPageButton_Click);
 		}
 		/// <summary>
 		/// 

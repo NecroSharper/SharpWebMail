@@ -44,18 +44,24 @@ namespace anmar.SharpWebMail.UI
 		protected System.Web.UI.WebControls.LinkButton logoutLinkButton;
 		protected System.Web.UI.WebControls.LinkButton newMessageLinkButton;
 		protected System.Web.UI.WebControls.LinkButton searchLinkButton;
+		protected System.Web.UI.WebControls.LinkButton trashLinkButton;
 
 		//General ImageButtons
-		public System.Web.UI.WebControls.ImageButton logOutSessionButton;
-		public System.Web.UI.WebControls.ImageButton nextPageButton;
-		public System.Web.UI.WebControls.ImageButton prevPageButton;
-		public System.Web.UI.WebControls.ImageButton refreshPageButton;
+		public System.Web.UI.WebControls.ImageButton logoutImageButton;
+		public System.Web.UI.WebControls.ImageButton nextPageImageButton;
+		public System.Web.UI.WebControls.ImageButton prevPageImageButton;
+		public System.Web.UI.WebControls.ImageButton refreshPageImageButton;
 
 		private System.Web.UI.ITemplate centralPanel = null;
 
 		public System.Web.UI.ITemplate CentralPanel {
 		    get { return centralPanel; }
 		    set { centralPanel = value; }
+		}
+		public anmar.SharpWebMail.CTNInbox Inbox {
+			get {
+				return this.inbox;
+			}
 		}
 		public System.Resources.ResourceSet LocalizedRS {
 			get {
@@ -65,10 +71,17 @@ namespace anmar.SharpWebMail.UI
 
 		protected void closeSession () {
 			if ( (IsPostBack)&&(Request.IsAuthenticated == true) ) {
-				Session.Remove ("client");
+				anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
+				// Delete messages marked for deletion
+				if ( client!=null ) {
+					client.purgeInbox ( this.inbox, false );
+					client = null;
+					Session.Remove ("client");
+				}
 				// Flush inbox content
-				inbox = new anmar.SharpWebMail.CTNInbox();
-				Session["inbox"] = inbox;
+				this.inbox = new anmar.SharpWebMail.CTNInbox();
+				Session["inbox"] = this.inbox;
+				this.inbox = null;
 				// Clean up temp files
 				try {
 					if ( Session["temppath"]!=null ) {
@@ -85,14 +98,9 @@ namespace anmar.SharpWebMail.UI
 		}
 		protected void mainInterface (  ) {
 			// Set general labels localized texts
+			this.setLabels ( this.Controls );
 			this.defaultWindowTitle.Text = System.String.Format ("{0} - {1}", Application["product"], Application["system_name"]);
-			this.inboxLinkButton.Text =  System.String.Format ("{0} ({1})", this.resources.GetString("inboxLabel"), this.inbox.messageCount );
-			this.logoutLinkButton.Text = this.resources.GetString("logoutLabel");
-			this.searchLinkButton.Text = this.resources.GetString("searchLabel");
-			this.messageCountLabel.Text = System.String.Format ("{0} {1} {2} bytes", this.inbox.messageCount, this.resources.GetString("messages"), this.inbox.messageSize);
-			this.newMessageLinkButton.Text = this.resources.GetString("newMessageLabel");
-			this.optionsLabel.Text = this.resources.GetString("optionsLabel");
-			this.setLabels ( this.centralPanelHolder.Controls );
+			this.setVariableLabels();
 		}
 		protected void setLabels ( System.Web.UI.ControlCollection controls ) {
 			System.String label;
@@ -105,11 +113,26 @@ namespace anmar.SharpWebMail.UI
 				label = this.resources.GetString(childcontrol.ID);
 				if ( label==null )
 					continue;
-				if ( childcontrol is System.Web.UI.WebControls.Label )
-					((System.Web.UI.WebControls.Label)childcontrol).Text = label;
-				else if ( childcontrol is System.Web.UI.WebControls.Button )
+				if ( childcontrol is System.Web.UI.WebControls.Button )
 					((System.Web.UI.WebControls.Button)childcontrol).Text = label;
+				else if ( childcontrol is System.Web.UI.WebControls.HyperLink )
+					((System.Web.UI.WebControls.HyperLink)childcontrol).ToolTip = label;
+				else if ( childcontrol is System.Web.UI.WebControls.ImageButton )
+					((System.Web.UI.WebControls.ImageButton)childcontrol).ToolTip = label;
+				else if ( childcontrol is System.Web.UI.WebControls.Label )
+					((System.Web.UI.WebControls.Label)childcontrol).Text = label;
+				else if ( childcontrol is System.Web.UI.WebControls.LinkButton )
+					((System.Web.UI.WebControls.LinkButton)childcontrol).Text = label;
 			}
+		}
+		internal void setVariableLabels ( ) {
+			if ( this.inboxLinkButton.Text.EndsWith(")") ) 
+				this.inboxLinkButton.Text= this.inboxLinkButton.Text.Remove(this.inboxLinkButton.Text.LastIndexOf(" ("), this.inboxLinkButton.Text.Length-this.inboxLinkButton.Text.LastIndexOf(" ("));
+			if ( this.trashLinkButton.Text.EndsWith(")") ) 
+				this.trashLinkButton.Text= this.trashLinkButton.Text.Remove(this.trashLinkButton.Text.LastIndexOf(" ("), this.trashLinkButton.Text.Length-this.trashLinkButton.Text.LastIndexOf(" ("));
+			this.inboxLinkButton.Text =  System.String.Format ("{0} ({1})", this.inboxLinkButton.Text, this.inbox.messageCount );
+			this.messageCountLabel.Text = System.String.Format ("{0} {1} {2} bytes", this.inbox.messageCount, this.resources.GetString("messages"), this.inbox.messageSize);
+			this.trashLinkButton.Text = System.String.Format ("{0} ({1})", this.trashLinkButton.Text, this.inbox.Count - this.inbox.messageCount );
 		}
 		/*
 		 * Events
@@ -141,9 +164,20 @@ namespace anmar.SharpWebMail.UI
 		protected void searchLinkButton_Click ( Object sender, System.EventArgs e ) {
 			Response.Redirect("search.aspx");
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		protected void trashLinkButton_Click ( Object sender, System.EventArgs e ) {
+			Response.Redirect("default.aspx?mode=trash");
+		}
 		/*
 		 * Page Events
 		*/
+		protected void Page_Disposed (System.EventArgs E ) {
+			Session["inbox"] = this.inbox;
+			this.inbox = null;
+			this.resources = null;
+		}
 		protected void Page_Init() {
 		    if ( this.centralPanel!=null ) {
 	            this.centralPanel.InstantiateIn (this.centralPanelHolder);
@@ -152,8 +186,9 @@ namespace anmar.SharpWebMail.UI
 			    this.inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
 		    }
 			this.resources = (System.Resources.ResourceSet) Session["resources"];
+		}
+		protected void Page_Load(System.Object Src, System.EventArgs E ) {
 			this.mainInterface();
 		}
-
 	}
 }

@@ -26,26 +26,26 @@
                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr> 
                       <td width="20"><input type="image" name="spacer" src="images/spacer.gif" border="0" /></td>
-                      <td width="40"><asp:ImageButton id="logOutSessionButton" runat="server"
+                      <td width="40"><asp:ImageButton id="logoutImageButton" runat="server"
 							onClick="logOutSessionButton_Click"
 							CausesValidation="false"
 							EnableViewState="false"
 							ImageUrl="images/navbar_button_logout.gif"
 							/>
                       </td>
-                      <td width="32"><asp:ImageButton id="prevPageButton" runat="server"
+                      <td width="32"><asp:ImageButton id="prevPageImageButton" runat="server"
 							CausesValidation="false"
 							EnableViewState="false"
 							ImageUrl="images/navbar_button_back.gif"
 							/>
 					  </td>
-                      <td width="40"><asp:ImageButton id="nextPageButton" runat="server"
+                      <td width="40"><asp:ImageButton id="nextPageImageButton" runat="server"
 							CausesValidation="false"
 							EnableViewState="false"
 							ImageUrl="images/navbar_button_forward.gif"
 							/>
 					  </td>
-                      <td><asp:ImageButton id="refreshPageButton" runat="server"
+                      <td><asp:ImageButton id="refreshPageImageButton" runat="server"
 							CausesValidation="false"
 							EnableViewState="false"
 							ImageUrl="images/navbar_button_refresh.gif"
@@ -89,6 +89,10 @@
                     <tr> 
                       <td><img src="images/spacer.gif" width="20" height="1"></td>
                       <td nowrap valign="middle"><asp:LinkButton id="inboxLinkButton" EnableViewState="false" CssClass="XPFormLabel" onClick="inboxLinkButton_Click" CausesValidation="false" runat="server" /></td>
+                    </tr>
+                    <tr> 
+                      <td></td>
+                      <td nowrap valign="middle"><asp:LinkButton id="trashLinkButton" EnableViewState="false" CssClass="XPFormLabel" onClick="trashLinkButton_Click" CausesValidation="false" runat="server" /></td>
                     </tr>
                     <tr> 
                       <td></td>
