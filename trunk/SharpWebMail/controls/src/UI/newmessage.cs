@@ -184,8 +184,11 @@ namespace anmar.SharpWebMail.UI
 			this.SharpUI.prevPageImageButton.Enabled = false;
 
 			System.String msgid = System.Web.HttpUtility.HtmlEncode (Page.Request.QueryString["msgid"]);
-			if ( msgid != null ) {
-				System.Object[] details = inbox[ msgid ];
+			System.Guid guid = System.Guid.Empty;
+			if ( msgid != null)
+				guid = new System.Guid(msgid);
+			if ( !guid.Equals( System.Guid.Empty) ) {
+				System.Object[] details = inbox[ guid ];
 				if ( details != null ) {
 					this.Header = (anmar.SharpMimeTools.SharpMimeHeader) details[13];
 					if ( !this.IsPostBack ) {

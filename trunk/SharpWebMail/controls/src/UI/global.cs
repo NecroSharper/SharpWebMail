@@ -94,7 +94,6 @@ namespace anmar.SharpWebMail.UI
 
 			Application["resources"] = new System.Resources.ResourceManager("SharpWebMail", System.Reflection.Assembly.GetExecutingAssembly());
 
-
 			initConfigSection("sharpwebmail/general");
 			initConfigSection("sharpwebmail/login");
 			initConfigSection("sharpwebmail/read/inbox");
@@ -151,10 +150,12 @@ namespace anmar.SharpWebMail.UI
 			}
 			Application.Add(config_item, selector);
 		}
-		private System.Globalization.CultureInfo ParseCulture ( System.String name ) {
+		private System.Globalization.CultureInfo ParseCulture ( System.String culturename ) {
+			if ( culturename.IndexOf(';')>0 )
+				culturename = culturename.Remove(culturename.IndexOf(';'), culturename.Length - culturename.IndexOf(';'));
 			System.Globalization.CultureInfo culture = null;
 			try {
-				culture = System.Globalization.CultureInfo.CreateSpecificCulture(name);
+				culture = System.Globalization.CultureInfo.CreateSpecificCulture(culturename);
 			} catch ( System.Exception e ) {
 				if ( log.IsErrorEnabled )
 					log.Error("Error parsing culture", e);

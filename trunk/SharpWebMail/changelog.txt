@@ -1,3 +1,12 @@
+08/16/2004
+ - Version number set to 0.8
+ - Added French translation. Thanks to Michel C.
+ - After several issues with email servers' uid generation, I've changed the
+   use of the uid in all the application. Now it's only used for sanity check while
+   getting messages from server. For the rest of the application a random GUID
+   is used instead.
+ - Fix: Alternative languages sent by browsers were not being parsed properly.
+ 
 09/13/2004
  - FCKEditor updated to version 2.0 beta 2.
  - The editor is now stated with the toolbar collapsed. It should give the impression
