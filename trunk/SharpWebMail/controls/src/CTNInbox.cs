@@ -141,11 +141,13 @@ namespace anmar.SharpWebMail
 				// now we try to find deleted messages
 				this.inbox_view.RowFilter = System.String.Empty;
 
-				foreach ( System.Data.DataRow item in this.inbox.Rows ) {
+				for ( int i=0 ; i<this.inbox.Rows.Count; i++ ) {
+					System.Data.DataRow item = this.inbox.Rows[i];
 					if ( !uidl.Contains(item[3].ToString() ) ) {
 						this.mcount--;
 						this.msize -= (int)item[2];
 						item.Delete();
+						i--;
 					}
 				}
 			}
