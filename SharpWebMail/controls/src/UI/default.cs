@@ -35,6 +35,7 @@ namespace anmar.SharpWebMail.UI
 		protected bool refresh = false;
 		protected System.String sort = "msgnum DESC";
 		protected anmar.SharpWebMail.UI.globalUI SharpUI;
+		protected System.Collections.Specialized.StringCollection delete = null;
 
 		//Form
 		protected System.Web.UI.HtmlControls.HtmlForm sharpwebmailform;
@@ -90,6 +91,7 @@ namespace anmar.SharpWebMail.UI
 			this.InboxDataGrid.Columns[0].HeaderText = this.SharpUI.LocalizedRS.GetString("inboxHeaderNumber");
 			this.InboxDataGrid.Columns[0].HeaderStyle.Wrap = false;
 			this.InboxDataGrid.Columns[0].ItemStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+			this.InboxDataGrid.Columns[0].HeaderStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
 
 			this.InboxDataGrid.Columns[1].HeaderText = this.SharpUI.LocalizedRS.GetString("inboxHeaderFrom");
 			this.InboxDataGrid.Columns[1].HeaderStyle.Wrap = false;
@@ -100,10 +102,16 @@ namespace anmar.SharpWebMail.UI
 			this.InboxDataGrid.Columns[3].HeaderText = this.SharpUI.LocalizedRS.GetString("inboxHeaderDate");
 			this.InboxDataGrid.Columns[3].HeaderStyle.Wrap = false;
 			this.InboxDataGrid.Columns[3].ItemStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+			this.InboxDataGrid.Columns[3].HeaderStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
 
 			this.InboxDataGrid.Columns[4].HeaderText = this.SharpUI.LocalizedRS.GetString("inboxHeaderSize");
 			this.InboxDataGrid.Columns[4].HeaderStyle.Wrap = false;
 			this.InboxDataGrid.Columns[4].ItemStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+			this.InboxDataGrid.Columns[4].HeaderStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+			this.InboxDataGrid.Columns[5].HeaderText = this.SharpUI.LocalizedRS.GetString("msgtoolbarDelete");
+			this.InboxDataGrid.Columns[5].ItemStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+			this.InboxDataGrid.Columns[5].HeaderStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
 
 			this.InboxDataGrid.PagerStyle.NextPageText = this.SharpUI.LocalizedRS.GetString("inboxNextPage");
 			this.InboxDataGrid.PagerStyle.PrevPageText = this.SharpUI.LocalizedRS.GetString("inboxPrevPage");
@@ -131,7 +139,7 @@ namespace anmar.SharpWebMail.UI
 		protected bool searchPattern ( out System.String pattern ) {
 			bool forcecache = false;
 			System.String Value, format, searchtype;
-			System .String mode = Page.Request.QueryString["mode"];
+			System.String mode = Page.Request.QueryString["mode"];
 			if ( mode!=null && mode.Equals("trash") )
 				pattern = "delete=true";
 			else
@@ -195,6 +203,22 @@ namespace anmar.SharpWebMail.UI
 			System.Web.UI.WebControls.HyperLink label = (System.Web.UI.WebControls.HyperLink)(args.Item.Cells[2].FindControl("inboxItemSubjectLink"));
 			if ( label!=null && label.Text.Length == 0 ) {
 				label.Text = SharpUI.LocalizedRS.GetString("noSubject");
+			}
+		}
+		protected void InboxDataGrid_DeleteCheckBox ( System.Object sender, System.EventArgs args ) {
+			if ( this.delete==null )
+				this.delete = new System.Collections.Specialized.StringCollection();
+			if ( ((System.Web.UI.HtmlControls.HtmlInputCheckBox)sender).Checked )
+				this.delete.Add (((System.Web.UI.HtmlControls.HtmlInputCheckBox)sender).Value);
+		}
+		protected void InboxDataGrid_Delete ( System.Object sender, System.Web.UI.WebControls.DataGridCommandEventArgs args ) {
+			if ( this.delete!=null && this.delete.Count>0 ) {
+				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+				foreach ( System.String item in this.delete ) {
+					if ( item!=null )
+						inbox.deleteMessage ( item );
+				}
+				this.SharpUI.setVariableLabels();
 			}
 		}
 		/// <summary>
@@ -270,6 +294,9 @@ namespace anmar.SharpWebMail.UI
 			if ( this.InboxDataGrid == null ) {
 				this.InboxDataGrid=(System.Web.UI.WebControls.DataGrid )this.SharpUI.FindControl("InboxDataGrid");
 				this.inboxWindowSearchHolder=(System.Web.UI.WebControls.PlaceHolder)this.SharpUI.FindControl("inboxWindowSearchHolder");
+				System.String mode = Page.Request.QueryString["mode"];
+					if ( mode!=null && mode.Equals("trash") )
+						this.InboxDataGrid.Columns[5].Visible=false;
 			}
 			this.SharpUI.nextPageImageButton.Click += new System.Web.UI.ImageClickEventHandler(nextPageButton_Click);
 			this.SharpUI.prevPageImageButton.Click += new System.Web.UI.ImageClickEventHandler(prevPageButton_Click);

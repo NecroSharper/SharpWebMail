@@ -29,6 +29,7 @@
 			ItemStyle-CssClass="XPInboxItemA"
 			AlternatingItemStyle-CssClass="XPInboxItemB"
 			AutoGenerateColumns="false"
+			OnDeleteCommand="InboxDataGrid_Delete"
 			AllowSorting="true"
 			OnSortCommand="InboxDataGrid_Sort">
 			<Columns>
@@ -113,6 +114,15 @@
 					<ItemTemplate>
 						<asp:Label runat="server"
 							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)["size"].ToString()) %>' />
+					</ItemTemplate>
+				</asp:TemplateColumn>
+				<asp:TemplateColumn>
+					<HeaderTemplate>
+						<asp:ImageButton runat="server" ID="msgtoolbarDelete" ToolTip='<%# InboxDataGrid.Columns[5].HeaderText %>' ImageAlign="Middle" CommandName="delete"
+                                         ImageUrl="images/msgtoolbar_delete.gif"/>
+					</HeaderTemplate>
+					<ItemTemplate>
+						<input type="checkbox" title='<%# InboxDataGrid.Columns[5].HeaderText %>' OnServerChange="InboxDataGrid_DeleteCheckBox" ID="delete" runat="server" value='<%#DataBinder.Eval(Container.DataItem, "uidl", "{0:G}")%>' />
 					</ItemTemplate>
 				</asp:TemplateColumn>
 			</Columns>
