@@ -90,6 +90,8 @@ namespace anmar.SharpWebMail.UI
 							foreach ( System.Collections.Specialized.ListDictionary addressbook in addressbooks.Values ) {
 								if ( addressbook.Contains("searchstringrealname") ) {
 									System.Collections.SortedList result = anmar.SharpWebMail.UI.AddressBook.GetDataSource(addressbook, true, client);
+									if ( result==null )
+										continue;
 									foreach ( System.String item in result.Keys ) {
 										if ( item.Equals(this.username.Value) ) {
 											Session["DisplayName"] = result[item];
