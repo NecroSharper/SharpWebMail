@@ -86,7 +86,7 @@
                       <tr> 
                         <td class="XPPanelBorder"><img src="images/spacer.gif" width="6" height="4"></td>
                         <td width="100%" class="XPWindowBackground">
-						<asp:panel id="newMessagePanel" runat="server"> 
+						<asp:PlaceHolder id="newMessagePH" runat="server"> 
                           <table align="center" width="97%">
                             <tr> 
                               <td align="right" nowrap width="1%"><asp:Label id="newMessageWindowFromNameLabel" CssClass="XPFormLabel" runat="server"/></td>
@@ -99,10 +99,10 @@
                             <tr> 
                               <td align="right" nowrap><asp:Label id="newMessageWindowFromEmailLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> <asp:Label id="newMessageWindowFromEmail" CssClass="XPFormLabel" runat="server"/>
-							  <asp:panel id="newMessageFromPanel" runat="server" Visible="false">
+							  <asp:PlaceHolder id="newMessageFromPH" runat="server" Visible="false">
 							     <input id="fromemail" type="text" runat="server" value="" class="XPInputEX" name="text" />
 								 <ASP:RegularExpressionValidator id="fromemailValidator" ValidationExpression=".+" ControlToValidate="fromemail" runat="server" ErrorMessage="*" Display="Static" /> 
-							  </asp:panel>
+							  </asp:PlaceHolder>
                               </td>
                               <td></td>
                             </tr>
@@ -161,8 +161,8 @@
                               <td>&nbsp;</td>
                             </tr>
                           </table>
-                          </asp:panel>
-						  <asp:panel id="confirmationPanel" runat="server"> 
+                          </asp:PlaceHolder>
+						  <asp:PlaceHolder id="confirmationPH" runat="server"> 
                           <table align="center">
                             <tr> 
                               <td></td>
@@ -171,8 +171,8 @@
                               <td> </td>
                             </tr>
                           </table>
-                          </asp:panel>
-                          <asp:panel id="attachmentsPanel" runat="server"> 
+                          </asp:PlaceHolder>
+                          <asp:PlaceHolder id="attachmentsPH" runat="server"> 
                           <table align="center">
                             <tr> 
                               <td></td>
@@ -207,7 +207,7 @@
                               <td> </td>
                             </tr>
                           </table>
-                          </asp:panel></td>
+                          </asp:PlaceHolder></td>
                         <td class="XPPanelBorder"><img src="images/spacer.gif" width="6" height="6"></td>
                       </tr>
                       <tr> 
