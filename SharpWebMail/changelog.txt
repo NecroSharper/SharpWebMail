@@ -1,3 +1,7 @@
+08/25/2004
+ - Added Russian translation. Thanks to Alex.
+ - The files with the culture lists are now sorted.
+
 08/24/2004
  - Cache the user's full name (and email in login mode 2) after it fills in
    the information the first time.
