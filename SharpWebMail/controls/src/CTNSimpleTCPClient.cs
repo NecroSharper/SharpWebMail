@@ -106,7 +106,7 @@ namespace anmar.SharpWebMail
 			error = !this.getStream( ref ns );
 
 			//Get response from NetworkStream
-			error = ( error )?error:!readString( ref ns, ref response, waitFor );
+			error = ( error )?error:!this.readString( ref ns, ref response, waitFor );
 
 			return !error;
 		}
@@ -123,7 +123,7 @@ namespace anmar.SharpWebMail
 			aTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.stopWaiting);
 
 			for ( aTimer.Enabled = true; !error && ns.CanRead && ns.CanWrite && !ns.DataAvailable && aTimer.Enabled ; ){}
-			
+
 			// If I can read from NetworkStream and there is
 			// some data, I get it
 			for (aTimer.Enabled = true; !error && ns.CanRead && aTimer.Enabled && (ns.DataAvailable || !(lastBoundary.Equals(waitFor)) ) ; nbytes = 0) {
@@ -157,14 +157,14 @@ namespace anmar.SharpWebMail
 
 			//Initialize response String
 			response = System.String.Empty;
-
+			if ( log.IsDebugEnabled ) log.Debug ( "Reading response string" );
 			// We wait until data is available but only if Stream is open
 			// We setup a timer that stops the loop after x seconds
 			aTimer.AutoReset = false;
 			aTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.stopWaiting);
 
 			for ( aTimer.Enabled = true; !error && ns.CanRead && ns.CanWrite && !ns.DataAvailable && aTimer.Enabled ; ){}
-			
+
 			// If I can read from NetworkStream and there is
 			// some data, I get it
 			for (aTimer.Enabled = true; !error && ns.CanRead && aTimer.Enabled && (ns.DataAvailable || !(lastBoundary.Equals(waitFor)) ) ; nbytes = 0) {
@@ -177,6 +177,7 @@ namespace anmar.SharpWebMail
 					if ( log.IsErrorEnabled ) log.Error ( lastErrorMessage, e );
 				}
 				if ( !error && nbytes>0 ) {
+					if ( log.IsDebugEnabled ) log.Debug ( "Read " + nbytes + " bytes" );
 					response = System.String.Concat ( response, System.Text.Encoding.ASCII.GetString(readBytes, 0, nbytes ) ) ;
 					if ( response.Length>waitFor.Length && response.EndsWith(waitFor) ) {
 						lastBoundary = response.Substring (response.Length - waitFor.Length);
@@ -184,10 +185,11 @@ namespace anmar.SharpWebMail
 				}
 			}
 			response = response.Trim();
+			if ( log.IsDebugEnabled ) log.Debug ( "Response string read: " + response );
 			error = (error||response.Length==0)?true:false;
 			return !error;
 		}
-		public bool sendCommand ( System.String cmd, System.Char end ) {
+		public bool sendCommand ( System.String cmd, System.String end ) {
 			bool error = false;
 			System.Net.Sockets.NetworkStream ns = null;
 
@@ -208,11 +210,11 @@ namespace anmar.SharpWebMail
 				error = true;
 				lastErrorMessage = "Thre should be something to send";
 			} else {
+				if ( log.IsDebugEnabled ) log.Debug ( "Sending string " + cmd);
 				sendBytes = System.Text.Encoding.ASCII.GetBytes( cmd );
 				// Check previous error and if network stream is writable
 				if ( ns.CanWrite ){
 					try {
-						//
 						ns.Write( sendBytes, 0, sendBytes.Length );
 					} catch ( System.IO.IOException e ) {
 						error = true;
@@ -220,6 +222,7 @@ namespace anmar.SharpWebMail
 						if ( log.IsErrorEnabled ) log.Error ( lastErrorMessage, e );
 					}
 				}
+				if ( log.IsDebugEnabled ) log.Debug ( "String sent");
 			}
 			return !error;
 		}

@@ -34,7 +34,7 @@ namespace anmar.SharpWebMail
 		protected System.String password;
 		protected System.String username;
 		
-		protected readonly static System.Char commandEnd = '\n';
+		protected readonly static System.String commandEnd = "\r\n";
 		protected readonly static System.String responseEnd = "\r\n.\r\n";
 		protected readonly static System.String responseEndSL = "\r\n";
 
