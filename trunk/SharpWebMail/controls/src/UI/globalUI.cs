@@ -80,7 +80,7 @@ namespace anmar.SharpWebMail.UI
 		}
 		protected void closeSession () {
 			if ( (IsPostBack)&&(Request.IsAuthenticated == true) ) {
-				anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
+				anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
 				// Delete messages marked for deletion
 				if ( client!=null ) {
 					client.purgeInbox ( this.inbox, false );

@@ -27,7 +27,7 @@ namespace anmar.SharpWebMail
 	/// <summary>
 	/// 
 	/// </summary>
-	public class CTNSimplePOP3Client {
+	public class CTNSimplePOP3Client : anmar.SharpWebMail.IEmailClient {
 		private static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		private anmar.SharpWebMail.CTNSimpleTCPClient client;
 		/// <summary>

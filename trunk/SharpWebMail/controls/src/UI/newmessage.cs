@@ -137,12 +137,12 @@ namespace anmar.SharpWebMail.UI
 			System.String from = null;
 			switch ( (int)Application["sharpwebmail/login/mode"] ) {
 				case 2:
-					from = System.String.Format("{0}<{1}>", this.fromname.Value.Trim(), this.fromemail.Value.Trim());
+					from = System.String.Format("{0} <{1}>", this.fromname.Value.Trim(), this.fromemail.Value.Trim());
 					break;
 				case 1:
 				case 3:
 				default:
-					from = System.String.Format("{0}<{1}>", this.fromname.Value.Trim(), User.Identity.Name);
+					from = System.String.Format("{0} <{1}>", this.fromname.Value.Trim(), User.Identity.Name);
 					break;
 			}
 			return from;
@@ -164,7 +164,13 @@ namespace anmar.SharpWebMail.UI
 			this.fromemail = (System.Web.UI.HtmlControls.HtmlInputText)this.SharpUI.FindControl("fromemail");
 			this.subject = (System.Web.UI.HtmlControls.HtmlInputText)this.SharpUI.FindControl("subject");
 			this.toemail = (System.Web.UI.HtmlControls.HtmlInputText)this.SharpUI.FindControl("toemail");
-			
+
+#if MONO
+			System.Web.UI.WebControls.RequiredFieldValidator rfv = (System.Web.UI.WebControls.RequiredFieldValidator) this.SharpUI.FindControl("ReqbodyValidator");
+			rfv.Enabled=false;
+			this.Validators.Remove(rfv);
+#endif
+
 			this.newMessageWindowConfirmation = (System.Web.UI.WebControls.Label)this.SharpUI.FindControl("newMessageWindowConfirmation");
 
 			this.SharpUI.refreshPageImageButton.Click += new System.Web.UI.ImageClickEventHandler(refreshPageButton_Click);
@@ -172,7 +178,6 @@ namespace anmar.SharpWebMail.UI
 			// Disable Panels
 			this.attachmentsPanel.Visible = false;
 			this.confirmationPanel.Visible = false;
-			this.newMessagePanel.Visible = false;
 
 			// Disable some things
 			this.SharpUI.nextPageImageButton.Enabled = false;
@@ -218,7 +223,7 @@ namespace anmar.SharpWebMail.UI
 			bool error = false;
 			message = null;
 			anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/send/servers"];
-			anmar.SharpWebMail.EmailServer server = selector.Select(User.Identity.Name);
+			anmar.SharpWebMail.EmailServerInfo server = selector.Select(User.Identity.Name);
 			if ( server==null || !server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.Smtp ) ) {
 				error = true;
 				return !error;
@@ -285,8 +290,8 @@ namespace anmar.SharpWebMail.UI
 			} catch (System.Exception e) {
 				error = true;
 				message = e.Message;
-#if DEBUG
-				message += "<br>InnerException: " + e.InnerException.Message;
+#if DEBUG && !MONO
+				message += ". <br>InnerException: " + e.InnerException.Message;
 #endif
 				if ( log.IsErrorEnabled ) log.Error ( "Error sending message", e );
 				if ( log.IsErrorEnabled ) log.Error ( "Error sending message (InnerException)", e.InnerException );
@@ -297,6 +302,7 @@ namespace anmar.SharpWebMail.UI
 
 		private void showAttachmentsPanel () {
 			if ( Session["sharpwebmail/send/message/temppath"]!=null || Session["sharpwebmail/read/message/temppath"]!=null ) {
+				this.newMessagePanel.Visible = false;
 				this.sharpwebmailform.Enctype = "multipart/form-data";
 				this.attachmentsPanel.Visible = true;
 				if ( Session["sharpwebmail/send/message/temppath"]==null ) {
@@ -311,6 +317,7 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		private void showConfirmationPanel () {
+			this.newMessagePanel.Visible = false;
 			this.confirmationPanel.Visible = true;
 			return;
 		}
@@ -400,8 +407,6 @@ namespace anmar.SharpWebMail.UI
 		/// </summary>
 		protected void Send_Click ( System.Object sender, System.EventArgs args ) {
 			System.String message;
-			this.newMessagePanel.Visible = true;
-			this.Validate();
 			if ( this.IsValid ) {
 				this.UI_case = 1;
 				if ( (int)Application["sharpwebmail/send/message/sanitizer_mode"]==1 ) {
@@ -414,7 +419,6 @@ namespace anmar.SharpWebMail.UI
 				message = this.SharpUI.LocalizedRS.GetString("newMessageValidationError");
 			}
 			newMessageWindowConfirmation.Text = message;
-			this.newMessagePanel.Visible = false;
 		}
 		#endregion Events
 
