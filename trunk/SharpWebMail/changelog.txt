@@ -1,4 +1,8 @@
 10/27/2004
+ - [Login] The culture combo is now properly sorted. It was being sorted by culture
+   identifier instead of by culture name.
+
+10/27/2004
  - Added Portuguese (Brazil) translation. Thanks to Christian Emil Hoh.
  - [Address Book] If the connection username is not configured, it tries to connect using
    the username and password for the current session. This allows per user authentication

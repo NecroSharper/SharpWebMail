@@ -116,8 +116,8 @@ namespace anmar.SharpWebMail.UI
 		protected void Page_Init () {
 			if ( selectculture!=null && !this.IsPostBack ) {
 				selectculture.DataSource = Application["AvailableCultures"];
-				selectculture.DataTextField = "Value";
-				selectculture.DataValueField = "Key";
+				selectculture.DataTextField = "Key";
+				selectculture.DataValueField = "Value";
 				selectculture.DataBind();
 				selectculture.Value = Session["effectiveculture"].ToString();
 			}
