@@ -24,7 +24,8 @@ BASE_SWM = .
 BASE_SMT = ../SharpMimeTools
 
 # Base dir for references (log4net & FCKeditor assemblies should be there)
-BASE_REF = ../mono/$(MONO_VERION)
+BASE_REF = ../mono
+BASE_REF_VERSION = ../mono/$(MONO_VERION)
 
 ASP_NET = $(BASE_SWM)/asp.net
 

@@ -171,7 +171,7 @@ namespace anmar.SharpWebMail
 		/// </summary>
 		/// <param name="result"></param>
 		/// <returns></returns>
-		protected override bool deletemessages ( System.Data.DataRow[] result ) {
+		protected override bool deletemessages ( System.Data.DataView result ) {
 			bool error = !base.deletemessages( result );
 			if ( !error ) {
 				this.randomTag();

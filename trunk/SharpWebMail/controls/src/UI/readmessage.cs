@@ -184,14 +184,29 @@ namespace anmar.SharpWebMail.UI
 		protected void Page_PreRender ( System.Object sender, System.EventArgs args ) {
 			if ( msgid != null ) {
 				System.Object[] details = this.SharpUI.Inbox[ msgid ];
+				System.IO.MemoryStream ms = null;
+				// We retrieve the message body
 				if ( details != null && details.Length>0 ) {
+					anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
+					ms = new System.IO.MemoryStream ();
+					if ( !client.GetMessage ( ms, (int)details[1] , details[3].ToString() ) ) {
+						// Message not found in that possition so we re-scan the server in order to find the new location
+						this.SharpUI.Inbox.CurrentFolder = details[18].ToString();
+						client.GetFolderIndex(this.SharpUI.Inbox, 0, 0, true);
+						details = this.SharpUI.Inbox[ msgid ];
+						if ( details==null || !client.GetMessage (ms, (int)details[1] , details[3].ToString()) )
+						    details=null;
+					}
+					client = null;
+				}
+				if ( details != null ) {
 					//Delete message
-					if ( delete && (bool)details[15]==false ) {
+					if ( delete && details[15].Equals(false) ) {
 						this.SharpUI.Inbox.deleteMessage ( msgid );
 						this.SharpUI.setVariableLabels();
 					}
 					// Disable delete button if message is already deleted
-					if ( (bool)details[15]==true || ( delete && (bool)details[15]==false ) )
+					if ( details[15].Equals(true) || ( delete && details[15].Equals(false) ) )
 						((System.Web.UI.WebControls.ImageButton)this.SharpUI.FindControl("msgtoolbarDelete")).Enabled=false;
 					this.readMessageWindowDateTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[14].ToString());
 					this.readMessageWindowFromTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[6].ToString());
@@ -200,9 +215,7 @@ namespace anmar.SharpWebMail.UI
 					this.newMessageWindowTitle.Text = System.Web.HttpUtility.HtmlEncode (details[10].ToString());
 					if ( this.newMessageWindowTitle.Text.Equals (System.String.Empty) )
 						this.newMessageWindowTitle.Text = this.SharpUI.LocalizedRS.GetString("noSubject");
-					anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
-					System.IO.MemoryStream ms = new System.IO.MemoryStream ();
-					if ( client.getMessage ( ms, (int)details[1] , details[3].ToString() ) ) {
+					if ( ms!=null && ms.CanRead ) {
 						anmar.SharpMimeTools.SharpMimeMessage mm = new anmar.SharpMimeTools.SharpMimeMessage ( ms );
 						this.readMessageWindowCcTextLabel.Text = System.Web.HttpUtility.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (mm.Header.Cc).ToString());
 						this.decodeMessage ( mm, this.readMessageWindowBodyTextHolder );
@@ -210,9 +223,8 @@ namespace anmar.SharpWebMail.UI
 						this.SharpUI.Inbox.readMessage ( msgid );
 						ms.Close();
 					}
-					ms = null;
-					client = null;
 				}
+				ms = null;
 				details = null;
 			}
 		}
