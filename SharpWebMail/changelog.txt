@@ -1,3 +1,7 @@
+11/08/2004
+ - Added nant build file.
+ - [Login] Bugfix: while looking for the real name, the query can return null.
+
 11/07/2004
  - Version number set to 0.10
  - [New Message] Stop using panels, use placeholders instead. It makes html output cleaner.
