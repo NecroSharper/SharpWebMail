@@ -1,3 +1,10 @@
+09/13/2004
+ - FCKEditor updated to version 2.0 beta 2.
+ - The editor is now stated with the toolbar collapsed. It should give the impression
+    of a faster load :).
+ - Upgraded to .NET Framework Service Pack 1 and everything works.
+ - Released as version 0.7b (276)
+
 08/25/2004
  - Added Russian translation. Thanks to Alex.
  - The files with the culture lists are now sorted.

@@ -1,5 +1,5 @@
   SharpWebMail - ASP.NET Web Mail application written in C#
-    v0.6b     - http://anmar.eu.org/projects/sharpwebmail/
+    v0.7b     - http://anmar.eu.org/projects/sharpwebmail/
 
 Introduction
 --------------------------------
@@ -46,8 +46,8 @@ Installation requisites
 --------------------------------
 
 Requisites on installation machine:
- - Microsoft .NET Framework 1.1
- - An ASP.NET capable server
+ - Microsoft .NET Framework 1.1 or Mono runtime
+ - An ASP.NET capable server (IIS or Apache + mod_mono)
 
 Other requisites:
  - At least one SMTP server in order to send mails
@@ -86,6 +86,7 @@ Licence
 History
 --------------------------------
 
+09/13/2004 - version 0.6b   - Released milestone 0.7
 08/17/2004 - version 0.6b   - Released milestone 0.6
 08/11/2004 - version 0.5b   - Released milestone 0.5
 07/21/2004 - version 0.4b   - Released milestone 0.4
