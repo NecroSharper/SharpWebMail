@@ -161,8 +161,8 @@ namespace anmar.SharpWebMail.UI
 		/*
 		 * Events
 		*/
-		protected void msgtoolbarCommand ( Object sender, System.Web.UI.WebControls.CommandEventArgs  e ) {
-			switch ( e.CommandName ) {
+		protected void msgtoolbarCommand ( System.Object sender, System.Web.UI.WebControls.CommandEventArgs args ) {
+			switch ( args.CommandName ) {
 				case "delete":
 					delete = true;
 					break;
@@ -179,13 +179,13 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void Page_Load(System.Object Src, System.EventArgs E ) {
+		protected void Page_Load ( System.Object sender, System.EventArgs args ) {
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
 			msgid = System.Web.HttpUtility.HtmlEncode (Page.Request.QueryString["msgid"]);
 			this.mainInterface ( );
 		}
-		protected void Page_PreRender( object sender, EventArgs e ) {
+		protected void Page_PreRender ( System.Object sender, System.EventArgs args ) {
 			if ( msgid != null ) {
 				System.Object[] details = this.SharpUI.Inbox[ msgid ];
 				if ( details != null && details.Length>0 ) {
@@ -198,7 +198,7 @@ namespace anmar.SharpWebMail.UI
 					if ( (bool)details[15]==true || ( delete && (bool)details[15]==false ) )
 						((System.Web.UI.WebControls.ImageButton)this.SharpUI.FindControl("msgtoolbarDelete")).Enabled=false;
 					this.readMessageWindowDateTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[14].ToString());
-					this.readMessageWindowFromTextLabel.Text = System.Web.HttpUtility.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (details[4].ToString()).ToString());
+					this.readMessageWindowFromTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[6].ToString());
 					this.readMessageWindowToTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[8].ToString());
 					this.readMessageWindowSubjectTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[10].ToString());
 					this.newMessageWindowTitle.Text = System.Web.HttpUtility.HtmlEncode (details[10].ToString());

@@ -42,7 +42,7 @@ namespace anmar.SharpWebMail
 											  "uidl", typeof(System.String),			//  3
 											  "From", typeof(System.String),			//  4
 											  "FromName", typeof(System.String),		//  5
-											  "FromEmail", typeof(System.String),		//  6
+											  "FromCollection", typeof(System.Collections.IEnumerable),		//  6
 											  "To", typeof(System.String),				//  7
 											  "ToCollection", typeof(System.Collections.IEnumerable),	//  8
 											  "Reply", typeof(System.Collections.IEnumerable),			//  9
@@ -267,8 +267,8 @@ namespace anmar.SharpWebMail
 			result = this.inbox.Select("uidl = '" + uidl + "'");
 			if (result.Length == 1 ){
 				result[0][4] = header.From;
-				result[0][5] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.From, 1 );
-				result[0][6] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.From, 2 );
+				result[0][5] = "";
+				result[0][6] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.From );
 				result[0][7] = header.To;
 				result[0][8] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.To );
 				result[0][9] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.Reply );
@@ -279,6 +279,14 @@ namespace anmar.SharpWebMail
 				result[0][14] = anmar.SharpMimeTools.SharpMimeTools.parseDate ( header.Date );
 				result[0][15] = false;
 				result[0][16] = false;
+				if ( result[0][6]!=null ) {
+					System.Collections.IEnumerator fromenum = ((System.Collections.IEnumerable)result[0][6]).GetEnumerator();
+					if ( fromenum.MoveNext() ) {
+						result[0][5] = ((anmar.SharpMimeTools.SharpMimeAddress)fromenum.Current)["name"];
+						if ( result[0][5]==null || result[0][5].ToString().Equals(System.String.Empty) )
+							result[0][5] = ((anmar.SharpMimeTools.SharpMimeAddress)fromenum.Current)["address"];
+					}
+				}
 			} else {
 				error = true;
 			}

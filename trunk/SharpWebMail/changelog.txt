@@ -1,3 +1,20 @@
+07/14/2004
+ - Change the use of column 6 in the Inbox and the way column 5 was parsed.
+   Now they are handled as a collection of addresses
+ - Bugfix: Closed bug 981747 - "Email addresses with commas not parsed correctly"
+ - Bugfix: server-side validation was not being performed when sending messages
+ - Implemented feature 981655 - "Add capability to send messages in Plain Text"
+   Now there is a checkbox that defaults to html where you can choose email format.
+   Anyway html messages are sent in both ways so all mail clients should be able to
+   choose the format they can understand.
+ - Added the resources for the above item
+ - Added a validator to email body. Now it is a required field
+ - Explicitly allow anonymous access to the CSS and images folder. xsp needs this
+
+07/03/2004
+ - Some coding style cleanups
+ - Compiled and tested successfully under Mono 1.0 and xsp 1.0
+
 06/31/2004
  - Bugfix: the committed fix for bug 981749 did not compile.
  - Bugfix: Closed bug 981654. No fix needed with current version of FCKEditor

@@ -62,7 +62,7 @@
 							/>
 					</HeaderTemplate>
 					<ItemTemplate>
-						<asp:HyperLink id="inboxItemFromLink" Text='<%# System.Web.HttpUtility.HtmlEncode ((((((System.Data.DataRowView)Container.DataItem)["FromName"].ToString().Length>0)?((System.Data.DataRowView)Container.DataItem)["FromName"]:((System.Data.DataRowView)Container.DataItem)["FromEmail"])).ToString()) %>' NavigateUrl='<%# System.String.Format("newmessage.aspx?msgid={0}", System.Web.HttpUtility.UrlEncode(DataBinder.Eval(Container.DataItem, "uidl", "{0:G}"))) %>' Target="_self" runat="server" />
+						<asp:HyperLink id="inboxItemFromLink" Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)["FromName"].ToString()) %>' NavigateUrl='<%# System.String.Format("newmessage.aspx?msgid={0}", System.Web.HttpUtility.UrlEncode(DataBinder.Eval(Container.DataItem, "uidl", "{0:G}"))) %>' Target="_self" runat="server" />
 					</ItemTemplate>
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>

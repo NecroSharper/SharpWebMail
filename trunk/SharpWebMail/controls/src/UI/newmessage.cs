@@ -181,8 +181,6 @@ namespace anmar.SharpWebMail.UI
 								this.toemail.Value += address["address"];
 							}
 						}
-						//this.FCKEditor.CanUpload = FredCK.EnablePropertyValues.False;
-						//this.FCKEditor.CanBrowse = FredCK.EnablePropertyValues.False;
 					}
 					details = null;
 				}
@@ -201,8 +199,14 @@ namespace anmar.SharpWebMail.UI
 			mailMessage.To = this.toemail.Value;
 			mailMessage.From = this.fromname.Value.Trim() + "<" + User.Identity.Name + ">";
 			mailMessage.Subject = this.subject.Value.Trim();
-			mailMessage.BodyFormat = System.Web.Mail.MailFormat.Html;
-			mailMessage.Body = bodyStart + FCKEditor.Value + bodyEnd;
+			System.String format = Request.Form["format"];
+			if ( format!=null && format.Equals("html") ) {
+				mailMessage.BodyFormat = System.Web.Mail.MailFormat.Html;
+				mailMessage.Body = bodyStart + FCKEditor.Value + bodyEnd;
+			} else {
+				mailMessage.BodyFormat = System.Web.Mail.MailFormat.Text;
+				mailMessage.Body = FCKEditor.Value;
+			}
 
 			if ( this.Header != null ) {
 				// RFC 2822 3.6.4. Identification fields
@@ -303,11 +307,11 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void refreshPageButton_Click (Object sender, System.Web.UI.ImageClickEventArgs e) {
+		protected void refreshPageButton_Click ( System.Object sender, System.Web.UI.ImageClickEventArgs args ) {
 			Response.Redirect("newmessage.aspx");
 		}
 
-		protected void AttachmentAdd_Click ( System.Object sender, System.EventArgs E ) {
+		protected void AttachmentAdd_Click ( System.Object sender, System.EventArgs args ) {
 			this.UI_case = 2;
 			if ( this.newMessageWindowAttachFile.PostedFile!=null && Session["temppath"]!=null ) {
 				System.String path = Session["temppath"].ToString();
@@ -324,14 +328,14 @@ namespace anmar.SharpWebMail.UI
 			}
 		}
 
-		protected void Attachments_Click ( System.Object sender, System.EventArgs E ) {
+		protected void Attachments_Click ( System.Object sender, System.EventArgs args ) {
 			this.UI_case = 2;
 			if ( this.newMessageWindowAttachmentsList.Items.Count == 0 ) {
 				this.bindAttachments();
 			}
 		}
 
-		protected void Attach_Click ( System.Object sender, System.EventArgs E ) {
+		protected void Attach_Click ( System.Object sender, System.EventArgs args ) {
 			this.UI_case = 0;
 			System.Collections.ArrayList attachments = new System.Collections.ArrayList();
 			foreach ( System.Web.UI.WebControls.ListItem item in this.newMessageWindowAttachmentsList.Items ) {
@@ -342,8 +346,8 @@ namespace anmar.SharpWebMail.UI
 			this.newMessageWindowAttachmentsAddedList.DataSource = attachments;
 			this.newMessageWindowAttachmentsAddedList.DataBind();
 		}
-		protected void msgtoolbarCommand ( Object sender, System.Web.UI.WebControls.CommandEventArgs  e ) {
-			switch ( e.CommandName ) {
+		protected void msgtoolbarCommand ( System.Object sender, System.Web.UI.WebControls.CommandEventArgs args ) {
+			switch ( args.CommandName ) {
 				case "cancel":
 					Server.Transfer("newmessage.aspx", true);
 					break;
@@ -352,10 +356,12 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void Send_Click ( System.Object sender, System.EventArgs E ) {
-			this.UI_case = 1;
+		protected void Send_Click ( System.Object sender, System.EventArgs args ) {
 			System.String message;
+			this.newMessagePanel.Visible = true;
+			this.Validate();
 			if ( this.IsValid ) {
+				this.UI_case = 1;
 				if ( (int)Application["sanitizer_mode"]==1 ) {
 					FCKEditor.Value = anmar.SharpWebMail.BasicSanitizer.SanitizeHTML(FCKEditor.Value, anmar.SharpWebMail.SanitizerMode.CommentBlocks|anmar.SharpWebMail.SanitizerMode.RemoveEvents);
 				}
@@ -366,6 +372,7 @@ namespace anmar.SharpWebMail.UI
 				message = this.SharpUI.LocalizedRS.GetString("newMessageValidationError");
 			}
 			newMessageWindowConfirmation.Text = message;
+			this.newMessagePanel.Visible = false;
 		}
 		#endregion Events
 
@@ -376,7 +383,7 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void Page_Load(System.Object Src, System.EventArgs E ) {
+		protected void Page_Load( System.Object sender, System.EventArgs args ) {
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
 
@@ -386,7 +393,7 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void Page_PreRender(object sender, EventArgs e) {
+		protected void Page_PreRender( System.Object sender, System.EventArgs args ) {
 			switch ( UI_case ) {
 				case 1:
 					this.showConfirmationPanel();

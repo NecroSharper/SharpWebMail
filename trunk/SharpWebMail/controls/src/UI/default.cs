@@ -182,17 +182,17 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void InboxDataGrid_ItemDataBound ( Object sender, System.Web.UI.WebControls.DataGridItemEventArgs e ) {
+		protected void InboxDataGrid_ItemDataBound ( System.Object sender, System.Web.UI.WebControls.DataGridItemEventArgs args ) {
 			// TODO: change aspect of read messages
-			if ( e.Item.ItemType == System.Web.UI.WebControls.ListItemType.Item ) {
-				e.Item.Attributes.Add ("onmouseover", "this.className='" + this.InboxDataGrid.ItemStyle.CssClass + "H'");
-				e.Item.Attributes.Add("onmouseout", "this.className='" + this.InboxDataGrid.ItemStyle.CssClass + "'");
+			if ( args.Item.ItemType == System.Web.UI.WebControls.ListItemType.Item ) {
+				args.Item.Attributes.Add ("onmouseover", "this.className='" + this.InboxDataGrid.ItemStyle.CssClass + "H'");
+				args.Item.Attributes.Add("onmouseout", "this.className='" + this.InboxDataGrid.ItemStyle.CssClass + "'");
 			}
-			if ( e.Item.ItemType == System.Web.UI.WebControls.ListItemType.AlternatingItem ) {
-				e.Item.Attributes.Add ("onmouseover", "this.className='" + this.InboxDataGrid.AlternatingItemStyle.CssClass + "H'");
-				e.Item.Attributes.Add("onmouseout", "this.className='" + this.InboxDataGrid.AlternatingItemStyle.CssClass + "'");
+			if ( args.Item.ItemType == System.Web.UI.WebControls.ListItemType.AlternatingItem ) {
+				args.Item.Attributes.Add ("onmouseover", "this.className='" + this.InboxDataGrid.AlternatingItemStyle.CssClass + "H'");
+				args.Item.Attributes.Add("onmouseout", "this.className='" + this.InboxDataGrid.AlternatingItemStyle.CssClass + "'");
 			}
-			System.Web.UI.WebControls.HyperLink label = (System.Web.UI.WebControls.HyperLink)(e.Item.Cells[2].FindControl("inboxItemSubjectLink"));
+			System.Web.UI.WebControls.HyperLink label = (System.Web.UI.WebControls.HyperLink)(args.Item.Cells[2].FindControl("inboxItemSubjectLink"));
 			if ( label!=null && label.Text.Length == 0 ) {
 				label.Text = SharpUI.LocalizedRS.GetString("noSubject");
 			}
@@ -200,8 +200,8 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void InboxDataGrid_Sort ( Object sender, System.Web.UI.WebControls.DataGridSortCommandEventArgs e ) {
-			this.sort = e.SortExpression.ToString();
+		protected void InboxDataGrid_Sort ( System.Object sender, System.Web.UI.WebControls.DataGridSortCommandEventArgs args ) {
+			this.sort = args.SortExpression.ToString();
 			anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
 			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
 			if ( inbox.sortExpression != this.sort ) {
@@ -218,30 +218,30 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void InboxDataGrid_PageIndexChanged ( Object sender, System.Web.UI.WebControls.DataGridPageChangedEventArgs e ) {
-			if ( this.InboxDataGrid.CurrentPageIndex < e.NewPageIndex ) {
+		protected void InboxDataGrid_PageIndexChanged ( System.Object sender, System.Web.UI.WebControls.DataGridPageChangedEventArgs args ) {
+			if ( this.InboxDataGrid.CurrentPageIndex < args.NewPageIndex ) {
 				anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
 				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-				if ( client.getInboxIndex ( inbox, e.NewPageIndex, (int) Application["pagesize"], false ) ) {
+				if ( client.getInboxIndex ( inbox, args.NewPageIndex, (int) Application["pagesize"], false ) ) {
 					Session["inbox"] = inbox;
 					Session["client"] = client;
 				}
 				inbox = null;
 				client = null;
 			}
-			this.InboxDataGrid.CurrentPageIndex = e.NewPageIndex;
+			this.InboxDataGrid.CurrentPageIndex = args.NewPageIndex;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void inboxLinkButton_Click ( Object sender, System.EventArgs e ) {
+		protected void inboxLinkButton_Click ( System.Object sender, System.EventArgs args ) {
 			this.InboxDataGrid.CurrentPageIndex = 0;
 			this.resetsearch = true;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void nextPageButton_Click ( Object sender, System.Web.UI.ImageClickEventArgs e ) {
+		protected void nextPageButton_Click ( System.Object sender, System.Web.UI.ImageClickEventArgs args ) {
 			if ( this.InboxDataGrid.CurrentPageIndex < this.InboxDataGrid.PageCount ) {
 				InboxDataGrid_PageIndexChanged ( sender, new System.Web.UI.WebControls.DataGridPageChangedEventArgs ( sender, this.InboxDataGrid.CurrentPageIndex+1 ) );
 			}
@@ -249,7 +249,7 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void prevPageButton_Click ( Object sender, System.Web.UI.ImageClickEventArgs e ) {
+		protected void prevPageButton_Click ( System.Object sender, System.Web.UI.ImageClickEventArgs args ) {
 			if ( this.InboxDataGrid.CurrentPageIndex > 0 ) {
 				InboxDataGrid_PageIndexChanged (sender, new System.Web.UI.WebControls.DataGridPageChangedEventArgs ( sender, this.InboxDataGrid.CurrentPageIndex-1 ));
 			}
@@ -257,7 +257,7 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void refreshPageButton_Click ( Object sender, System.Web.UI.ImageClickEventArgs e ) {
+		protected void refreshPageButton_Click ( System.Object sender, System.Web.UI.ImageClickEventArgs args ) {
 			this.refresh = true;
 		}
 		/*
@@ -266,7 +266,7 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void Page_Load(System.Object Src, System.EventArgs E ) {
+		protected void Page_Load ( System.Object sender, System.EventArgs args ) {
 			if ( this.InboxDataGrid == null ) {
 				this.InboxDataGrid=(System.Web.UI.WebControls.DataGrid )this.SharpUI.FindControl("InboxDataGrid");
 				this.inboxWindowSearchHolder=(System.Web.UI.WebControls.PlaceHolder)this.SharpUI.FindControl("inboxWindowSearchHolder");
@@ -278,7 +278,7 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void Page_PreRender( object sender, EventArgs e ) {
+		protected void Page_PreRender( System.Object sender, EventArgs args ) {
 			this.bindInbox();
 		}
 	}

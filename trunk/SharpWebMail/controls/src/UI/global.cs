@@ -31,20 +31,20 @@ namespace anmar.SharpWebMail.UI
 		public override void Init() {
 		}
 
-		public void Application_Start ( Object sender, EventArgs e ) {
+		public void Application_Start ( System.Object sender, System.EventArgs args ) {
 			initConfig();
 		}
-		public void Application_End ( Object sender, EventArgs e ) {
+		public void Application_End ( System.Object sender, System.EventArgs args ) {
 		}
 
-		public void Application_Error ( Object sender, EventArgs e ) {
+		public void Application_Error ( System.Object sender, System.EventArgs args ) {
 			if ( log.IsErrorEnabled ) log.Error ( "Application_Error", Server.GetLastError() );
 #if !DEBUG
 			Server.ClearError();
 #endif
 		}
 
-		public void Session_Start ( Object sender, EventArgs e ) {
+		public void Session_Start ( System.Object sender, System.EventArgs args ) {
 			// For each request initialize the culture values with the
 			// user language as specified by the browser.
 			System.Threading.Thread.CurrentThread.CurrentCulture = this.ParseCultures ( Request.UserLanguages );
@@ -63,7 +63,7 @@ namespace anmar.SharpWebMail.UI
 
 		}
 
-		public void Session_End ( Object sender, EventArgs e ) {
+		public void Session_End ( System.Object sender, System.EventArgs args ) {
 			// Clean up temp files
 			try {
 				if ( Session["temppath"]!=null ) {

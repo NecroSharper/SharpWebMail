@@ -26,7 +26,7 @@ namespace anmar.SharpWebMail.UI
 {
 	public class download : System.Web.UI.Page {
 
-		protected void Page_Load(System.Object Src, System.EventArgs E ) {
+		protected void Page_Load( System.Object sender, System.EventArgs args ) {
 			//Our Inbox
 			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
 
