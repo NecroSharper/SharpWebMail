@@ -89,7 +89,7 @@ namespace anmar.SharpWebMail.UI
 							System.Collections.SortedList addressbooks = (System.Collections.SortedList)Application["sharpwebmail/send/addressbook"];
 							foreach ( System.Collections.Specialized.ListDictionary addressbook in addressbooks.Values ) {
 								if ( addressbook.Contains("searchstringrealname") ) {
-									System.Collections.SortedList result = anmar.SharpWebMail.UI.AddressBook.GetDataSource(addressbook, true, this.username.Value);
+									System.Collections.SortedList result = anmar.SharpWebMail.UI.AddressBook.GetDataSource(addressbook, true, client);
 									foreach ( System.String item in result.Keys ) {
 										if ( item.Equals(this.username.Value) ) {
 											Session["DisplayName"] = result[item];
