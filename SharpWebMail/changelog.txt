@@ -1,3 +1,28 @@
+08/10/2004
+ - Rewrite the imap client response parsing. Now it's a bit more intelligent.
+ - Abstract way of removing command responses from messages streams.
+ - The imap client now removes command responses from streams.
+ - Bugfix: The timeouts of the tcpclients were too aggressive, big mails on
+   slow connections may have trouble.
+ - Bugfix: A locking network read was being done without being sure about
+   the availability of data.
+
+08/09/2004
+ - Improve Imap client.
+ - Bugfix: The order of the multiple servers configuration wasn't being followed.
+
+08/08/2004
+ - Finished the abstract implementation of the emailclient and the derived pop3client.
+ - Finished the imap client. This initial implementation only allows reading messages
+   in the inbox of the imap server. Now it needs intensive testing.
+ - Some general code cleanups.
+ 
+08/07/2004
+ - Started an abstract emailclient implementation, and changed the pop3client as
+   a derived class of it.
+ - Changes accessibility of pop3client to internal.
+ - Started an IMAP client implementation.
+
 08/06/2004
  - Bugfix: In the newmessage page, the validation wasn't working under mono 1.0
  - Bugfix: The validator associated to FCKEditor was causing problems under mono 1.0

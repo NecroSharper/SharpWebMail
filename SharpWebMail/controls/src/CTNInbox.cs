@@ -101,21 +101,21 @@ namespace anmar.SharpWebMail
 		/// <param name="list"></param>
 		/// <param name="uidllist"></param>
 		/// <returns></returns>
-		public bool buildMessageTable ( System.Int32[] list, System.String[] uidllist ) {
+		public bool buildMessageTable ( System.Int32[] list, System.String[] uidlist ) {
 			bool error = false;
 
 			// We need to initialize the inbox list
 			if (this.Count == 0) {
-				this.initMessageList (list, uidllist );
+				this.initMessageList (list, uidlist );
 			} else {
 				// As we already have an index, we try to put it in sync
 				// with the mail server
 				System.Data.DataRow[] result;
-				for ( int i=0 ; i<uidllist.Length; i++ ) {
-					result = this.inbox.Select("uidl = '" + uidllist[i].Replace("'", "''") + "'");
+				for ( int i=0 ; i<uidlist.Length; i++ ) {
+					result = this.inbox.Select("uidl = '" + uidlist[i].Replace("'", "''") + "'");
 					// Message not found, so we add it
 					if (result.Length == 0 ){
-						this.newMessage (i+1, list[i], uidllist[i]);
+						this.newMessage (i+1, list[i], uidlist[i]);
 					} else {
 						// Message found, but at the incorrect position
 						if (((int)result[0][1]) != (i+1)) {
@@ -127,12 +127,12 @@ namespace anmar.SharpWebMail
 				result = this.inbox.Select();
 
 				for ( int i=0, max = result.GetLength(0), j=0 ; i<max; i++ ) {
-					for (j = 0; j<uidllist.Length; j++ ) {
-						if (uidllist[j].Equals(result[i][3])) {
+					for (j = 0; j<uidlist.Length; j++ ) {
+						if (uidlist[j].Equals(result[i][3])) {
 							break;
 						}
 					}
-					if (j==uidllist.Length) {
+					if (j==uidlist.Length) {
 						this.mcount--;
 						this.msize -= (int) result[j][2];
 						result[i].Delete();
