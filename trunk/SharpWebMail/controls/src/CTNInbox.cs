@@ -247,9 +247,9 @@ namespace anmar.SharpWebMail
 			System.Data.DataRow[] result;
 			uidl = uidl.Replace("'", "''");
 			result = this.inbox.Select("uidl='" + uidl + "'");
-			if ( result.Length==1 && result[0][col]==!val ) {
+			if ( result.Length==1 && ((bool)result[0][col])==!val ) {
 				result[0][col] = val;
-				return true
+				return true;
 			} else {
 				return false;
 			}
