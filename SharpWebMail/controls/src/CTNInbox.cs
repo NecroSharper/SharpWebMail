@@ -98,7 +98,7 @@ namespace anmar.SharpWebMail
 			get {
 				System.Data.DataRow[] result = this.inbox.Select(System.String.Format ("guid='{0}'", guid));
 				if ( result.Length==1 ) {
-					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("{1} guid='{0}' found", guid));
+					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("{0} guid='{0}' found", guid));
 					return result[0].ItemArray;
 				} else {
 					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("guid='{0}' not found", guid));
