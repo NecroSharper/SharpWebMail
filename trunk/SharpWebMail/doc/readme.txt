@@ -1,5 +1,5 @@
   SharpWebMail - ASP.NET Web Mail application written in C#
-    v0.4b     - http://anmar.eu.org/projects/sharpwebmail/
+    v0.5b     - http://anmar.eu.org/projects/sharpwebmail/
 
 Introduction
 --------------------------------
@@ -14,9 +14,9 @@ Features
 
 Very simple to configure (only a few settings in web.config)
 
-Reads mail from POP3 server
+Multiple POP3 and IMAP servers can be configured to read mail from.
 
-Tries to minimize the querys to the POP3 server caching message info
+Tries to minimize the queries to the email server caching message info
 
 Authentication is handled by the POP3 server
 
@@ -25,6 +25,8 @@ Sends mail through a SMTP server
 HTML editor (FCKeditor) for composing mails
 
 Download and send multiple attachments per message
+
+It is possible to attach a file that we have received in other message without downloading it 
 
 Reads MIME messages
 
@@ -36,7 +38,7 @@ Multilingual user interface
 
 XP look & feel
 
-Tested with IE6 and Mozilla FireFox 0.8, but it should work with other versions
+Tested with IE6 and Mozilla FireFox 0.9, but it should work with other versions
 
 Installation requisites
 --------------------------------
@@ -46,9 +48,8 @@ Requisites on installation machine:
  - An ASP.NET capable server
 
 Other requisites:
- - Reachable SMTP server in order to send mails
- - Reachable POP3 server in order to read mails
-
+ - At least one SMTP server in order to send mails
+ - At least one POP3 or IMAP server in order to read mails
 
 Installation notes
 --------------------------------
@@ -61,7 +62,7 @@ Building
 
 Dependencies:
  - Microsoft .NET framework 1.1  - http://msdn.microsoft.com/netframework/
- - Log4net - http://log4net.sourceforge.net/
+ - Log4net - http://logging.apache.org/log4net/
  - FCKeditor - http://www.fckeditor.net/
  - SharpMimeTools - For now distributed only with SharpWebMail
 
@@ -82,6 +83,7 @@ Licence
 History
 --------------------------------
 
+08/xx/2004 - version 0.5b   - Released milestone 0.5
 07/21/2004 - version 0.4b   - Released milestone 0.4
 05/29/2004 - version 0.3b   - Released milestone 0.3
 05/15/2004 - version 0.2b   - Released milestone 0.2

@@ -27,6 +27,6 @@ namespace anmar.SharpWebMail
 	public interface IEmailClient {
 		bool getInboxIndex ( anmar.SharpWebMail.CTNInbox inbox, int npage, int npagesize, bool askserver );
 		bool purgeInbox ( anmar.SharpWebMail.CTNInbox inbox, bool all );
-		bool getMessage ( ref System.IO.MemoryStream Message, int mindex, System.String uidl );
+		bool getMessage ( System.IO.MemoryStream Message, int mindex, System.String uidl );
 	}
 }

@@ -202,7 +202,7 @@ namespace anmar.SharpWebMail.UI
 						this.newMessageWindowTitle.Text = this.SharpUI.LocalizedRS.GetString("noSubject");
 					anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
 					System.IO.MemoryStream ms = new System.IO.MemoryStream ();
-					if ( client.getMessage ( ref ms, System.Int32.Parse(details[1].ToString() ) , msgid ) ) {
+					if ( client.getMessage ( ms, System.Int32.Parse(details[1].ToString() ) , msgid ) ) {
 						anmar.SharpMimeTools.SharpMimeMessage mm = new anmar.SharpMimeTools.SharpMimeMessage ( ms );
 						this.readMessageWindowCcTextLabel.Text = System.Web.HttpUtility.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (mm.Header.Cc).ToString());
 						this.decodeMessage ( mm, this.readMessageWindowBodyTextHolder );

@@ -31,6 +31,8 @@ namespace anmar.SharpWebMail
 			switch ( server.Protocol ) {
 				case anmar.SharpWebMail.ServerProtocol.Pop3:
 					return new anmar.SharpWebMail.CTNSimplePOP3Client ( server.Host, server.Port, username, password );
+				case anmar.SharpWebMail.ServerProtocol.Imap:
+					return new anmar.SharpWebMail.SimpleIMAPClient( server.Host, server.Port, username, password );
 			}
 			return null;
 		}

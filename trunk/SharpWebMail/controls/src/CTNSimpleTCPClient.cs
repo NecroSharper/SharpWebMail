@@ -86,7 +86,7 @@ namespace anmar.SharpWebMail
 		protected void init () {
 			client = new System.Net.Sockets.TcpClient();
 		}
-		public bool readResponse ( ref System.IO.MemoryStream response, System.String waitFor ) {
+		public bool readResponse ( System.IO.MemoryStream response, System.String waitFor ) {
 			bool error = false;
 			System.Net.Sockets.NetworkStream ns = null;
 
@@ -94,7 +94,7 @@ namespace anmar.SharpWebMail
 			error = !this.getStream( ref ns );
 
 			//Get response from NetworkStream
-			error = ( error )?error:!readBytes( ref ns, ref response, waitFor );
+			error = ( error )?error:!readBytes( ns, response, waitFor );
 
 			return !error;
 		}
@@ -106,17 +106,18 @@ namespace anmar.SharpWebMail
 			error = !this.getStream( ref ns );
 
 			//Get response from NetworkStream
-			error = ( error )?error:!this.readString( ref ns, ref response, waitFor );
+			error = ( error )?error:!this.readString( ns, ref response, waitFor );
 
 			return !error;
 		}
-		protected bool readBytes (ref System.Net.Sockets.NetworkStream ns, ref System.IO.MemoryStream response, System.String waitFor ) {
+		protected bool readBytes ( System.Net.Sockets.NetworkStream ns, System.IO.MemoryStream response, System.String waitFor ) {
 			bool error = false;
 			byte[] readBytes = new byte[client.ReceiveBufferSize];
 			int nbytes = 0;
 			System.String lastBoundary = System.String.Empty;
 			System.Timers.Timer aTimer = new System.Timers.Timer(this.timeoutResponse);
 
+			if ( log.IsDebugEnabled ) log.Debug ( "Reading response" );
 			// We wait until data is available but only if Stream is open
 			// We setup a timer that stops the loop after x seconds
 			aTimer.AutoReset = false;
@@ -126,50 +127,10 @@ namespace anmar.SharpWebMail
 
 			// If I can read from NetworkStream and there is
 			// some data, I get it
-			for (aTimer.Enabled = true; !error && ns.CanRead && aTimer.Enabled && (ns.DataAvailable || !(lastBoundary.Equals(waitFor)) ) ; nbytes = 0) {
+			for ( aTimer.Interval = this.timeoutResponse; !error && ns.CanRead && aTimer.Enabled && (ns.DataAvailable || !(lastBoundary.Equals(waitFor)) ) ; nbytes = 0) {
 				try {
-					nbytes = ns.Read( readBytes, 0, client.ReceiveBufferSize );
-				} catch ( System.IO.IOException e ) {
-					error = true;
-					nbytes = 0;
-					lastErrorMessage = "Read error";
-					if ( log.IsErrorEnabled ) log.Error ( lastErrorMessage, e );
-				}
-				if ( !error && nbytes>0 ) {
-					response.Write( readBytes, 0, nbytes );
-					if ( response.Length>waitFor.Length ) {
-						response.Seek(response.Length - waitFor.Length,0);
-						response.Read(readBytes,  0, waitFor.Length);
-						lastBoundary = System.Text.Encoding.ASCII.GetString(readBytes, 0, waitFor.Length);
-					}
-				}
-			}
-			response.Flush();
-			error = (error||response.Length==0)?true:false;
-			return !error;
-		}
-		protected bool readString (ref System.Net.Sockets.NetworkStream ns, ref System.String response, System.String waitFor) {
-			bool error = false;
-			byte[] readBytes = new byte[client.ReceiveBufferSize];
-			int nbytes = 0;
-			System.String lastBoundary = System.String.Empty;
-			System.Timers.Timer aTimer = new System.Timers.Timer(this.timeoutResponse);
-
-			//Initialize response String
-			response = System.String.Empty;
-			if ( log.IsDebugEnabled ) log.Debug ( "Reading response string" );
-			// We wait until data is available but only if Stream is open
-			// We setup a timer that stops the loop after x seconds
-			aTimer.AutoReset = false;
-			aTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.stopWaiting);
-
-			for ( aTimer.Enabled = true; !error && ns.CanRead && ns.CanWrite && !ns.DataAvailable && aTimer.Enabled ; ){}
-
-			// If I can read from NetworkStream and there is
-			// some data, I get it
-			for (aTimer.Enabled = true; !error && ns.CanRead && aTimer.Enabled && (ns.DataAvailable || !(lastBoundary.Equals(waitFor)) ) ; nbytes = 0) {
-				try {
-					nbytes = ns.Read( readBytes, 0, client.ReceiveBufferSize );
+					if ( ns.DataAvailable )
+						nbytes = ns.Read( readBytes, 0, client.ReceiveBufferSize );
 				} catch ( System.IO.IOException e ) {
 					error = true;
 					nbytes = 0;
@@ -178,13 +139,31 @@ namespace anmar.SharpWebMail
 				}
 				if ( !error && nbytes>0 ) {
 					if ( log.IsDebugEnabled ) log.Debug ( "Read " + nbytes + " bytes" );
-					response = System.String.Concat ( response, System.Text.Encoding.ASCII.GetString(readBytes, 0, nbytes ) ) ;
-					if ( response.Length>waitFor.Length && response.EndsWith(waitFor) ) {
-						lastBoundary = response.Substring (response.Length - waitFor.Length);
+					response.Write( readBytes, 0, nbytes );
+					if ( response.Length>waitFor.Length ) {
+						response.Seek(response.Length - waitFor.Length, System.IO.SeekOrigin.Begin);
+						response.Read(readBytes,  0, waitFor.Length);
+						lastBoundary = System.Text.Encoding.ASCII.GetString(readBytes, 0, waitFor.Length);
 					}
+					// Reset timer
+					aTimer.Interval = this.timeoutResponse;
 				}
 			}
-			response = response.Trim();
+			response.Flush();
+			if ( log.IsDebugEnabled ) log.Debug ( "Reading response finished" );
+			error = (error||response.Length==0)?true:false;
+			return !error;
+		}
+		protected bool readString ( System.Net.Sockets.NetworkStream ns, ref System.String response, System.String waitFor) {
+			bool error = false;
+			if ( log.IsDebugEnabled ) log.Debug ( "Reading response string" );
+			response = System.String.Empty;
+			System.IO.MemoryStream stream = new System.IO.MemoryStream();
+			error = !this.readBytes(ns, stream, waitFor);
+			if ( !error ) {
+				response = System.Text.Encoding.ASCII.GetString(stream.GetBuffer(), 0, (int)stream.Length );
+				response = response.Trim();
+			}
 			if ( log.IsDebugEnabled ) log.Debug ( "Response string read: " + response );
 			error = (error||response.Length==0)?true:false;
 			return !error;
@@ -197,18 +176,18 @@ namespace anmar.SharpWebMail
 			error = !this.getStream( ref ns );
 
 			// Send the command
-			error = ( !error && cmd.Length>0 )?!this.sendString ( ref ns, System.String.Concat( cmd, end ) ):true;
+			error = ( !error && cmd.Length>0 )?!this.sendString ( ns, System.String.Concat( cmd, end ) ):true;
 
 			return !error;
 		}
-		protected bool sendString ( ref System.Net.Sockets.NetworkStream ns, System.String cmd ) {
+		protected bool sendString ( System.Net.Sockets.NetworkStream ns, System.String cmd ) {
 			bool error = false;
 			byte[] sendBytes;
 
 			// Check string length
 			if ( !(cmd.Length>0) ) {
 				error = true;
-				lastErrorMessage = "Thre should be something to send";
+				lastErrorMessage = "There should be something to send";
 			} else {
 				if ( log.IsDebugEnabled ) log.Debug ( "Sending string " + cmd);
 				sendBytes = System.Text.Encoding.ASCII.GetBytes( cmd );

@@ -40,6 +40,8 @@
     <File name=".\src\emailserver.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\src\iemailclient.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\src\emailclientfactory.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\simpleimapclient.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\simpleemailclient.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="SharpMimeTools" localcopy="True" />
