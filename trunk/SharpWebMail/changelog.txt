@@ -1,3 +1,9 @@
+10/09/2004
+ - Bugfix: Too much resources were being used while waiting to mail servers'
+   responses.
+ - Bugfix: Timeout of tcp client was set too low, so dns and ident delays in the
+   mail server were causing login failures to the client.
+
 10/07/2004
  - Added Vietnamese translation. Thanks to Pham Vu Dung.
 
