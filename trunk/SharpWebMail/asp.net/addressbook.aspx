@@ -25,6 +25,7 @@ function add_rcpt (email) {
 }
 //--></script>
 	<form id="sharpwebmailform" method="post" runat="server">
+		<select ID="addressbookselect" OnChange="this.form.submit();" OnServerChange="AddressBook_Changed" Visible="false" runat="server" />
 		<asp:DataGrid id="AddressBookDataGrid" runat="server"
 			AllowPaging="True"
 			PageSize="10"
@@ -44,12 +45,12 @@ function add_rcpt (email) {
 						<asp:Label id="inboxHeaderNumber" Text="<%# this.AddressBookDataGrid.Columns[0].HeaderText %>" runat="server" />
 					</HeaderTemplate>
 					<ItemTemplate>
-						<a href="javascript:add_rcpt('<%#((System.Collections.DictionaryEntry)Container.DataItem).Value%>')">
+						<a href="javascript:add_rcpt('<%#((System.Collections.DictionaryEntry)Container.DataItem).Key%>')">
 						<asp:Label runat="server"
-							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Collections.DictionaryEntry)Container.DataItem).Key.ToString()) %>' />
+							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Collections.DictionaryEntry)Container.DataItem).Value.ToString()) %>' />
 							-
 							<asp:Label runat="server"
-							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Collections.DictionaryEntry)Container.DataItem).Value.ToString()) %>' />
+							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Collections.DictionaryEntry)Container.DataItem).Key.ToString()) %>' />
 						</a>
 					</ItemTemplate>
 				</asp:TemplateColumn>

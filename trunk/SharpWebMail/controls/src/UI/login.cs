@@ -85,6 +85,22 @@ namespace anmar.SharpWebMail.UI
 						System.Web.Security.FormsAuthentication.RedirectFromLoginPage(this.username.Value, false);
 						Session["client"] = client;
 						Session["inbox"] = inbox;
+						if ( Application["sharpwebmail/send/addressbook"]!=null ) {
+							System.Collections.SortedList addressbooks = (System.Collections.SortedList)Application["sharpwebmail/send/addressbook"];
+							foreach ( System.Collections.Specialized.ListDictionary addressbook in addressbooks.Values ) {
+								if ( addressbook.Contains("searchstringrealname") ) {
+									System.Collections.SortedList result = anmar.SharpWebMail.UI.AddressBook.GetDataSource(addressbook, true, this.username.Value);
+									foreach ( System.String item in result.Keys ) {
+										if ( item.Equals(this.username.Value) ) {
+											Session["DisplayName"] = result[item];
+											break;
+										}
+									}
+									result = null;
+									break;
+								}
+							}
+						}
 					} else {
 						errorMsgLogin.Visible=true;
 					}
