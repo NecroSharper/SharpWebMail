@@ -34,6 +34,7 @@ namespace anmar.SharpWebMail
 		/// </summary>
 		protected System.Data.DataTable inbox;
 		protected System.Data.DataView inbox_view;
+		protected System.String current_folder = "inbox";
 		/// <summary>
 		/// 
 		/// </summary>
@@ -54,7 +55,8 @@ namespace anmar.SharpWebMail
 											  "Date", typeof(System.DateTime),			// 14
 											  "delete", typeof(System.Boolean),			// 15
 											  "read", typeof(System.Boolean),			// 16
-											  "guid", typeof(System.String)};			// 17
+											  "guid", typeof(System.String),			// 17
+											  "folder", typeof(System.String)};			// 18
 		/// <summary>
 		/// 
 		/// </summary>
@@ -127,19 +129,21 @@ namespace anmar.SharpWebMail
 				// As we already have an index, we try to put it in sync
 				// with the mail server
 				for ( int i=0 ; i<uidlist.Length; i++ ) {
-					this.inbox_view.RowFilter = System.String.Concat("uidl = '", uidlist[i].Replace("'", "''"), "'");
+					this.inbox_view.RowFilter = System.String.Concat("uidl = '", uidlist[i], "'");
 					// Message not found, so we add it
 					if (this.inbox_view.Count == 0 ){
 						this.newMessage (i+1, list[i], uidlist[i]);
 					} else {
 						// Message found, but at the wrong position
-						if ( !this.inbox_view[0][1].Equals(i+1) ) {
+						if ( !this.inbox_view[0][1].Equals(i+1) )
 							this.inbox_view[0][1] = i+1;
-						}
+						// Message found, but in the wrong folder.
+						if ( !this.inbox_view[0][18].Equals(this.current_folder) )
+							this.inbox_view[0][18] = this.current_folder;
 					}
 				}
 				// now we try to find deleted messages
-				this.inbox_view.RowFilter = System.String.Empty;
+				this.inbox_view.RowFilter = System.String.Concat("folder='", this.current_folder, "'");
 
 				for ( int i=0 ; i<this.inbox.Rows.Count; i++ ) {
 					System.Data.DataRow item = this.inbox.Rows[i];
@@ -177,19 +181,16 @@ namespace anmar.SharpWebMail
 				start = 0;
 				end = this.Count;
 			}
-			this.inbox_view.RowFilter = "delete=false";
+			this.inbox_view.RowFilter = System.String.Concat("delete=false AND folder='", this.current_folder, "'");
 			this.inbox_view.Sort = sort;
-
+			// Clean up message list before
+			if ( msgs!=null && msgs.Count>0 )
+				msgs.Clear();
 			for ( int i=start; (!error) && i<this.inbox_view.Count && i<end ; i++ ) {
 				tmpkey = (int)this.inbox_view[i][1];
 				tmpvalue = this.inbox_view[i][3].ToString();
-				// Message added to list but hash and msgnum added do not match with
-				// last server response
-				if ( (msgs.ContainsKey (tmpkey) && !msgs[tmpkey].Equals(tmpvalue)) || (msgs.ContainsValue(tmpvalue) && !msgs[tmpkey].Equals(tmpvalue) ) ){
-					msgs.Remove(tmpkey);
-				}
 				// We want to get headers only if we do not have them
-				if ( this.inbox_view[i][13].Equals(System.DBNull.Value) && !msgs.ContainsKey (tmpkey) ) {
+				if ( !msgs.ContainsKey (tmpkey) && this.inbox_view[i][13].Equals(System.DBNull.Value) ) {
 					msgs.Add( this.inbox_view[i][1], this.inbox_view[i][3].ToString() );
 				}
 			}
@@ -255,7 +256,7 @@ namespace anmar.SharpWebMail
 			if ( guid.Equals(System.Guid.Empty) )
 				return false;
 			this.inbox_view.RowFilter = System.String.Concat("guid='", guid, "'");
-			if ( this.inbox_view.Count==1 && this.inbox_view[0][col].Equals(!val) ) {
+			if ( this.inbox_view.Count==1 && !this.inbox_view[0][col].Equals(val) ) {
 				this.inbox_view[0][col] = val;
 				return true;
 			} else {
@@ -294,8 +295,6 @@ namespace anmar.SharpWebMail
 				msg[12] = header.MessageID;
 				msg[13] = header;
 				msg[14] = anmar.SharpMimeTools.SharpMimeTools.parseDate ( date );
-				msg[15] = false;
-				msg[16] = false;
 				if ( msg[6]!=null ) {
 					foreach ( anmar.SharpMimeTools.SharpMimeAddress item in ((System.Collections.IEnumerable)msg[6]) ) {
 						msg[5] = item["name"];
@@ -326,6 +325,7 @@ namespace anmar.SharpWebMail
 			tmpRow[15] = false;
 			tmpRow[16] = false;
 			tmpRow[17] = System.Guid.NewGuid().ToString();
+			tmpRow[18] = this.current_folder;
 			inbox.Rows.Add (tmpRow);
 			this.mcount++;
 			this.msize += size;
@@ -350,9 +350,9 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
-		public System.Data.DataTable getInbox {
+		public System.Data.DataView Inbox {
 			get {
-				return this.inbox;
+				return this.inbox_view;
 			}
 		}
 		/// <summary>
@@ -363,10 +363,18 @@ namespace anmar.SharpWebMail
 				return this.inbox.Rows.Count;
 			}
 		}
+		public System.String CurrentFolder {
+			get {
+				return this.current_folder;
+			}
+			set {
+				this.current_folder = value;
+			}
+		}
 		/// <summary>
 		/// 
 		/// </summary>
-		public System.Int32 messageCount {
+		public System.Int32 MessageCount {
 			get {
 				return this.mcount;
 			}
@@ -377,7 +385,7 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
-		public System.Int32 messageSize {
+		public System.Int32 MessageSize {
 			get {
 				return this.msize;
 			}
@@ -388,7 +396,7 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
-		public System.String sortExpression {
+		public System.String SortExpression {
 			get {
 				return this.sort;
 			}

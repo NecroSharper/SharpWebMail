@@ -55,32 +55,36 @@ namespace anmar.SharpWebMail.UI
 		protected void bindInbox () {
 			anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
 
+			if ( !this.refresh && ((int)Application["sharpwebmail/read/inbox/stat"])==1 )
+				this.refresh = true;
+
 			System.String pattern;
 			if ( this.searchPattern ( out pattern ) ) {
 				if ( client!=null )
-					client.getInboxIndex ( this.SharpUI.Inbox, 0, this.SharpUI.Inbox.Count , false );
+					client.GetFolderIndex(this.SharpUI.Inbox, 0, this.SharpUI.Inbox.Count, this.refresh);
 			} else {
 				// Ask for new messages if necessary
-				if ( client!=null ) 
-					client.getInboxIndex ( this.SharpUI.Inbox, this.InboxDataGrid.CurrentPageIndex, (int) Application["sharpwebmail/read/inbox/pagesize"], this.refresh );
+				if ( client!=null )
+					client.GetFolderIndex(this.SharpUI.Inbox, this.InboxDataGrid.CurrentPageIndex, (int)Application["sharpwebmail/read/inbox/pagesize"], this.refresh);
 				// Update message count
 				if ( this.refresh )
 					this.SharpUI.setVariableLabels();
 			}
 			this.buildDataGrid ();
-			System.Data.DataView tmpV = new System.Data.DataView ( this.SharpUI.Inbox.getInbox );
-			this.sort = this.SharpUI.Inbox.sortExpression;
+			System.Data.DataView tmpV = this.SharpUI.Inbox.Inbox;
+			this.sort = this.SharpUI.Inbox.SortExpression;
 			if ( this.sort==null || this.sort.Length==0 ) {
 				this.sort = "msgnum DESC";
 			}
 			tmpV.RowFilter = pattern;
 			tmpV.Sort = this.sort;
 			this.InboxDataGrid.DataSource = tmpV;
+			if ( (this.InboxDataGrid.CurrentPageIndex+1)*this.InboxDataGrid.PageSize>tmpV.Count )
+				this.InboxDataGrid.CurrentPageIndex = (tmpV.Count-1)/this.InboxDataGrid.PageSize;
 			this.InboxDataGrid.DataBind();
 
 			this.mainInterface ( );
 
-			Session["client"] = client;
 			client = null;
 		}
 		/// <summary>
@@ -139,10 +143,14 @@ namespace anmar.SharpWebMail.UI
 		protected bool searchPattern ( out System.String pattern ) {
 			bool forcecache = false;
 			System.String mode = Page.Request.QueryString["mode"];
-			if ( mode!=null && mode.Equals("trash") )
+			if ( mode==null )
+				mode = "inbox";
+			if ( mode.Equals("trash") )
 				pattern = "delete=true";
 			else
-				pattern = "delete=false";
+				pattern = System.String.Concat("delete=false AND folder='", mode + "'");
+			this.SharpUI.Inbox.CurrentFolder = mode;
+
 			if ( this.resetsearch == false ) {
 				if ( this.IsPostBack ) {
 					foreach ( System.String param in Request.Form ) {
@@ -258,33 +266,17 @@ namespace anmar.SharpWebMail.UI
 		/// </summary>
 		protected void InboxDataGrid_Sort ( System.Object sender, System.Web.UI.WebControls.DataGridSortCommandEventArgs args ) {
 			this.sort = args.SortExpression.ToString();
-			anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
 			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-			if ( inbox.sortExpression != this.sort ) {
-				inbox.sortExpression = this.sort;
-				if ( client.getInboxIndex ( inbox, 0, (int) Application["sharpwebmail/read/inbox/pagesize"], false ) ) {
-					Session["client"] = client;
-					Session["inbox"] = inbox;
-					this.InboxDataGrid.CurrentPageIndex = 0;
-				}
+			if ( !inbox.SortExpression.Equals(this.sort) ) {
+				inbox.SortExpression = this.sort;
+				this.InboxDataGrid.CurrentPageIndex = 0;
 			}
 			inbox = null;
-			client = null;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		protected void InboxDataGrid_PageIndexChanged ( System.Object sender, System.Web.UI.WebControls.DataGridPageChangedEventArgs args ) {
-			if ( this.InboxDataGrid.CurrentPageIndex < args.NewPageIndex ) {
-				anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
-				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-				if ( client.getInboxIndex ( inbox, args.NewPageIndex, (int) Application["sharpwebmail/read/inbox/pagesize"], false ) ) {
-					Session["inbox"] = inbox;
-					Session["client"] = client;
-				}
-				inbox = null;
-				client = null;
-			}
 			this.InboxDataGrid.CurrentPageIndex = args.NewPageIndex;
 		}
 		/// <summary>

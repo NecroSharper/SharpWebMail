@@ -25,9 +25,9 @@ using System;
 namespace anmar.SharpWebMail
 {
 	public interface IEmailClient {
-		bool getInboxIndex ( anmar.SharpWebMail.CTNInbox inbox, int npage, int npagesize, bool askserver );
-		bool purgeInbox ( anmar.SharpWebMail.CTNInbox inbox, bool all );
-		bool getMessage ( System.IO.MemoryStream Message, int mindex, System.String uidl );
+		bool GetFolderIndex ( anmar.SharpWebMail.CTNInbox inbox, int npage, int npagesize, bool askserver );
+		bool PurgeInbox ( anmar.SharpWebMail.CTNInbox inbox, bool all );
+		bool GetMessage ( System.IO.MemoryStream Message, int mindex, System.String uidl );
 		System.String UserName { get;}
 		System.String Password { get;}
 	}

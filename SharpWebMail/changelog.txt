@@ -1,3 +1,22 @@
+01/06/2005
+ - Version number set to 0.11
+ - [New Message] Some servers renumber message index numbers when there are new deliveries, so
+   is this happens the previously cached messages can't be found in the servers. Now if a server
+   does not find the message, we re-scan the inbox so the cached messages are relocated to their new
+   position and can be retrieved.
+ - [Inbox] Bugfix: With servers that behave as described above, the page navigation did not cope well
+   with the situation.
+ - [Trash] Bugfix: With servers that behave as described above, we can end up deleting the incorrect message.
+   Then we look for position changes before doing the deletion.
+ - [Inbox] Bugfix: There were problems when all the messages of the last page were deleted.
+ - [Inbox] Removed old and redundant code in sorter and pager.
+ - [Inbox] Minor performance tweaks.
+ - [Inbox] Rename some properties.
+ - [Inbox] Initial support for multi-folder inbox.
+ - Adjust Makefile paths.
+ - [Inbox] Implemented stat option. It gives control on the frequency of connections to email server to
+   refresh the list of available messages.
+
 01/02/2005
  - Update copyright notice.
  - [Project] Add build targets for 2.0.

@@ -83,7 +83,7 @@ namespace anmar.SharpWebMail.UI
 				anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
 				// Delete messages marked for deletion
 				if ( client!=null ) {
-					client.purgeInbox ( this.inbox, false );
+					client.PurgeInbox ( this.inbox, false );
 					client = null;
 					Session.Remove ("client");
 				}
@@ -137,9 +137,9 @@ namespace anmar.SharpWebMail.UI
 				this.inboxLinkButton.Text= this.inboxLinkButton.Text.Remove(this.inboxLinkButton.Text.LastIndexOf(" ("), this.inboxLinkButton.Text.Length-this.inboxLinkButton.Text.LastIndexOf(" ("));
 			if ( this.trashLinkButton.Text.EndsWith(")") ) 
 				this.trashLinkButton.Text= this.trashLinkButton.Text.Remove(this.trashLinkButton.Text.LastIndexOf(" ("), this.trashLinkButton.Text.Length-this.trashLinkButton.Text.LastIndexOf(" ("));
-			this.inboxLinkButton.Text =  System.String.Format ("{0} ({1})", this.inboxLinkButton.Text, this.inbox.messageCount );
-			this.messageCountLabel.Text = System.String.Format ("{0} {1} {2} bytes", this.inbox.messageCount, this.resources.GetString("messages"), this.inbox.messageSize);
-			this.trashLinkButton.Text = System.String.Format ("{0} ({1})", this.trashLinkButton.Text, this.inbox.Count - this.inbox.messageCount );
+			this.inboxLinkButton.Text =  System.String.Format ("{0} ({1})", this.inboxLinkButton.Text, this.inbox.MessageCount );
+			this.messageCountLabel.Text = System.String.Format ("{0} {1} {2} bytes", this.inbox.MessageCount, this.resources.GetString("messages"), this.inbox.MessageSize);
+			this.trashLinkButton.Text = System.String.Format ("{0} ({1})", this.trashLinkButton.Text, this.inbox.Count - this.inbox.MessageCount );
 		}
 		/*
 		 * Events

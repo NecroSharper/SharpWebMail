@@ -81,7 +81,11 @@ namespace anmar.SharpWebMail.UI
 					anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/read/servers"];
 					anmar.SharpWebMail.IEmailClient client = anmar.SharpWebMail.EmailClientFactory.CreateEmailClient(selector.Select(this.username.Value), this.username.Value, password.Value );
 					anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-					if ( client!=null && client.getInboxIndex ( inbox, 0, (int)Application["sharpwebmail/read/inbox/pagesize"], true ) ) {
+					System.String folder = Page.Request.QueryString["mode"];
+					if ( folder==null )
+						folder = "inbox";
+					inbox.CurrentFolder = folder;
+					if ( client!=null && client.GetFolderIndex ( inbox, 0, (int)Application["sharpwebmail/read/inbox/pagesize"], true ) ) {
 						System.Web.Security.FormsAuthentication.RedirectFromLoginPage(this.username.Value, false);
 						Session["client"] = client;
 						Session["inbox"] = inbox;

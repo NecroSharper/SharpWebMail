@@ -151,9 +151,9 @@ namespace anmar.SharpWebMail
 		/// </summary>
 		/// <param name="result"></param>
 		/// <returns></returns>
-		protected virtual bool deletemessages ( System.Data.DataRow[] result ) {
+		protected virtual bool deletemessages ( System.Data.DataView result ) {
 			bool error = false;
-			foreach ( System.Data.DataRow msg in result )
+			foreach ( System.Data.DataRowView msg in result )
 				error = (error)?error:!this.delete ( (int)msg[1] );
 			return !error;
 		}
@@ -186,7 +186,7 @@ namespace anmar.SharpWebMail
 		/// <param name="npagesize"></param>
 		/// <param name="askserver"></param>
 		/// <returns></returns>
-		public virtual bool getInboxIndex ( anmar.SharpWebMail.CTNInbox inbox, int npage, int npagesize, bool askserver ) {
+		public virtual bool GetFolderIndex ( anmar.SharpWebMail.CTNInbox inbox, int npage, int npagesize, bool askserver ) {
 			bool error = false;
 			int total = 0;
 			int totalbytes = 0;
@@ -201,7 +201,7 @@ namespace anmar.SharpWebMail
 				error = !this.connect();
 				error = (error)?error:!this.login ( this.username, this.password );
 				error = (error)?error:!this.status ( ref total, ref totalbytes );
-				
+
 				error = (error)?error:!this.getListToIndex ( list, total, inbox, npage, npagesize );
 
 				if ( !error && total>0 && list.Count>0 ) {
@@ -225,26 +225,22 @@ namespace anmar.SharpWebMail
 		private bool getListToIndex ( System.Collections.Hashtable msgs, int total, anmar.SharpWebMail.CTNInbox inbox, int npage, int npagesize ) {
 			bool error = false;
 
-			if ( total>0 ){
-				System.Int32[] list = new System.Int32[total];
-				System.String[] uidlist = new System.String[total];
-
+			System.Int32[] list = new System.Int32[total];
+			System.String[] uidlist = new System.String[total];
+			if ( total>0 ) {
 				// Get uid list
 				error = (error)?error:!this.uidl ( uidlist, 0);
 				//Get messages list
 				error = (error)?error:!this.list ( list );
-
-				// Prepare message table with new messages
-				error = (error)?error:!inbox.buildMessageTable ( list, uidlist );
-
-				list = null;
-				uidlist =  null;
-
-				//Determine what messages we have to index
-				error = (error)?error:!inbox.buildMessageList ( msgs, npage, npagesize );
-			} else {
-				inbox = new anmar.SharpWebMail.CTNInbox ();
 			}
+			// Prepare message table with new messages
+			error = (error)?error:!inbox.buildMessageTable ( list, uidlist );
+
+			list = null;
+			uidlist =  null;
+
+			//Determine what messages we have to index
+			error = (error)?error:!inbox.buildMessageList ( msgs, npage, npagesize );
 
 			return !error;
 		}
@@ -255,7 +251,7 @@ namespace anmar.SharpWebMail
 		/// <param name="mindex"></param>
 		/// <param name="uidl"></param>
 		/// <returns></returns>
-		public bool getMessage ( System.IO.MemoryStream message, int mindex, System.String uid ) {
+		public bool GetMessage ( System.IO.MemoryStream message, int mindex, System.String uid ) {
 			bool error = false;
 
 			error = !this.connect();
@@ -384,20 +380,26 @@ namespace anmar.SharpWebMail
 		/// <param name="inbox"></param>
 		/// <param name="all"></param>
 		/// <returns></returns>
-		public bool purgeInbox ( anmar.SharpWebMail.CTNInbox inbox, bool all ) {
+		public bool PurgeInbox ( anmar.SharpWebMail.CTNInbox inbox, bool all ) {
 			bool error = false;
 			System.String filter;
 			if ( all )
-				filter = "";
+				filter = System.String.Empty;
 			else
 				filter = "delete=true";
-			System.Data.DataRow[] result = inbox.getInbox.Select(filter);
-			if ( result.GetLength(0)>0 ) {
+			System.Data.DataView result = inbox.Inbox;
+			result.RowFilter = filter;
+			if ( result.Count>0 ) {
+				int total = 0, totalbytes = 0;
 				error = !this.connect();
-				error = (error)?true:!this.login ( this.username, this.password );
-				error = (error)?true:!this.deletemessages(result);
+				error = (error)?error:!this.login ( this.username, this.password );
+				error = (error)?error:!this.status ( ref total, ref totalbytes );
+				error = (error)?error:!this.getListToIndex ( null, total, inbox, 0, 0 );
+				result.RowFilter = filter;
+				error = (error)?error:!this.deletemessages(result);
 				this.quit();
 			}
+			result.RowFilter = System.String.Empty;
 			return !error;
 		}
 		/// <summary>
