@@ -1,13 +1,13 @@
   SharpWebMail - ASP.NET Web Mail application written in C#
-    v0.8b     - http://anmar.eu.org/projects/sharpwebmail/
+    v0.9b     - http://anmar.eu.org/projects/sharpwebmail/
 
 Introduction
 --------------------------------
 SharpWebMail is an ASP.NET Web Mail application that is written in C#.
 It uses a POP3 or IMAP servers as the mailstore and sends mail through a SMTP server.
 It is very simple to configure (Only a few settings in the web.config file).
-You can compose HTML messages, search your inbox, read complex mime messages
-and much more.
+You can compose HTML messages, search your inbox, read complex mime messages, have
+multiple address books and much more.
 
 Features
 --------------------------------
@@ -29,6 +29,8 @@ Download and send multiple attachments per message
 It is possible to attach a file that we have received in other message without downloading it 
 
 Reads MIME messages
+
+Multiple Address books based on fully configurable datasources (ldap, oledb, odbc, ...)
 
 Is possible to sort the inbox elements by number, sender, subject, date and size
 
@@ -86,6 +88,7 @@ Licence
 History
 --------------------------------
 
+11/06/2004 - version 0.9b   - Released milestone 0.9
 10/16/2004 - version 0.8b   - Released milestone 0.8
 09/13/2004 - version 0.7b   - Released milestone 0.7
 08/17/2004 - version 0.6b   - Released milestone 0.6

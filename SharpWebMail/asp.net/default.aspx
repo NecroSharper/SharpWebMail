@@ -64,7 +64,7 @@
 							/>
 					</HeaderTemplate>
 					<ItemTemplate>
-						<asp:HyperLink id="inboxItemFromLink" Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)["FromName"].ToString()) %>' NavigateUrl='<%# System.String.Format("newmessage.aspx?msgid={0}", DataBinder.Eval(Container.DataItem, "guid", "{0:N}")) %>' Target="_self" runat="server" />
+						<asp:HyperLink id="inboxItemFromLink" Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)["FromName"].ToString()) %>' NavigateUrl='<%# System.String.Concat("newmessage.aspx?msgid=", ((System.Data.DataRowView)Container.DataItem)["guid"]) %>' Target="_self" runat="server" />
 					</ItemTemplate>
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
@@ -80,7 +80,7 @@
 							/>
 					</HeaderTemplate>
 					<ItemTemplate>
-						<asp:HyperLink id="inboxItemSubjectLink" Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)["Subject"].ToString()) %>' NavigateUrl='<%# System.String.Format("readmessage.aspx?msgid={0}", DataBinder.Eval(Container.DataItem, "guid", "{0:N}")) %>' Target="_self" runat="server" />
+						<asp:HyperLink id="inboxItemSubjectLink" Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)["Subject"].ToString()) %>' NavigateUrl='<%# System.String.Concat("readmessage.aspx?msgid=", ((System.Data.DataRowView)Container.DataItem)["guid"]) %>' Target="_self" runat="server" />
 					</ItemTemplate>
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
@@ -123,7 +123,7 @@
                                          ImageUrl="images/msgtoolbar_delete.gif"/>
 					</HeaderTemplate>
 					<ItemTemplate>
-						<input type="checkbox" title='<%# InboxDataGrid.Columns[5].HeaderText %>' OnServerChange="InboxDataGrid_DeleteCheckBox" ID="delete" runat="server" value='<%#DataBinder.Eval(Container.DataItem, "guid", "{0:N}")%>' />
+						<input type="checkbox" title='<%# InboxDataGrid.Columns[5].HeaderText %>' OnServerChange="InboxDataGrid_DeleteCheckBox" ID="delete" runat="server" value='<%#((System.Data.DataRowView)Container.DataItem)["guid"]%>' />
 					</ItemTemplate>
 				</asp:TemplateColumn>
 			</Columns>
