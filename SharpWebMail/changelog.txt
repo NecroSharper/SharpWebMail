@@ -1,5 +1,14 @@
 10/25/2004
  - Bugfix: LDAP search was not being performed due to a try-catch wrongly added.
+ - Written a configuration handler, so it's now possible to write more flexible sections.
+   The config file is incompatible with previous ones. (the only needed change is replacing
+   the "configSections" section by the new one, the real config is the same).
+ - Now it is possible to configure multiple Address Books.
+ - If one of the Address Books has configured a special query (SearchStringRealName), the
+   real name of the user will be looked up executing that query. The UserName as authenticated
+   by the mail server, is replaced in that query.
+ - In the query for getting the address book content, the UserName as authenticated by the mail
+   server, is replaced in the query.
 
 10/24/2004
  - The culture names in login page are now sorted.

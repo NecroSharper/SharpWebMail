@@ -100,29 +100,28 @@ namespace anmar.SharpWebMail.UI
 			this.configOptions.Add ( "sharpwebmail/read/message/temppath", "" );
 			this.configOptions.Add ( "sharpwebmail/send/message/sanitizer_mode", 0 );
 			this.configOptions.Add ( "sharpwebmail/send/message/temppath", "" );
-			this.configOptions.Add ( "sharpwebmail/send/addressbook/type", "none" );
-			this.configOptions.Add ( "sharpwebmail/send/addressbook/pagesize", 10 );
 
 			Application["product"] = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 			Application["version"] = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
 			resources = new System.Resources.ResourceManager("SharpWebMail", System.Reflection.Assembly.GetExecutingAssembly());
 			Application["resources"] = resources;
-
-			initConfigSection("sharpwebmail/general");
-			initConfigSection("sharpwebmail/login");
-			initConfigSection("sharpwebmail/read/inbox");
-			initConfigSection("sharpwebmail/read/message");
-			initConfigSection("sharpwebmail/send/message");
-			initConfigSection("sharpwebmail/send/addressbook");
+			System.Collections.Specialized.ListDictionary config = (System.Collections.Specialized.ListDictionary)System.Configuration.ConfigurationSettings.GetConfig("sharpwebmail");
+			initConfigSection("sharpwebmail/general", config);
+			initConfigSection("sharpwebmail/login", config);
+			initConfigSection("sharpwebmail/read/inbox", config);
+			initConfigSection("sharpwebmail/read/message", config);
+			initConfigSection("sharpwebmail/send/message", config);
+			if ( config.Contains("sharpwebmail/send/addressbook") )
+			    Application.Add ("sharpwebmail/send/addressbook", config["sharpwebmail/send/addressbook"]);
 
 			// Set defaults for unset config options
 			foreach ( System.String item in this.configOptions.Keys ) {
 				if ( Application[item]==null )
 					Application[item]=this.configOptions[item];
 			}
-			parseConfigServers ("sharpwebmail/read/servers");
-			parseConfigServers ("sharpwebmail/send/servers");
+			parseConfigServers ("sharpwebmail/read/servers", config);
+			parseConfigServers ("sharpwebmail/send/servers", config);
 
 			TestAvailableCultures();
 			Application["AvailableCultures"] = new System.Collections.SortedList(availablecultures);
@@ -131,8 +130,10 @@ namespace anmar.SharpWebMail.UI
 			Application["sharpwebmail/read/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/read/message/temppath"]);
 			Application["sharpwebmail/send/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/send/message/temppath"]);
 		}
-		private void initConfigSection ( System.String section ) {
-			System.Collections.Hashtable config = (System.Collections.Hashtable)System.Configuration.ConfigurationSettings.GetConfig(section);
+		private void initConfigSection ( System.String section, System.Collections.Specialized.ListDictionary globalconfig ) {
+			System.Collections.Hashtable config = null;
+			if ( globalconfig.Contains(section) )
+				config = (System.Collections.Hashtable)globalconfig[section];
 			if ( config!=null ) {
 				foreach ( System.String item in config.Keys ) {
 					System.String config_item = System.String.Format("{0}/{1}", section, item);
@@ -167,8 +168,10 @@ namespace anmar.SharpWebMail.UI
 				return defaultvalue;
 			}
 		}
-		private void parseConfigServers ( System.String config_item ) {
-			System.Collections.Specialized.NameValueCollection config = (System.Collections.Specialized.NameValueCollection)System.Configuration.ConfigurationSettings.GetConfig(config_item);
+		private void parseConfigServers ( System.String config_item, System.Collections.Specialized.ListDictionary globalconfig ) {
+			System.Collections.Specialized.NameValueCollection config = null;
+			if ( globalconfig.Contains(config_item) )
+				config = (System.Collections.Specialized.NameValueCollection)globalconfig[config_item];
 			anmar.SharpWebMail.ServerSelector selector = new anmar.SharpWebMail.ServerSelector();
 			if ( config!=null ) {
 				foreach ( System.String item in config.Keys ) {
