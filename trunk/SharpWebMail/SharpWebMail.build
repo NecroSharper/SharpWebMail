@@ -63,8 +63,9 @@
 		<csc target="library" define="${build.defines}" warnaserror="false" debug="${build.debug}" output="${build.dir}/${project.name}.dll">
 			<sources failonempty="true" refid="build.files.source" />
 			<references>
-				<include name="${build.ref}/log4net.dll" />
 				<include name="${build.ref}/FredCK.FCKeditorV2.dll" />
+				<include name="${build.ref}/log4net.dll" />
+				<include name="${build.ref}/OpenSmtp.dll" />
 				<include name="${build.ref}/SharpMimeTools.dll" />
 				<include name="System.Data.dll" />
 				<include name="System.Directoryservices.dll" />

@@ -128,6 +128,10 @@ namespace anmar.SharpWebMail
 		/// </summary>
 		Smtp,
 		/// <summary>
+		/// SMTP combined with SMTP AUTH
+		/// </summary>
+		SmtpAuth,
+		/// <summary>
 		/// Unknown protocol
 		/// </summary>
 		Unknown

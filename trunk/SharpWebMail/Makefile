@@ -45,7 +45,7 @@ SOURCES_SWM = $(BASE_SWM)/controls/src/UI/*.cs \
 REFERENCES_SMT= System.Web $(BASE_REF)/log4net
 REFS_SMT= $(addsuffix .dll, $(addprefix /r:, $(REFERENCES_SMT)))
 
-REFERENCES_SWM= System.Web System.Data System.DirectoryServices $(BASE_REF)/log4net  $(BASE_REF)/FredCK.FCKeditorV2 $(BIN_SMT)/SharpMimeTools
+REFERENCES_SWM= System.Web System.Data System.DirectoryServices $(BASE_REF)/log4net  $(BASE_REF)/FredCK.FCKeditorV2 $(BIN_SMT)/SharpMimeTools $(BASE_REF)/OpenSmtp
 REFS_SWM= $(addsuffix .dll, $(addprefix /r:, $(REFERENCES_SWM)))  
 
 all: SharpMimeTools SharpWebMail
@@ -88,7 +88,7 @@ lang:
 		mkdir $(ASP_NET)/bin/; \
 	fi; \
 	for lang in `ls -1 $(RESOURCES)/*.resources|sed -e 's/.*SharpWebMail\.//' -e 's/\..*//'` ; do \
-		if [ "$$lang" != "resources" -a "$$lang" != "sr-SP-Latn" ]; then \
+		if [ "$$lang" != "resources" -a "$$lang" != "sr-SP-Latn" -a "$$lang" != "zh-CHT" ]; then \
 			if [ ! -d $(ASP_NET)/bin/$$lang/ ]; then \
 				mkdir $(ASP_NET)/bin/$$lang/; \
 			fi; \

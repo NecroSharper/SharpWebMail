@@ -6,5 +6,3 @@
  - Support for more languages
  - Make everything configurable
  - POP before SMTP
- - SMTP AUTH
- - Evaluate using openSmtp instead of System.Web.Mail for sending mails (it's more flexible)

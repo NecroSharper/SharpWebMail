@@ -12,14 +12,14 @@ function add_rcpt (email) {
 	var dest = window.opener.document.sharpwebmailform.elements['SharpUI:toemail'];
 	if ( dest!=null ) {
 		dest.value = dest.value.replace(/(?:^\s+|\s+$|;$)/, '');
-		var current = dest.value.split(';');
+		var current = dest.value.split(',');
 		for ( var i=0; current!=null&&i<current.length; i++ ) {
 			current[i] = current[i].replace(/(?:^\s+|\s+$)/, '');
 			if ( current[i]==email )
 				return;
 		}
 		if ( dest.value.length>0 )
-			dest.value += '; ';
+			dest.value += ', ';
 		dest.value += email;
 	}
 }

@@ -133,16 +133,16 @@ namespace anmar.SharpWebMail.UI
 			if ( log.IsDebugEnabled ) log.Debug ("Path: " + path );
 			return path;
 		}
-		private System.String getFrom () {
+		private System.String GetFromAddress () {
 			System.String from = null;
 			switch ( (int)Application["sharpwebmail/login/mode"] ) {
 				case 2:
-					from = System.String.Format("{0} <{1}>", this.fromname.Value.Trim(), this.fromemail.Value.Trim());
+					from = this.fromemail.Value.Trim();
 					break;
 				case 1:
 				case 3:
 				default:
-					from = System.String.Format("{0} <{1}>", this.fromname.Value.Trim(), User.Identity.Name);
+					from = User.Identity.Name;
 					break;
 			}
 			return from;
@@ -210,7 +210,7 @@ namespace anmar.SharpWebMail.UI
 						foreach ( anmar.SharpMimeTools.SharpMimeAddress address in (System.Collections.IEnumerable) details[9] ) {
 							if ( address["address"]!=null && !address["address"].Equals( User.Identity.Name ) ) {
 								if ( this.toemail.Value.Length >0 )
-									this.toemail.Value += "; ";
+									this.toemail.Value += ", ";
 								this.toemail.Value += address["address"];
 							}
 						}
@@ -225,46 +225,7 @@ namespace anmar.SharpWebMail.UI
 			if ( this.fromemail.Value.Length>0 || this.IsPostBack )
 				Session["DisplayEmail"] = this.fromemail.Value;
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		private bool sendMail ( out System.String message ) {
-			bool error = false;
-			message = null;
-			anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/send/servers"];
-			anmar.SharpWebMail.EmailServerInfo server = selector.Select(User.Identity.Name);
-			if ( server==null || !server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.Smtp ) ) {
-				error = true;
-				return !error;
-			}
-			System.Web.Mail.SmtpMail.SmtpServer = server.Host;
-
-			System.Web.Mail.MailMessage mailMessage = new System.Web.Mail.MailMessage();
-			mailMessage.To = this.toemail.Value;
-			mailMessage.From = this.getFrom();
-			mailMessage.Subject = this.subject.Value.Trim();
-			System.String format = Request.Form["format"];
-			if ( format!=null && format.Equals("html") ) {
-				mailMessage.BodyFormat = System.Web.Mail.MailFormat.Html;
-				mailMessage.Body = bodyStart + FCKEditor.Value + bodyEnd;
-			} else {
-				mailMessage.BodyFormat = System.Web.Mail.MailFormat.Text;
-				mailMessage.Body = FCKEditor.Value;
-			}
-
-			if ( this._headers != null ) {
-				// RFC 2822 3.6.4. Identification fields
-				if ( this._headers["Message-ID"]!=null ) {
-					mailMessage.Headers["In-Reply-To"] = this._headers["Message-ID"];
-					mailMessage.Headers["References"] = this._headers["Message-ID"];
-				}
-				if ( this._headers["References"]!=null ) {
-					mailMessage.Headers["References"] = System.String.Format ("{0} {1}", this._headers["References"], mailMessage.Headers["References"]).Trim();
-				} else if ( this._headers["In-Reply-To"]!=null && this._headers["In-Reply-To"].IndexOf('>')==this._headers["In-Reply-To"].LastIndexOf('>') ) {
-					mailMessage.Headers["References"] = System.String.Format ("{0} {1}", this._headers["In-Reply-To"], mailMessage.Headers["References"]).Trim();
-				}
-			}
-			mailMessage.Headers["X-Mailer"] = System.String.Format ("{0} {1}", Application["product"], Application["version"]);
+		private void ProcessMessageAttachments (System.Object message) {
 			// Attachments
 			if ( this.newMessageWindowAttachmentsAddedList.Items.Count>0 ) {
 				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
@@ -285,19 +246,56 @@ namespace anmar.SharpWebMail.UI
 							if ( attachment==null )
 								attachment = this.getfilename (Session["sharpwebmail/read/message/temppath"], Value, item.Text.Substring(0, item.Text.LastIndexOf(" (")));
 							if ( attachment!=null ) {
-								mailMessage.Attachments.Add(new System.Web.Mail.MailAttachment(attachment));
+								if ( message is System.Web.Mail.MailMessage )
+									((System.Web.Mail.MailMessage)message).Attachments.Add(new System.Web.Mail.MailAttachment(attachment));
+								else if ( message is OpenSmtp.Mail.MailMessage )
+									((OpenSmtp.Mail.MailMessage)message).AddAttachment(attachment);
 								if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("Attached {0}", attachment) );
 							}
 						}
 					}
 				}
 			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		private System.String SendMail ( anmar.SharpWebMail.EmailServerInfo server ) {
+			System.String message = null;
+			System.Web.Mail.SmtpMail.SmtpServer = server.Host;
+
+			System.Web.Mail.MailMessage mailMessage = new System.Web.Mail.MailMessage();
+			mailMessage.To = this.toemail.Value;
+			mailMessage.From = System.String.Format("{0} <{1}>", this.fromname.Value, this.GetFromAddress());
+			mailMessage.Subject = this.subject.Value.Trim();
+			System.String format = Request.Form["format"];
+			if ( format!=null && format.Equals("html") ) {
+				mailMessage.BodyFormat = System.Web.Mail.MailFormat.Html;
+				mailMessage.Body = bodyStart + FCKEditor.Value + bodyEnd;
+			} else {
+				mailMessage.BodyFormat = System.Web.Mail.MailFormat.Text;
+				mailMessage.Body = FCKEditor.Value;
+			}
+
+			if ( this._headers != null ) {
+				// RFC 2822 3.6.4. Identification fields
+				if ( this._headers["Message-ID"]!=null ) {
+					mailMessage.Headers["In-Reply-To"] = this._headers["Message-ID"];
+					mailMessage.Headers["References"] = this._headers["Message-ID"];
+				}
+				if ( this._headers["References"]!=null ) {
+					mailMessage.Headers["References"] = System.String.Concat (this._headers["References"], " ", mailMessage.Headers["References"]).Trim();
+				} else if ( this._headers["In-Reply-To"]!=null && this._headers["In-Reply-To"].IndexOf('>')==this._headers["In-Reply-To"].LastIndexOf('>') ) {
+					mailMessage.Headers["References"] = System.String.Concat (this._headers["In-Reply-To"], " ", mailMessage.Headers["References"]).Trim();
+				}
+			}
+			mailMessage.Headers["X-Mailer"] = System.String.Format ("{0} {1}", Application["product"], Application["version"]);
+			this.ProcessMessageAttachments(mailMessage);
 			try {
 				if ( log.IsDebugEnabled) log.Error ( "Sending message" );
 				System.Web.Mail.SmtpMail.Send(mailMessage);
 				if ( log.IsDebugEnabled) log.Error ( "Message sent" );
 			} catch (System.Exception e) {
-				error = true;
 				message = e.Message;
 #if DEBUG && !MONO
 				message += ". <br>InnerException: " + e.InnerException.Message;
@@ -306,7 +304,60 @@ namespace anmar.SharpWebMail.UI
 				if ( log.IsErrorEnabled ) log.Error ( "Error sending message (InnerException)", e.InnerException );
 			}
 			mailMessage = null;
-			return !error;
+			return message;
+		}
+		private System.String SendMailOpenSmtp ( anmar.SharpWebMail.EmailServerInfo server ) {
+			System.String message = null;
+			OpenSmtp.Mail.MailMessage mailMessage = new OpenSmtp.Mail.MailMessage();
+			mailMessage.From = new OpenSmtp.Mail.EmailAddress(this.GetFromAddress(), this.fromname.Value);
+			System.Text.RegularExpressions.Regex email = new System.Text.RegularExpressions.Regex(@"(" + anmar.SharpMimeTools.ABNF.address + @")");
+			System.String[] tokens = email.Split(this.toemail.Value);
+			foreach ( System.String token in tokens ) {
+				if ( email.IsMatch(token ) )
+					mailMessage.To.Add (new OpenSmtp.Mail.EmailAddress(token.Trim()));
+			}
+			mailMessage.Subject = this.subject.Value.Trim();
+			System.String format = Request.Form["format"];
+			if ( format!=null && format.Equals("html") ) {
+				mailMessage.HtmlBody = bodyStart + FCKEditor.Value + bodyEnd;
+			} else {
+				mailMessage.Body = FCKEditor.Value;
+			}
+
+			if ( this._headers != null ) {
+				// RFC 2822 3.6.4. Identification fields
+				OpenSmtp.Mail.MailHeader references = new OpenSmtp.Mail.MailHeader("References", System.String.Empty);
+				if ( this._headers["Message-ID"]!=null ) {
+					mailMessage.AddCustomHeader("In-Reply-To", this._headers["Message-ID"]);
+					references.Body = this._headers["Message-ID"];
+				}
+				if ( this._headers["References"]!=null ) {
+					references.Body = System.String.Concat(this._headers["References"], " ", references.Body).Trim();
+				} else if ( this._headers["In-Reply-To"]!=null && this._headers["In-Reply-To"].IndexOf('>')==this._headers["In-Reply-To"].LastIndexOf('>') ) {
+					references.Body = System.String.Concat(this._headers["In-Reply-To"], " ", references.Body).Trim();
+				}
+				if ( !references.Body.Equals(System.String.Empty) )
+					mailMessage.AddCustomHeader(references);
+			}
+			mailMessage.AddCustomHeader("X-Mailer", System.String.Concat (Application["product"], " ", Application["version"]));
+			this.ProcessMessageAttachments(mailMessage);
+			try {
+				if ( log.IsDebugEnabled) log.Error ( "Sending message" );
+				OpenSmtp.Mail.Smtp SmtpMail = null;
+				if ( server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.SmtpAuth) ) {
+					anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
+					SmtpMail = new OpenSmtp.Mail.Smtp(server.Host, client.UserName, client.Password, server.Port);
+				} else
+					SmtpMail = new OpenSmtp.Mail.Smtp(server.Host, server.Port);
+				SmtpMail.SendMail(mailMessage);
+				SmtpMail=null;
+				if ( log.IsDebugEnabled) log.Error ( "Message sent" );
+			} catch (System.Exception e) {
+				message = e.Message;
+				if ( log.IsErrorEnabled ) log.Error ( "Error sending message", e );
+			}
+			mailMessage = null;
+			return message;
 		}
 
 		private void showAttachmentsPanel () {
@@ -336,7 +387,7 @@ namespace anmar.SharpWebMail.UI
 		/// </summary>
 		private void showMessagePanel () {
 			System.Web.UI.WebControls.RegularExpressionValidator rev = (System.Web.UI.WebControls.RegularExpressionValidator) this.SharpUI.FindControl("toemailValidator");
-			rev.ValidationExpression = @"^" + anmar.SharpMimeTools.ABNF.addr_spec + @"(;\s*" + anmar.SharpMimeTools.ABNF.addr_spec + @")*$";
+			rev.ValidationExpression = @"^" + anmar.SharpMimeTools.ABNF.addr_spec + @"(,\s*" + anmar.SharpMimeTools.ABNF.addr_spec + @")*$";
 			this.newMessageFromPH=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("newMessageFromPH");
 
 			if ( !this.IsPostBack ) {
@@ -429,14 +480,23 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		protected void Send_Click ( System.Object sender, System.EventArgs args ) {
-			System.String message;
+			System.String message = null;
 			if ( this.IsValid ) {
 				this.UI_case = 1;
 				if ( (int)Application["sharpwebmail/send/message/sanitizer_mode"]==1 ) {
 					FCKEditor.Value = anmar.SharpWebMail.BasicSanitizer.SanitizeHTML(FCKEditor.Value, anmar.SharpWebMail.SanitizerMode.CommentBlocks|anmar.SharpWebMail.SanitizerMode.RemoveEvents);
 				}
-				if ( this.sendMail( out message ) ) {
-					message = this.SharpUI.LocalizedRS.GetString("newMessageSent");
+				anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/send/servers"];
+				anmar.SharpWebMail.EmailServerInfo server = selector.Select(User.Identity.Name);
+				if ( server!=null && ( server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.Smtp) 
+				                      || server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.SmtpAuth) ) ) {
+					if ( Application["sharpwebmail/send/message/smtp_engine"].Equals("opensmtp") )
+						message = this.SendMailOpenSmtp(server);
+					else
+						message = this.SendMail( server );
+	
+					if ( message==null )
+						message = this.SharpUI.LocalizedRS.GetString("newMessageSent");
 				}
 			} else {
 				message = this.SharpUI.LocalizedRS.GetString("newMessageValidationError");
