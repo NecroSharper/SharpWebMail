@@ -27,6 +27,9 @@ namespace anmar.SharpWebMail.UI
 {
 	public class Global : System.Web.HttpApplication {
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		protected static System.Globalization.CultureInfo invariant = null;
+		protected static System.Collections.ArrayList availablecultures;
+		protected static System.Resources.ResourceManager resources = null;
 		private System.Collections.Hashtable configOptions = new System.Collections.Hashtable();
 
 		public override void Init() {
@@ -51,7 +54,7 @@ namespace anmar.SharpWebMail.UI
 			System.Threading.Thread.CurrentThread.CurrentCulture = this.ParseCultures ( Request.UserLanguages );
 			System.Threading.Thread.CurrentThread.CurrentUICulture = System.Threading.Thread.CurrentThread.CurrentCulture;
 
-			Session["resources"] = ((System.Resources.ResourceManager)Application["resources"]).GetResourceSet(System.Threading.Thread.CurrentThread.CurrentUICulture, true, true);
+			Session["resources"] = resources.GetResourceSet(System.Threading.Thread.CurrentThread.CurrentUICulture, true, true);
 			// Inbox Object
 			Session["inbox"] = new anmar.SharpWebMail.CTNInbox();
 
@@ -68,7 +71,8 @@ namespace anmar.SharpWebMail.UI
 			try {
 				if ( value!=null ) {
 					System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo (value.ToString());
-					dir.Delete(true);
+					if ( dir.Exists )
+						dir.Delete(true);
 					dir=null;
 				}
 			} catch( System.Exception e ) {
@@ -76,8 +80,16 @@ namespace anmar.SharpWebMail.UI
 					log.Error("Error cleanling up dir", e);
 			}
 		}
+		public int getBestEffectiveCulture ( System.Globalization.CultureInfo ci ) {
+			int culture = 127;
+			if ( !availablecultures.Contains(ci.LCID) && !ci.Equals(System.Globalization.CultureInfo.InvariantCulture) )
+				culture = this.getBestEffectiveCulture(ci.Parent);
+			else
+				culture = ci.LCID;
+			return culture;
+		}
 		private void initConfig () {
-			this.configOptions.Add ( "sharpwebmail/general/default_lang", "en-US" );
+			this.configOptions.Add ( "sharpwebmail/general/default_lang", "en" );
 			this.configOptions.Add ( "sharpwebmail/general/title", "" );
 			this.configOptions.Add ( "sharpwebmail/login/append", "" );
 			this.configOptions.Add ( "sharpwebmail/login/mode", 1 );
@@ -92,7 +104,7 @@ namespace anmar.SharpWebMail.UI
 			Application["product"] = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 			Application["version"] = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
-			Application["resources"] = new System.Resources.ResourceManager("SharpWebMail", System.Reflection.Assembly.GetExecutingAssembly());
+			resources = new System.Resources.ResourceManager("SharpWebMail", System.Reflection.Assembly.GetExecutingAssembly());
 
 			initConfigSection("sharpwebmail/general");
 			initConfigSection("sharpwebmail/login");
@@ -107,6 +119,9 @@ namespace anmar.SharpWebMail.UI
 			}
 			parseConfigServers ("sharpwebmail/read/servers");
 			parseConfigServers ("sharpwebmail/send/servers");
+
+			TestAvailableCultures();
+			initInvariantCulture();
 
 			Application["sharpwebmail/read/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/read/message/temppath"]);
 			Application["sharpwebmail/send/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/send/message/temppath"]);
@@ -123,13 +138,20 @@ namespace anmar.SharpWebMail.UI
 		private System.Object initConfigElement ( System.String config_item, System.Object value ) {
 			if ( this.configOptions.ContainsKey(config_item) ) {
 				System.Object defaultvalue = this.configOptions[config_item];
-				if ( defaultvalue.GetType().Equals(typeof(int)) ) {
+				if ( defaultvalue.GetType().Equals(typeof(int)) )
 					return parseConfigElement(value.ToString(), (int)defaultvalue);
-				} else if ( defaultvalue.GetType().Equals(typeof(System.String)) ) {
+				else if ( defaultvalue.GetType().Equals(typeof(System.String)) )
 					return (value==null)?defaultvalue:value;
-				}
 			}
 			return value;
+		}
+		private void initInvariantCulture() {
+			if ( invariant==null )
+				ParseInvariant(Application["sharpwebmail/general/default_lang"].ToString());
+			if ( invariant==null )
+				ParseInvariant("en");
+			if ( invariant==null )
+				ParseInvariant(System.String.Empty);
 		}
 		private System.Object parseConfigElement ( System.String value, System.Int32 defaultvalue ) {
 			try {
@@ -150,7 +172,7 @@ namespace anmar.SharpWebMail.UI
 			}
 			Application.Add(config_item, selector);
 		}
-		private System.Globalization.CultureInfo ParseCulture ( System.String culturename ) {
+		private System.Globalization.CultureInfo ParseCultureSpecific ( System.String culturename ) {
 			if ( culturename.IndexOf(';')>0 )
 				culturename = culturename.Remove(culturename.IndexOf(';'), culturename.Length - culturename.IndexOf(';'));
 			System.Globalization.CultureInfo culture = null;
@@ -158,31 +180,51 @@ namespace anmar.SharpWebMail.UI
 				culture = System.Globalization.CultureInfo.CreateSpecificCulture(culturename);
 			} catch ( System.Exception e ) {
 				if ( log.IsErrorEnabled )
-					log.Error("Error parsing culture", e);
+					log.Error("Error parsing specific culture", e);
 			}
 			return culture;
 		}
 		private System.Globalization.CultureInfo ParseCultures ( System.String[] cultures ) {
 			System.Globalization.CultureInfo culture = null;
-			foreach ( System.String item in cultures ) {
-				culture = this.ParseCulture(item);
-				if ( culture!=null )
-					break;
+			if ( cultures!=null ) {
+				foreach ( System.String item in cultures ) {
+					culture = this.ParseCultureSpecific(item);
+					if ( culture!=null && getBestEffectiveCulture(culture)!=127 )
+						break;
+					else
+						culture = null;
+				}
 			}
 			if ( culture==null )
-				culture = ParseCulture(Application["sharpwebmail/general/default_lang"].ToString());
-			if ( culture==null )
-				culture = ParseCulture("en-US");
-			if ( culture==null )
-				culture = ParseCulture("");
+				culture = invariant;
 			return culture;
+		}
+		private void ParseInvariant ( System.String culture ) {
+			try {
+				invariant = new System.Globalization.CultureInfo(culture);
+			} catch ( System.Exception e ) {
+				if ( log.IsErrorEnabled )
+					log.Error("Error parsing culture", e);
+			}
+			if ( invariant!=null ) {
+				if ( availablecultures.Contains(invariant.LCID) )
+					invariant = ParseCultureSpecific(culture);
+				else
+					invariant = null;
+			}
 		}
 		private System.String parseTempFolder( System.Object prefix, System.Object sufix ) {
 			// Temp folder
-			if ( prefix!=null && sufix!=null && !prefix.Equals("") && !sufix.Equals("") ) {
+			if ( prefix!=null && sufix!=null && !prefix.Equals(System.String.Empty) && !sufix.Equals(System.String.Empty) )
 				return System.IO.Path.Combine (prefix.ToString(), sufix.ToString());
-			} else {
+			else
 				return null;
+		}
+		private void TestAvailableCultures() {
+			availablecultures = new System.Collections.ArrayList();
+			foreach ( System.Globalization.CultureInfo item in System.Globalization.CultureInfo.GetCultures( System.Globalization.CultureTypes.AllCultures) )  {
+				if ( !item.Equals(System.Globalization.CultureInfo.InvariantCulture) && !availablecultures.Contains(item.LCID) && resources.GetResourceSet(item, true, false)!=null )
+					availablecultures.Add(item.LCID);
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-Neutral Cultures .NET Framework 1.1
+Neutral Cultures .NET Framework 1.1 SP1
 
 CULTURE    ENGLISHNAME
 ---------- ---------------------
@@ -55,6 +55,7 @@ sa         Sanskrit
 sk         Slovak
 sl         Slovenian
 sq         Albanian
+sr         Serbian (Latin)
 sv         Swedish
 sw         Swahili
 syr        Syriac
