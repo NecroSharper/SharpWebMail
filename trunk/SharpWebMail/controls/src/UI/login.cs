@@ -58,10 +58,10 @@ namespace anmar.SharpWebMail.UI
 		protected void Login_Click ( System.Object sender, System.EventArgs args ) {
 			// authenticate user
 			if (this.IsPostBack&&this.IsValid) {
-				int login_mode = (int)Application["login_mode"];
-				if ( login_mode==3 && Application["login_mode_append"]!=null ) {
+				int login_mode = (int)Application["sharpwebmail/login/mode"];
+				if ( login_mode==3 && Application["sharpwebmail/login/append"]!=null ) {
 					if ( this.username.Value.IndexOf ("@") == -1 ) {
-						this.username.Value = System.String.Format ( "{0}@{1}", this.username.Value, Application["login_mode_append"]);
+						this.username.Value = System.String.Format ( "{0}@{1}", this.username.Value, Application["sharpwebmail/login/append"]);
 					}
 					this.usernameValidator.ValidationExpression = "^" + anmar.SharpMimeTools.ABNF.addr_spec + "$";
 					this.usernameValidator.Validate();
@@ -70,7 +70,7 @@ namespace anmar.SharpWebMail.UI
 					this.username.Value=this.PrepareLogin(this.username.Value);
 					anmar.SharpWebMail.CTNSimplePOP3Client client = new anmar.SharpWebMail.CTNSimplePOP3Client (Application["mail_server_pop3"].ToString(), (int) Application["mail_server_pop3_port"], this.username.Value, password.Value );
 					anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-					if ( client.getInboxIndex ( inbox, 0, (int) Application["pagesize"], true ) ) {
+					if ( client.getInboxIndex ( inbox, 0, (int) Application["sharpwebmail/read/inbox/pagesize"], true ) ) {
 						System.Web.Security.FormsAuthentication.RedirectFromLoginPage(this.username.Value, false);
 						Session["client"] = client;
 						Session["inbox"] = inbox;
@@ -92,14 +92,14 @@ namespace anmar.SharpWebMail.UI
 				//Localized resources for this session
 				System.Resources.ResourceSet rs = (System.Resources.ResourceSet) Session["resources"];
 				// Set labels localized texts
-				loginWindowTitle.Text = rs.GetString("loginWindowTitle") + ": " + System.Configuration.ConfigurationSettings.AppSettings["system_name"];
-				loginWindowHeadTitle.Text = System.Configuration.ConfigurationSettings.AppSettings["system_name"];
+				loginWindowTitle.Text = rs.GetString("loginWindowTitle") + ": " + Application["sharpwebmail/login/title"].ToString();
+				loginWindowHeadTitle.Text = Application["sharpwebmail/general/title"].ToString();
 	            loginWindowUsername.Text = rs.GetString("loginWindowUsername");
 				loginWindowPassword.Text = rs.GetString("loginWindowPassword");
 				loginButton.Text = rs.GetString("loginButton");
 				errorMsgLogin.Text = rs.GetString("errorMsgLogin");
 
-				switch ( (int)Application["login_mode"] ) {
+				switch ( (int)Application["sharpwebmail/login/mode"] ) {
 					case 2:
 						loginWindowUsername.Text = rs.GetString("loginWindowUsername2");
 						this.usernameValidator.ValidationExpression = ".+";

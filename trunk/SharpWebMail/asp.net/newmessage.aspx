@@ -181,6 +181,7 @@
                             <tr> 
                               <td colspan="3"><img src="images/spacer.gif" width="1" height="5"></td>
                             </tr>
+                            <asp:placeholder id="newattachmentPH" runat="server"> 
                             <tr> 
                               <td></td>
                               <td align="center"><INPUT id="newMessageWindowAttachFile" type="file" size="20" runat="server">
@@ -196,6 +197,7 @@
                             <tr> 
                               <td colspan="3"><img src="images/spacer.gif" width="1" height="5"></td>
                             </tr>
+                             </asp:placeholder>
                             <tr> 
                               <td></td>
                               <td align="center"><asp:button id="newMessageWindowAttachButton" causesvalidation="false" onClick="Attach_Click" runat="server" text="Attach" />

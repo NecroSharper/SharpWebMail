@@ -5,7 +5,7 @@
  - Perhaps an XHTML interface
  - Support for more languages
  - Configure multiple POP3 and SMTP servers and select them based on the domain portion of the username
- - Make everything  configurable
+ - Make everything configurable
  - POP before SMTP
  - SMTP AUTH
  - Evaluate using openSmtp instead of System.Web.Mail for sending mails (it's more flexible)

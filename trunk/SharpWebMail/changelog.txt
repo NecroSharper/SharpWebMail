@@ -1,3 +1,12 @@
+08/04/2004
+ - Added Danish translation. Thanks to Claus Witt.
+
+08/03/2004
+ - Rewritten configuration file. Now it is structured in sections.
+ - Now it is possible to set the temp folder for sending and for
+   reading messages. This allows disabling them independently.
+ - Now the sanitizer can be configured for sending and for reading messages.
+
 07/28/2004
  - Implemented feature 998814 - Added a checkbox column and a delete command to
    the inbox for allowing the deletion of messages without reading them. Messages

@@ -62,7 +62,7 @@ namespace anmar.SharpWebMail.UI
 			} else {
 				// Ask for new messages if necessary
 				if ( client!=null ) 
-					client.getInboxIndex ( this.SharpUI.Inbox, this.InboxDataGrid.CurrentPageIndex, (int) Application["pagesize"], this.refresh );
+					client.getInboxIndex ( this.SharpUI.Inbox, this.InboxDataGrid.CurrentPageIndex, (int) Application["sharpwebmail/read/inbox/pagesize"], this.refresh );
 				// Update message count
 				if ( this.refresh )
 					this.SharpUI.setVariableLabels();
@@ -87,7 +87,7 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		protected void buildDataGrid () {
-			this.InboxDataGrid.PageSize = (int)Application["pagesize"];
+			this.InboxDataGrid.PageSize = (int)Application["sharpwebmail/read/inbox/pagesize"];
 			this.InboxDataGrid.Columns[0].HeaderText = this.SharpUI.LocalizedRS.GetString("inboxHeaderNumber");
 			this.InboxDataGrid.Columns[0].HeaderStyle.Wrap = false;
 			this.InboxDataGrid.Columns[0].ItemStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
@@ -230,7 +230,7 @@ namespace anmar.SharpWebMail.UI
 			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
 			if ( inbox.sortExpression != this.sort ) {
 				inbox.sortExpression = this.sort;
-				if ( client.getInboxIndex ( inbox, 0, (int) Application["pagesize"], false ) ) {
+				if ( client.getInboxIndex ( inbox, 0, (int) Application["sharpwebmail/read/inbox/pagesize"], false ) ) {
 					Session["client"] = client;
 					Session["inbox"] = inbox;
 					this.InboxDataGrid.CurrentPageIndex = 0;
@@ -246,7 +246,7 @@ namespace anmar.SharpWebMail.UI
 			if ( this.InboxDataGrid.CurrentPageIndex < args.NewPageIndex ) {
 				anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
 				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-				if ( client.getInboxIndex ( inbox, args.NewPageIndex, (int) Application["pagesize"], false ) ) {
+				if ( client.getInboxIndex ( inbox, args.NewPageIndex, (int) Application["sharpwebmail/read/inbox/pagesize"], false ) ) {
 					Session["inbox"] = inbox;
 					Session["client"] = client;
 				}

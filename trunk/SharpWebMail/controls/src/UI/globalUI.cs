@@ -68,7 +68,16 @@ namespace anmar.SharpWebMail.UI
 				return this.resources;
 			}
 		}
-
+		private void cleanTempFolder ( System.Object value ) {
+			try {
+				if ( value!=null ) {
+					System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo (value.ToString());
+					dir.Delete(true);
+					dir=null;
+				}
+			} catch( System.Exception ) {
+			}
+		}
 		protected void closeSession () {
 			if ( (IsPostBack)&&(Request.IsAuthenticated == true) ) {
 				anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
@@ -83,13 +92,8 @@ namespace anmar.SharpWebMail.UI
 				Session["inbox"] = this.inbox;
 				this.inbox = null;
 				// Clean up temp files
-				try {
-					if ( Session["temppath"]!=null ) {
-						System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo (Session["temppath"].ToString());
-						dir.Delete(true);
-					}
-				} catch( System.Exception ) {
-				}
+				cleanTempFolder(Session["sharpwebmail/read/message/temppath"]);
+				cleanTempFolder(Session["sharpwebmail/send/message/temppath"]);
 				// Logout
 				System.Web.Security.FormsAuthentication.SignOut();
 				// Go to login page
@@ -99,7 +103,7 @@ namespace anmar.SharpWebMail.UI
 		protected void mainInterface (  ) {
 			// Set general labels localized texts
 			this.setLabels ( this.Controls );
-			this.defaultWindowTitle.Text = System.String.Format ("{0} - {1}", Application["product"], Application["system_name"]);
+			this.defaultWindowTitle.Text = System.String.Format ("{0} - {1}", Application["product"], Application["sharpwebmail/general/title"]);
 			this.setVariableLabels();
 		}
 		protected void setLabels ( System.Web.UI.ControlCollection controls ) {

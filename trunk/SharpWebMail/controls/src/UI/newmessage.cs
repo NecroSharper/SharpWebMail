@@ -60,6 +60,8 @@ namespace anmar.SharpWebMail.UI
 		protected System.Web.UI.WebControls.Panel newMessageFromPanel;
 		protected System.Web.UI.WebControls.Panel newMessagePanel;
 
+		protected System.Web.UI.WebControls.PlaceHolder newattachmentPH;
+
 		//Other form elements
 		protected System.Web.UI.HtmlControls.HtmlInputFile newMessageWindowAttachFile;
 		protected System.Web.UI.WebControls.CheckBoxList newMessageWindowAttachmentsList;
@@ -71,8 +73,17 @@ namespace anmar.SharpWebMail.UI
 
 		protected void bindAttachments () {
 			System.Collections.SortedList attachments = new System.Collections.SortedList();
-			if ( Session["temppath"]!=null ) {
-				System.String path = Session["temppath"].ToString();
+			bindAttachments ( attachments, Session["sharpwebmail/read/message/temppath"] );
+			if ( !Session["sharpwebmail/read/message/temppath"].Equals(Session["sharpwebmail/send/message/temppath"]) )
+				bindAttachments ( attachments, Session["sharpwebmail/send/message/temppath"] );
+			this.newMessageWindowAttachmentsList.DataSource = attachments;
+			this.newMessageWindowAttachmentsList.DataTextField = "Value";
+			this.newMessageWindowAttachmentsList.DataValueField = "Key";
+			this.newMessageWindowAttachmentsList.DataBind();
+		}
+		protected void bindAttachments ( System.Collections.SortedList attachments, System.Object pathname ) {
+			if ( pathname!=null ) {
+				System.String path = pathname.ToString();
 				System.IO.DirectoryInfo basedir = new System.IO.DirectoryInfo(path);
 				if ( basedir.Exists ) {
 					foreach ( System.IO.FileInfo file in basedir.GetFiles() ) {
@@ -86,15 +97,11 @@ namespace anmar.SharpWebMail.UI
 				}
 				basedir = null;
 			}
-			this.newMessageWindowAttachmentsList.DataSource = attachments;
-			this.newMessageWindowAttachmentsList.DataTextField = "Value";
-			this.newMessageWindowAttachmentsList.DataValueField = "Key";
-			this.newMessageWindowAttachmentsList.DataBind();
 		}
-		private System.String getfilename ( params System.String[] parts ) {
+		private System.String getfilename ( System.Object temppath, params System.String[] parts ) {
 			System.String path = null;
-			if ( Session["temppath"]!=null ) {
-				path = Session["temppath"].ToString();
+			if ( temppath!=null ) {
+				path = temppath.ToString();
 				System.IO.DirectoryInfo basedir = new System.IO.DirectoryInfo(path);
 				if ( basedir.Exists ) {
 					foreach ( System.String part in parts ) {
@@ -128,6 +135,7 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		protected void mainInterface ( anmar.SharpWebMail.CTNInbox inbox ) {
+			this.newattachmentPH=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("newattachmentPH");
 			this.attachmentsPanel=(System.Web.UI.WebControls.Panel )this.SharpUI.FindControl("attachmentsPanel");
 			this.confirmationPanel=(System.Web.UI.WebControls.Panel )this.SharpUI.FindControl("confirmationPanel");
 			this.newMessagePanel=(System.Web.UI.WebControls.Panel )this.SharpUI.FindControl("newMessagePanel");
@@ -224,20 +232,25 @@ namespace anmar.SharpWebMail.UI
 			// Attachments
 			if ( this.newMessageWindowAttachmentsAddedList.Items.Count>0 ) {
 				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-				System.String Value;
+				System.String Value="";
 				foreach ( System.Web.UI.WebControls.ListItem item in this.newMessageWindowAttachmentsList.Items ) {
 					if ( item.Selected ) {
 						if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("Attaching {0} {1}", item.Text, item.Value) );
-						if ( item.Value.StartsWith ( Session.SessionID ) ) {
-							mailMessage.Attachments.Add(new System.Web.Mail.MailAttachment(this.getfilename (item.Text.Substring(0, item.Text.LastIndexOf(" (")))));
-							if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("Attached {0}", this.getfilename (item.Text.Substring(0, item.Text.LastIndexOf(" (")))) );
-						} else {
+						if ( !item.Value.StartsWith ( Session.SessionID ) ) {
 							Value = item.Value.Substring ( 0 , item.Value.IndexOf ( System.IO.Path.DirectorySeparatorChar ));
 							System.Object[] details = inbox[ Value ];
-							if ( details != null ) {
-								mailMessage.Attachments.Add(new System.Web.Mail.MailAttachment(this.getfilename (Value, item.Text.Substring(0, item.Text.LastIndexOf(" (")))));
-								if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("Attached {0}", this.getfilename (Value, item.Text.Substring(0, item.Text.LastIndexOf(" (")))));
-								details = null;
+							if ( details == null ) {
+								Value=null;
+							}
+							details = null;
+						}
+						if ( Value!=null ) {
+							System.String attachment = this.getfilename (Session["sharpwebmail/send/message/temppath"], Value, item.Text.Substring(0, item.Text.LastIndexOf(" (")));
+							if ( attachment==null )
+								attachment = this.getfilename (Session["sharpwebmail/read/message/temppath"], Value, item.Text.Substring(0, item.Text.LastIndexOf(" (")));
+							if ( attachment!=null ) {
+								mailMessage.Attachments.Add(new System.Web.Mail.MailAttachment(attachment));
+								if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("Attached {0}", attachment) );
 							}
 						}
 					}
@@ -257,9 +270,12 @@ namespace anmar.SharpWebMail.UI
 		}
 
 		private void showAttachmentsPanel () {
-			if ( Session["temppath"]!=null ) {
+			if ( Session["sharpwebmail/send/message/temppath"]!=null || Session["sharpwebmail/read/message/temppath"]!=null ) {
 				this.sharpwebmailform.Enctype = "multipart/form-data";
 				this.attachmentsPanel.Visible = true;
+				if ( Session["sharpwebmail/send/message/temppath"]==null ) {
+					this.newattachmentPH.Visible = false;
+				}
 			} else {
 				showMessagePanel();
 			}
@@ -281,7 +297,7 @@ namespace anmar.SharpWebMail.UI
 			rev.ValidationExpression = @"^" + anmar.SharpMimeTools.ABNF.addr_spec + @"(;\s*" + anmar.SharpMimeTools.ABNF.addr_spec + @")*$";
 			this.newMessageFromPanel=(System.Web.UI.WebControls.Panel )this.SharpUI.FindControl("newMessageFromPanel");
 			if ( !this.IsPostBack ) {
-				switch ( (int)Application["login_mode"] ) {
+				switch ( (int)Application["sharpwebmail/login/mode"] ) {
 					case 2:
 						this.newMessageFromPanel.Visible = true;
 						rev = (System.Web.UI.WebControls.RegularExpressionValidator) this.SharpUI.FindControl("fromemailValidator");
@@ -313,8 +329,8 @@ namespace anmar.SharpWebMail.UI
 
 		protected void AttachmentAdd_Click ( System.Object sender, System.EventArgs args ) {
 			this.UI_case = 2;
-			if ( this.newMessageWindowAttachFile.PostedFile!=null && Session["temppath"]!=null ) {
-				System.String path = Session["temppath"].ToString();
+			if ( this.newMessageWindowAttachFile.PostedFile!=null && Session["sharpwebmail/send/message/temppath"]!=null ) {
+				System.String path = Session["sharpwebmail/send/message/temppath"].ToString();
 				System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo ( path );
 				try {
 					dir.Create();
@@ -362,7 +378,7 @@ namespace anmar.SharpWebMail.UI
 			this.Validate();
 			if ( this.IsValid ) {
 				this.UI_case = 1;
-				if ( (int)Application["sanitizer_mode"]==1 ) {
+				if ( (int)Application["sharpwebmail/send/message/sanitizer_mode"]==1 ) {
 					FCKEditor.Value = anmar.SharpWebMail.BasicSanitizer.SanitizeHTML(FCKEditor.Value, anmar.SharpWebMail.SanitizerMode.CommentBlocks|anmar.SharpWebMail.SanitizerMode.RemoveEvents);
 				}
 				if ( this.sendMail( out message ) ) {
