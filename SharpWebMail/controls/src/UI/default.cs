@@ -53,7 +53,7 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		protected void bindInbox () {
-			anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
+			anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
 
 			System.String pattern;
 			if ( this.searchPattern ( out pattern ) ) {
@@ -226,7 +226,7 @@ namespace anmar.SharpWebMail.UI
 		/// </summary>
 		protected void InboxDataGrid_Sort ( System.Object sender, System.Web.UI.WebControls.DataGridSortCommandEventArgs args ) {
 			this.sort = args.SortExpression.ToString();
-			anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
+			anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
 			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
 			if ( inbox.sortExpression != this.sort ) {
 				inbox.sortExpression = this.sort;
@@ -244,7 +244,7 @@ namespace anmar.SharpWebMail.UI
 		/// </summary>
 		protected void InboxDataGrid_PageIndexChanged ( System.Object sender, System.Web.UI.WebControls.DataGridPageChangedEventArgs args ) {
 			if ( this.InboxDataGrid.CurrentPageIndex < args.NewPageIndex ) {
-				anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
+				anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
 				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
 				if ( client.getInboxIndex ( inbox, args.NewPageIndex, (int) Application["sharpwebmail/read/inbox/pagesize"], false ) ) {
 					Session["inbox"] = inbox;

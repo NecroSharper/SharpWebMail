@@ -1,3 +1,12 @@
+08/06/2004
+ - Bugfix: In the newmessage page, the validation wasn't working under mono 1.0
+ - Bugfix: The validator associated to FCKEditor was causing problems under mono 1.0
+   I've disabled it conditionally until further investigation (it looks as a FCKEditor
+   bug)
+ - Email client usage now does not depend on POP3Client, so it is possible to extend
+   everything to use other email clients (ex. IMAP). Now only an open source IMAP client
+   is needed :)
+
 08/05/2004
  - Bugfix: When sending a message in login_mode 2, the user supplied email was
    being ignored and login name was being used instead.

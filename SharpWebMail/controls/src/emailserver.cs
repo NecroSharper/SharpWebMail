@@ -27,13 +27,13 @@ namespace anmar.SharpWebMail
 	/// <summary>
 	/// 
 	/// </summary>
-	public class EmailServer {
+	public class EmailServerInfo {
 		private static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		private anmar.SharpWebMail.ServerProtocol _protocol;
 		private System.String _host;
 		private int _port;
 
-		public EmailServer ( anmar.SharpWebMail.ServerProtocol protocol, System.String host, int port ) {
+		public EmailServerInfo ( anmar.SharpWebMail.ServerProtocol protocol, System.String host, int port ) {
 			this._protocol = protocol;
 			this._host = host;
 			this._port = port;
@@ -55,6 +55,8 @@ namespace anmar.SharpWebMail
 		}
 		private static int GetDefaultPort ( anmar.SharpWebMail.ServerProtocol protocol ) {
 			switch ( protocol ) {
+				case anmar.SharpWebMail.ServerProtocol.Imap:
+					return 143;
 				case anmar.SharpWebMail.ServerProtocol.Pop3:
 					return 110;
 				case anmar.SharpWebMail.ServerProtocol.Smtp:
@@ -62,22 +64,22 @@ namespace anmar.SharpWebMail
 			}
 			return 0;
 		}
-		public static anmar.SharpWebMail.EmailServer Parse ( System.String value ) {
-			anmar.SharpWebMail.EmailServer server = null;
+		public static anmar.SharpWebMail.EmailServerInfo Parse ( System.String value ) {
+			anmar.SharpWebMail.EmailServerInfo server = null;
 			System.String[] values = value.ToString().Split(':');
 			if ( values.Length==3 ) {
-				anmar.SharpWebMail.ServerProtocol protocol = anmar.SharpWebMail.EmailServer.ParseProtocol(values[0]);
-				System.String host = anmar.SharpWebMail.EmailServer.ParseHost(values[1]);
-				int port = anmar.SharpWebMail.EmailServer.ParsePort(values[2], protocol);
+				anmar.SharpWebMail.ServerProtocol protocol = anmar.SharpWebMail.EmailServerInfo.ParseProtocol(values[0]);
+				System.String host = anmar.SharpWebMail.EmailServerInfo.ParseHost(values[1]);
+				int port = anmar.SharpWebMail.EmailServerInfo.ParsePort(values[2], protocol);
 				if ( !protocol.Equals(anmar.SharpWebMail.ServerProtocol.Unknown) && port>0 && host!=null ) {
-					server = new anmar.SharpWebMail.EmailServer(protocol, host, port);
+					server = new anmar.SharpWebMail.EmailServerInfo(protocol, host, port);
 				}
 			}
 			return server;
 		}
 		private static System.String ParseHost ( System.String value ) {
 			try {
-				System.Net.IPHostEntry host = System.Net.Dns.Resolve(value);
+				System.Net.Dns.Resolve(value);
 			} catch ( System.Exception e ) {
 				if ( log.IsErrorEnabled )
 					log.Error(System.String.Format("Error parsing host: {0}", value), e);
@@ -93,7 +95,7 @@ namespace anmar.SharpWebMail
 			} catch ( System.Exception e ) {
 				if ( log.IsErrorEnabled )
 					log.Error(System.String.Format("Error parsing port: {0}", value), e);
-				port = anmar.SharpWebMail.EmailServer.GetDefaultPort(protocol);
+				port = anmar.SharpWebMail.EmailServerInfo.GetDefaultPort(protocol);
 			}
 			return port;
 		}
@@ -114,15 +116,19 @@ namespace anmar.SharpWebMail
 	/// </summary>	
 	public enum ServerProtocol {
 		/// <summary>
-		/// 
+		/// IMAP. Read RFC 3501
+		/// </summary>
+		Imap,
+		/// <summary>
+		/// POP3. Read RFC 3461
 		/// </summary>
 		Pop3,
 		/// <summary>
-		/// 
+		/// SMTP. Read RFC 2821
 		/// </summary>
 		Smtp,
 		/// <summary>
-		/// 
+		/// Unknown protocol
 		/// </summary>
 		Unknown
 	}

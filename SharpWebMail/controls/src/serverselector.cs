@@ -38,7 +38,7 @@ namespace anmar.SharpWebMail
 				throw new System.ArgumentNullException();
 			
 			System.Text.RegularExpressions.Regex condition = this.ParseCondition(key.ToString());
-			anmar.SharpWebMail.EmailServer server = anmar.SharpWebMail.EmailServer.Parse(value.ToString());
+			anmar.SharpWebMail.EmailServerInfo server = anmar.SharpWebMail.EmailServerInfo.Parse(value.ToString());
 			if ( condition!=null && server!=null )
 				this._servers.Add (condition, server);
 		}
@@ -54,11 +54,11 @@ namespace anmar.SharpWebMail
 			}
 			return condition;
 		}
-		public anmar.SharpWebMail.EmailServer Select ( System.String key ) {
+		public anmar.SharpWebMail.EmailServerInfo Select ( System.String key ) {
 			foreach(System.Text.RegularExpressions.Regex item in this._servers.Keys ) {
 				log.Error(item.IsMatch(key));
 				if ( item.IsMatch(key) )
-					return (anmar.SharpWebMail.EmailServer)this._servers[item];
+					return (anmar.SharpWebMail.EmailServerInfo)this._servers[item];
 			}
 			return null;
 		}

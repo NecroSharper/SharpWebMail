@@ -38,6 +38,8 @@
     <File name=".\res\SharpWebMail.da.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
     <File name=".\src\serverselector.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\src\emailserver.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\iemailclient.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\emailclientfactory.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="SharpMimeTools" localcopy="True" />

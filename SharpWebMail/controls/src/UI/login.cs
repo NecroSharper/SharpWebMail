@@ -69,22 +69,18 @@ namespace anmar.SharpWebMail.UI
 				if ( this.IsValid ) {
 					this.username.Value=this.PrepareLogin(this.username.Value);
 					anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/read/servers"];
-					anmar.SharpWebMail.EmailServer server = selector.Select(this.username.Value);
-					if ( server !=null && server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.Pop3) ) {
-						anmar.SharpWebMail.CTNSimplePOP3Client client = new anmar.SharpWebMail.CTNSimplePOP3Client (server.Host, server.Port, this.username.Value, password.Value );
-						anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-						if ( client.getInboxIndex ( inbox, 0, (int) Application["sharpwebmail/read/inbox/pagesize"], true ) ) {
-							System.Web.Security.FormsAuthentication.RedirectFromLoginPage(this.username.Value, false);
-							Session["client"] = client;
-							Session["inbox"] = inbox;
-						} else {
-							errorMsgLogin.Visible=true;
-						}
-						client = null;
-						inbox = null;
+					anmar.SharpWebMail.IEmailClient client = anmar.SharpWebMail.EmailClientFactory.CreateEmailClient(selector.Select(this.username.Value), this.username.Value, password.Value );
+					anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+					if ( client!=null && client.getInboxIndex ( inbox, 0, (int)Application["sharpwebmail/read/inbox/pagesize"], true ) ) {
+						System.Web.Security.FormsAuthentication.RedirectFromLoginPage(this.username.Value, false);
+						Session["client"] = client;
+						Session["inbox"] = inbox;
 					} else {
 						errorMsgLogin.Visible=true;
 					}
+					client = null;
+					inbox = null;
+					selector = null;
 				}
 			}
 		}

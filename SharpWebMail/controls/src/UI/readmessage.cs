@@ -93,10 +93,6 @@ namespace anmar.SharpWebMail.UI
 					} else {
 						goto case anmar.SharpMimeTools.MimeTopLevelMediaType.application;
 					}
-					// Lets make Mono compiler happy
-#if MONO
-					break;
-#endif
 				case anmar.SharpMimeTools.MimeTopLevelMediaType.application:
 				case anmar.SharpMimeTools.MimeTopLevelMediaType.audio:
 				case anmar.SharpMimeTools.MimeTopLevelMediaType.image:
@@ -204,7 +200,7 @@ namespace anmar.SharpWebMail.UI
 					this.newMessageWindowTitle.Text = System.Web.HttpUtility.HtmlEncode (details[10].ToString());
 					if ( this.newMessageWindowTitle.Text.Equals (System.String.Empty) )
 						this.newMessageWindowTitle.Text = this.SharpUI.LocalizedRS.GetString("noSubject");
-					anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
+					anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
 					System.IO.MemoryStream ms = new System.IO.MemoryStream ();
 					if ( client.getMessage ( ref ms, System.Int32.Parse(details[1].ToString() ) , msgid ) ) {
 						anmar.SharpMimeTools.SharpMimeMessage mm = new anmar.SharpMimeTools.SharpMimeMessage ( ms );
