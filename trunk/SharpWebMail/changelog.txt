@@ -1,3 +1,6 @@
+07/21/2004
+ - Released as version 0.4b (214)
+
 07/14/2004
  - Change the use of column 6 in the Inbox and the way column 5 was parsed.
    Now they are handled as a collection of addresses
