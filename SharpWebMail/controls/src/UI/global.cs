@@ -124,7 +124,11 @@ namespace anmar.SharpWebMail.UI
 			parseConfigServers ("sharpwebmail/send/servers", config);
 
 			TestAvailableCultures();
-			Application["AvailableCultures"] = new System.Collections.SortedList(availablecultures);
+			System.Collections.SortedList availablecultures_values = new System.Collections.SortedList(availablecultures.Count);
+			foreach ( System.Collections.DictionaryEntry item in availablecultures ) {
+				availablecultures_values.Add(item.Value, item.Key);
+			}
+			Application["AvailableCultures"] = availablecultures_values;
 			initInvariantCulture();
 
 			Application["sharpwebmail/read/message/temppath"] = parseTempFolder(Server.MapPath("/"), Application["sharpwebmail/read/message/temppath"]);
