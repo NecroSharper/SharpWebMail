@@ -55,7 +55,7 @@ namespace anmar.SharpWebMail.UI
 		/*
 		 * Events
 		*/
-		protected void Login_Click(System.Object sender, System.EventArgs E) {
+		protected void Login_Click ( System.Object sender, System.EventArgs args ) {
 			// authenticate user
 			if (this.IsPostBack&&this.IsValid) {
 				int login_mode = (int)Application["login_mode"];
@@ -85,7 +85,7 @@ namespace anmar.SharpWebMail.UI
 		/*
 		 * Page Events
 		*/
-		protected void Page_Load(System.Object Src, System.EventArgs E ) {
+		protected void Page_Load ( System.Object sender, System.EventArgs args ) {
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
 			if ( !this.IsPostBack ) {

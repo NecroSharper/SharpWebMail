@@ -9,9 +9,47 @@
 <link rel="stylesheet" type="text/css" href="sharpwebmail.css">
 </head>
 <body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<script type="text/javascript"><!--
+	window.onload = function () {
+		var oFrame = window.frames[ 'SharpUI:FCKEditor___Frame' ];
+		if ( typeof (oFrame)=='object' ) {
+			if ( !oFrame.FCKBrowserInfo.IsIE ) {
+				oFrame.document.getElementById('eSource');
+				oFrame.document.getElementById('eWysiwyg').style.display = "";
+				oFrame.document.getElementById('eSource').style.display = "none";
+			}
+			for ( var i=0; i<window.document.sharpwebmailform.format.length; i++ ) {
+				if ( window.document.sharpwebmailform.format[i].value=="html" ) {
+					window.document.sharpwebmailform.format[i].disabled=false;
+					window.document.sharpwebmailform.format[i].checked=true;
+					break;
+				}
+			}
+		}
+		oFrame=null;
+	}
+	function switchFCKEditorMode ( mode ) {
+		var oFrame = window.frames[ 'SharpUI:FCKEditor___Frame' ];
+		if ( typeof (oFrame)=='object' ) {
+			var FCK = oFrame.FCK;
+			if ( typeof (FCK)=='object' ) {
+				if ( ( FCK.EditMode==FCK_EDITMODE_WYSIWYG && mode=="text" ) || ( FCK.EditMode==FCK_EDITMODE_SOURCE && mode=="html" ) )
+					FCK.SwitchEditMode();
+				if  ( FCK.EditMode == FCK_EDITMODE_WYSIWYG )
+					FCK.ToolbarSet.Expand();
+				else
+					FCK.ToolbarSet.Collapse();
+				if ( !oFrame.FCKBrowserInfo.IsIE )
+					oFrame.window.onresize();
+			}
+			FCK=null;
+		}
+		oFrame=null;
+	}
+//--></script>
 <form id="sharpwebmailform" method="post" runat="server">
 <SharpUI:globalUI id="SharpUI" runat="server">
-<CentralPanel>
+	<CentralPanel>
                     <table width="95%" cellpadding="0" cellspacing="0" align="center" height="95%">
                       <tr>
                         <td class="XPPanelTitleBorderLeft"><img src="images/spacer.gif" width="6" height="3"></td>
@@ -85,6 +123,14 @@
                               <td> </td>
                             </tr>
                             <tr> 
+                              <td align="right" nowrap><asp:Label id="newMessageWindowFormatLabel" CssClass="XPFormLabel" runat="server"/></td>
+                              <td> 
+                                <input name="format" type="radio" style="XPInput" value="text" onClick="switchFCKEditorMode(this.value)" checked /> <asp:Label id="newMessageWindowFormatTextLabel" CssClass="XPFormText" runat="server"/>
+								<input name="format" type="radio" style="XPInput" value="html" onClick="switchFCKEditorMode(this.value)" disabled /> <asp:Label id="newMessageWindowFormatHtmlLabel" CssClass="XPFormText" runat="server"/>
+                              </td>
+                              <td> </td>
+                            </tr>
+                            <tr> 
                               <td nowrap><asp:button id="newMessageWindowAttachmentsButton" causesvalidation="false" onClick="Attachments_Click" runat="server" text="Send" /></td>
                               <td>
                               <asp:DataList id="newMessageWindowAttachmentsAddedList"
@@ -106,10 +152,10 @@
                               <td colspan="2" height="200">
                                   <FredCK:FCKeditor id="FCKEditor" height="210" runat="server" BasePath="fcke/" />
                               </td>
-                              <td></td>
+                              <td><ASP:RequiredFieldValidator id="ReqbodyValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="FCKEditor" /></td>
                             </tr>
                             <tr> 
-                              <td colspan="2" align="center"><asp:button id="newMessageWindowSendButton" onClick="Send_Click" runat="server" text="Send" /> 
+                              <td colspan="2" align="center"><asp:button id="newMessageWindowSendButton" CausesValidation="true" onClick="Send_Click" runat="server" text="Send" /> 
                               </td>
                               <td>&nbsp;</td>
                             </tr>

@@ -42,7 +42,7 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void Search_Click ( System.Object sender, System.EventArgs E ) {
+		protected void Search_Click ( System.Object sender, System.EventArgs args ) {
 			Server.Transfer ("default.aspx", true);
 		}
 		/*
@@ -51,7 +51,7 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void Page_Load ( System.Object Src, System.EventArgs E ) {
+		protected void Page_Load ( System.Object sender, System.EventArgs args ) {
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
 

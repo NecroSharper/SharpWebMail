@@ -137,48 +137,48 @@ namespace anmar.SharpWebMail.UI
 		/*
 		 * Events
 		*/
-		protected void inboxLinkButton_Click ( Object sender, System.EventArgs e ) {
+		protected void inboxLinkButton_Click ( System.Object sender, System.EventArgs args ) {
 			Response.Redirect("default.aspx");
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void logoutLinkButton_Click ( Object sender, System.EventArgs e ) {
+		protected void logoutLinkButton_Click ( System.Object sender, System.EventArgs args ) {
 			this.closeSession();
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void logOutSessionButton_Click ( Object sender, System.Web.UI.ImageClickEventArgs e ) {
+		protected void logOutSessionButton_Click ( System.Object sender, System.Web.UI.ImageClickEventArgs args ) {
 			this.closeSession();
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void newMessageLinkButton_Click ( Object sender, System.EventArgs e ) {
+		protected void newMessageLinkButton_Click ( System.Object sender, System.EventArgs args ) {
 			Response.Redirect("newmessage.aspx");
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void searchLinkButton_Click ( Object sender, System.EventArgs e ) {
+		protected void searchLinkButton_Click ( System.Object sender, System.EventArgs args ) {
 			Response.Redirect("search.aspx");
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void trashLinkButton_Click ( Object sender, System.EventArgs e ) {
+		protected void trashLinkButton_Click ( System.Object sender, System.EventArgs args ) {
 			Response.Redirect("default.aspx?mode=trash");
 		}
 		/*
 		 * Page Events
 		*/
-		protected void Page_Disposed (System.EventArgs E ) {
+		protected void Page_Disposed ( System.EventArgs args ) {
 			Session["inbox"] = this.inbox;
 			this.inbox = null;
 			this.resources = null;
 		}
-		protected void Page_Init() {
+		protected void Page_Init () {
 		    if ( this.centralPanel!=null ) {
 	            this.centralPanel.InstantiateIn (this.centralPanelHolder);
 		    }
@@ -187,7 +187,7 @@ namespace anmar.SharpWebMail.UI
 		    }
 			this.resources = (System.Resources.ResourceSet) Session["resources"];
 		}
-		protected void Page_Load(System.Object Src, System.EventArgs E ) {
+		protected void Page_Load ( System.Object sender, System.EventArgs args ) {
 			this.mainInterface();
 		}
 	}

@@ -62,7 +62,7 @@ Building
 Dependencies:
  - Microsoft .NET framework 1.1  - http://msdn.microsoft.com/netframework/
  - Log4net - http://log4net.sourceforge.net/
- - FCKeditor - http://www.fredck.com/FCKeditor/
+ - FCKeditor - http://www.fckeditor.net/
  - SharpMimeTools - For now distributed only with SharpWebMail
 
 Project files provided for:
