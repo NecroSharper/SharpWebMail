@@ -1,0 +1,138 @@
+﻿Specific Cultures .NET Framework 1.1
+
+Culture    English Name                                            Parent Culture
+---------- ------------------------------------------------------- --------------
+ar-SA      Arabic (Saudi Arabia)                                   ar
+ar-IQ      Arabic (Iraq)                                           ar
+ar-EG      Arabic (Egypt)                                          ar
+ar-LY      Arabic (Libya)                                          ar
+ar-DZ      Arabic (Algeria)                                        ar
+ar-MA      Arabic (Morocco)                                        ar
+ar-TN      Arabic (Tunisia)                                        ar
+ar-OM      Arabic (Oman)                                           ar
+ar-YE      Arabic (Yemen)                                          ar
+ar-SY      Arabic (Syria)                                          ar
+ar-JO      Arabic (Jordan)                                         ar
+ar-LB      Arabic (Lebanon)                                        ar
+ar-KW      Arabic (Kuwait)                                         ar
+ar-AE      Arabic (U.A.E.)                                         ar
+ar-BH      Arabic (Bahrain)                                        ar
+ar-QA      Arabic (Qatar)                                          ar
+bg-BG      Bulgarian (Bulgaria)                                    bg
+ca-ES      Catalan (Catalan)                                       ca
+zh-TW      Chinese (Taiwan)                                        zh-CHT
+zh-CN      Chinese (People's Republic of China)                    zh-CHS
+zh-HK      Chinese (Hong Kong S.A.R.)                              zh-CHT
+zh-SG      Chinese (Singapore)                                     zh-CHS
+zh-MO      Chinese (Macau S.A.R.)                                  zh-CHS
+cs-CZ      Czech (Czech Republic)                                  cs
+da-DK      Danish (Denmark)                                        da
+de-DE      German (Germany)                                        de
+de-CH      German (Switzerland)                                    de
+de-AT      German (Austria)                                        de
+de-LU      German (Luxembourg)                                     de
+de-LI      German (Liechtenstein)                                  de
+el-GR      Greek (Greece)                                          el
+en-US      English (United States)                                 en
+en-GB      English (United Kingdom)                                en
+en-AU      English (Australia)                                     en
+en-CA      English (Canada)                                        en
+en-NZ      English (New Zealand)                                   en
+en-IE      English (Ireland)                                       en
+en-ZA      English (South Africa)                                  en
+en-JM      English (Jamaica)                                       en
+en-CB      English (Caribbean)                                     en
+en-BZ      English (Belize)                                        en
+en-TT      English (Trinidad and Tobago)                           en
+en-ZW      English (Zimbabwe)                                      en
+en-PH      English (Republic of the Philippines)                   en
+es-MX      Spanish (Mexico)                                        es
+es-ES      Spanish (Spain)                                         es
+es-GT      Spanish (Guatemala)                                     es
+es-CR      Spanish (Costa Rica)                                    es
+es-PA      Spanish (Panama)                                        es
+es-DO      Spanish (Dominican Republic)                            es
+es-VE      Spanish (Venezuela)                                     es
+es-CO      Spanish (Colombia)                                      es
+es-PE      Spanish (Peru)                                          es
+es-AR      Spanish (Argentina)                                     es
+es-EC      Spanish (Ecuador)                                       es
+es-CL      Spanish (Chile)                                         es
+es-UY      Spanish (Uruguay)                                       es
+es-PY      Spanish (Paraguay)                                      es
+es-BO      Spanish (Bolivia)                                       es
+es-SV      Spanish (El Salvador)                                   es
+es-HN      Spanish (Honduras)                                      es
+es-NI      Spanish (Nicaragua)                                     es
+es-PR      Spanish (Puerto Rico)                                   es
+fi-FI      Finnish (Finland)                                       fi
+fr-FR      French (France)                                         fr
+fr-BE      French (Belgium)                                        fr
+fr-CA      French (Canada)                                         fr
+fr-CH      French (Switzerland)                                    fr
+fr-LU      French (Luxembourg)                                     fr
+fr-MC      French (Principality of Monaco)                         fr
+he-IL      Hebrew (Israel)                                         he
+hu-HU      Hungarian (Hungary)                                     hu
+is-IS      Icelandic (Iceland)                                     is
+it-IT      Italian (Italy)                                         it
+it-CH      Italian (Switzerland)                                   it
+ja-JP      Japanese (Japan)                                        ja
+ko-KR      Korean (Korea)                                          ko
+nl-NL      Dutch (Netherlands)                                     nl
+nl-BE      Dutch (Belgium)                                         nl
+nb-NO      Norwegian (Bokmål) (Norway)                             no
+nn-NO      Norwegian (Nynorsk) (Norway)                            no
+pl-PL      Polish (Poland)                                         pl
+pt-BR      Portuguese (Brazil)                                     pt
+pt-PT      Portuguese (Portugal)                                   pt
+ro-RO      Romanian (Romania)                                      ro
+ru-RU      Russian (Russia)                                        ru
+hr-HR      Croatian (Croatia)                                      hr
+sr-SP-Latn Serbian (Latin) (Serbia)                                hr
+sr-SP-Cyrl Serbian (Cyrillic) (Serbia)                             hr
+sk-SK      Slovak (Slovakia)                                       sk
+sq-AL      Albanian (Albania)                                      sq
+sv-SE      Swedish (Sweden)                                        sv
+sv-FI      Swedish (Finland)                                       sv
+th-TH      Thai (Thailand)                                         th
+tr-TR      Turkish (Turkey)                                        tr
+ur-PK      Urdu (Islamic Republic of Pakistan)                     ur
+id-ID      Indonesian (Indonesia)                                  id
+uk-UA      Ukrainian (Ukraine)                                     uk
+be-BY      Belarusian (Belarus)                                    be
+sl-SI      Slovenian (Slovenia)                                    sl
+et-EE      Estonian (Estonia)                                      et
+lv-LV      Latvian (Latvia)                                        lv
+lt-LT      Lithuanian (Lithuania)                                  lt
+fa-IR      Farsi (Iran)                                            fa
+vi-VN      Vietnamese (Viet Nam)                                   vi
+hy-AM      Armenian (Armenia)                                      hy
+az-AZ-Latn Azeri (Latin) (Azerbaijan)                              az
+az-AZ-Cyrl Azeri (Cyrillic) (Azerbaijan)                           az
+eu-ES      Basque (Basque)                                         eu
+mk-MK      FYRO Macedonian (Former Yugoslav Republic of Macedonia) mk
+af-ZA      Afrikaans (South Africa)                                af
+ka-GE      Georgian (Georgia)                                      ka
+fo-FO      Faroese (Faroe Islands)                                 fo
+hi-IN      Hindi (India)                                           hi
+ms-MY      Malay (Malaysia)                                        ms
+ms-BN      Malay (Brunei Darussalam)                               ms
+kk-KZ      Kazakh (Kazakhstan)                                     kk
+ky-KZ      Kyrgyz (Kyrgyzstan)                                     ky
+sw-KE      Swahili (Kenya)                                         sw
+uz-UZ-Latn Uzbek (Latin) (Uzbekistan)                              uz
+uz-UZ-Cyrl Uzbek (Cyrillic) (Uzbekistan)                           uz
+tt-RU      Tatar (Russia)                                          tt
+pa-IN      Punjabi (India)                                         pa
+gu-IN      Gujarati (India)                                        gu
+ta-IN      Tamil (India)                                           ta
+te-IN      Telugu (India)                                          te
+kn-IN      Kannada (India)                                         kn
+mr-IN      Marathi (India)                                         mr
+sa-IN      Sanskrit (India)                                        sa
+mn-MN      Mongolian (Mongolia)                                    mn
+gl-ES      Galician (Galician)                                     gl
+kok-IN     Konkani (India)                                         kok
+syr-SY     Syriac (Syria)                                          syr
+div-MV     Divehi (Maldives)                                       div

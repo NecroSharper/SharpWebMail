@@ -1,0 +1,221 @@
+.XPBorderLeft {
+	background-image: url(images/BorderLeft.gif);
+	background-repeat: repeat-y;
+}
+.XPBorderRight {
+	background-image: url(images/BorderRight.gif);
+	background-repeat: repeat-y;
+}
+.XPDownload 
+{
+	padding-right: 3pt;
+	font-family: Trebuchet MS, Arial;
+	font-size: 10pt;
+	color: #336699;
+	text-decoration: none;
+}
+.XPDownload:hover {
+	color: #FF0000;
+}
+.XPErrorMessage
+{
+	font-weight: bold;
+	font-size: 10pt;
+	color: #ff0000;
+	font-family: "Trebuchet MS" , Arial;
+}
+.XPFooter {
+	background-image: url(images/FooterBackground.gif);
+	background-repeat: repeat-x;
+}
+.XPFooterLeft {
+	background-image: url(images/FooterLeft.gif);
+	background-repeat: no-repeat;
+}
+.XPFooterRight {
+	background-image: url(images/FooterRight.gif);
+	background-repeat: no-repeat;
+}
+.XPFormLabel {
+	font-size: 14px;
+	font-family: Trebuchet MS , Arial;
+	font-weight: bold;
+	color: #336699;
+	text-decoration: none;
+}
+.XPFormLabel:hover {
+	color: #FF0000;
+}
+.XPFormText {
+	font-family: "Trebuchet MS" , Arial;
+	font-size: 14px;
+	color: #000000;
+	text-indent: 4pt;
+}
+.XPInboxHeader {
+	background-color: #ECE9D8;
+	font-family: "Trebuchet MS" , Arial;
+	font-size: 14px;
+	color: #000000;
+	text-indent: 4pt;
+}
+.XPInboxItemA {
+	font-family: "Trebuchet MS", Arial;
+	color: #000000;
+	font-size: 9pt;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+}
+.XPInboxItemAH {
+	font-family: "Trebuchet MS", Arial;
+	color: #000000;
+	background-color: #C1D3FB;
+	font-size: 9pt;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+}
+.XPInboxItemB {
+	font-family: "Trebuchet MS", Arial;
+	color: #000000;
+	font-size: 9pt;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+}
+.XPInboxItemBH {
+	font-family: "Trebuchet MS", Arial;
+	color: #000000;
+	background-color: #C1D3FB;
+	font-size: 9pt;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+}
+.XPInput {
+	width: 150;
+}
+.XPPanel {
+	background-color: #D6D3CE;
+	font-family: "Trebuchet MS" , Arial;
+	font-size: 14px;
+	color: #000000;
+	text-indent: 4pt;
+
+}
+.XPPanelBorder {
+	background-image: url(images/Border_inner.gif);
+	background-repeat: repeat-y;
+}
+.XPPanelFooter {
+	background-image: url(images/FooterBackground_inner.gif);
+	background-repeat: repeat-x;
+}
+.XPPanelFooterLeft {
+	background-image: url(images/FooterLeft_inner.gif);
+	background-repeat: no-repeat;
+}
+.XPPanelFooterRight {
+	background-image: url(images/FooterRight_inner.gif);
+	background-repeat: no-repeat;
+}
+.XPPanelTitle {
+	background-color: #D6D3CE;
+	font-family: "Trebuchet MS" , Arial;
+	font-size: 14px;
+	color: #000000;
+	text-indent: 4pt;
+	border-width: 1px;
+	border-color: #999999 #999999 #999999 #999999;
+	border-style: solid;
+}
+.XPPanelTitleBorder {
+	background-color: #D6D3CE;
+}
+.XPPanelTitleBorderLeft {
+	background-color: #D6D3CE;
+	background-image: url(images/TitleBorderLeft.gif);
+	background-repeat: repeat-y;
+}
+.XPPanelTitleBorderRight {
+	background-color: #D6D3CE;
+	background-image: url(images/TitleBorderRight.gif);
+	background-repeat: repeat-y;
+}
+.XPPanelBorderTop {
+	background-image: url(images/TitleBarBackground_inner.gif);
+	background-repeat: repeat-x;
+}
+.XPPanelBorderTopLeft {
+	background-image: url(images/TitleBarLeft_inner.gif);
+	background-repeat: no-repeat;
+}
+.XPPanelBorderTopRight {
+	background-image: url(images/TitleBarRight_inner.gif);
+	background-repeat: no-repeat;
+}
+
+.XPTitleBar {
+	font-weight: bold;
+	font-size: 10pt;
+	background-image: url(images/TitleBarBackground.gif);
+	color: #ffffff;
+	text-indent: 4pt;
+	background-repeat: repeat-x;
+	font-family: "Trebuchet MS" , Arial;
+	WHITE-SPACE: nowrap;
+	text-shadow: #333333;
+}
+.XPTitleBarClose {
+	background-image: url(images/TitleBarClose.gif);
+	background-repeat: no-repeat;
+	cursor: hand;
+}
+.XPTitleBarLeft {
+	background-image: url(images/TitleBarLeft.gif);
+	background-repeat: no-repeat;
+}
+.XPTitleBarRight {
+	background-image: url(images/TitleBarRight.gif);
+	background-repeat: no-repeat;
+}
+.XPToolbar {
+	background-color: #ECE9D8;
+	font-family: Trebuchet MS, Arial;
+	font-size: 10pt;
+	color: #666666;
+	text-indent: 5pt;
+}
+.XPToolbarFooter {
+	background-color: #ECE9D8;
+	font-family: Trebuchet MS, Arial;
+	font-size: 10pt;
+	color: #336699;
+	text-decoration: none;
+}
+.XPToolbarFooter:hover {
+	color: #FF0000;
+}
+.XPWindowBackground {
+	background-color: #EEEEEE;
+	border-color: #999999 #CCCCCC #CCCCCC #999999;
+	border-style: solid;
+	border-width: 1px;
+	padding: 10px;
+	font-family: Trebuchet MS, Arial;
+	font-size: 10pt;
+	color: #666666;
+}
+
+.XPWindowFoot {
+	background-color: #EEEEEE;
+	font-family: Trebuchet MS, Arial;
+	font-size: 9pt;
+	color: #666666;
+	text-indent: 5pt;
+	text-decoration: none;
+}
+.XPWindowFoot:hover {
+	color: #FF0000;
+}
