@@ -1,3 +1,6 @@
+10/25/2004
+ - Bugfix: LDAP search was not being performed due to a try-catch wrongly added.
+
 10/24/2004
  - The culture names in login page are now sorted.
  - Make the input boxes of newmessage page larger.

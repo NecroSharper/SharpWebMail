@@ -40,7 +40,7 @@ namespace anmar.SharpWebMail.UI
 			dirsearcher.PropertiesToLoad.Add(mailcolumn);
 			System.DirectoryServices.SearchResultCollection results = null;
 			try {
-				dirsearcher.FindAll();
+				results = dirsearcher.FindAll();
 			} catch ( System.Exception e) {
 				if (log.IsErrorEnabled)
 					log.Error("Error while doing LDAP query", e);
