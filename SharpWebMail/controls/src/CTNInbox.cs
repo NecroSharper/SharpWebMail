@@ -33,6 +33,7 @@ namespace anmar.SharpWebMail
 		/// 
 		/// </summary>
 		protected System.Data.DataTable inbox;
+		protected System.Data.DataView inbox_view;
 		/// <summary>
 		/// 
 		/// </summary>
@@ -96,10 +97,10 @@ namespace anmar.SharpWebMail
 		/// </summary>
 		public System.Object[] this [ System.Guid guid ] {
 			get {
-				System.Data.DataRow[] result = this.inbox.Select(System.String.Format ("guid='{0}'", guid));
-				if ( result.Length==1 ) {
+				this.inbox_view.RowFilter = System.String.Format ("guid='{0}'", guid);
+				if ( this.inbox_view.Count==1 ) {
 					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("{0} guid='{0}' found", guid));
-					return result[0].ItemArray;
+					return this.inbox_view[0].Row.ItemArray;
 				} else {
 					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("guid='{0}' not found", guid));
 					return null;
@@ -117,39 +118,34 @@ namespace anmar.SharpWebMail
 
 			// We need to initialize the inbox list
 			if (this.Count == 0) {
-				this.initMessageList (list, uidlist );
+				for ( int i=0 ; i<uidlist.Length; i++) {
+					this.newMessage (i+1, list[i], uidlist[i]);
+				}
 			} else {
+				System.Collections.Specialized.StringCollection uidl = new System.Collections.Specialized.StringCollection();
+				uidl.AddRange(uidlist);
 				// As we already have an index, we try to put it in sync
 				// with the mail server
-				System.Data.DataRow[] result;
 				for ( int i=0 ; i<uidlist.Length; i++ ) {
-					result = this.inbox.Select("uidl = '" + uidlist[i].Replace("'", "''") + "'");
+					this.inbox_view.RowFilter = System.String.Concat("uidl = '", uidlist[i].Replace("'", "''"), "'");
 					// Message not found, so we add it
-					if (result.Length == 0 ){
+					if (this.inbox_view.Count == 0 ){
 						this.newMessage (i+1, list[i], uidlist[i]);
 					} else {
-						// Message found, but at the incorrect position
-						if (((int)result[0][1]) != (i+1)) {
-							result[0][1] = i+1;
+						// Message found, but at the wrong position
+						if ( !this.inbox_view[0][1].Equals(i+1) ) {
+							this.inbox_view[0][1] = i+1;
 						}
 					}
 				}
 				// now we try to find deleted messages
-				result = this.inbox.Select();
+				this.inbox_view.RowFilter = System.String.Empty;
 
-				for ( int i=0, max = result.GetLength(0), j=0 ; i<max; i++ ) {
-					for (j = 0; j<uidlist.Length; j++ ) {
-						if (uidlist[j].Equals(result[i][3])) {
-							break;
-						}
-					}
-					if (j==uidlist.Length) {
+				foreach ( System.Data.DataRow item in this.inbox.Rows ) {
+					if ( !uidl.Contains(item[3].ToString() ) ) {
 						this.mcount--;
-						this.msize -= (int) result[j][2];
-						result[i].Delete();
-						result = this.inbox.Select();
-						max = result.GetLength(0);
-						i--;
+						this.msize -= (int)item[2];
+						item.Delete();
 					}
 				}
 			}
@@ -168,33 +164,35 @@ namespace anmar.SharpWebMail
 			int start = (int)npage * npagesize;
 			start = (start<0)?0:start;
 			int end = start + npagesize;
-			System.Data.DataRow[] result;
 			System.String tmpvalue;
 			System.Int32 tmpkey;
 
 			System.String field = sort.Split(' ')[0];
 			// If we are sorting by any colunm which data is not contained
 			// in UIDL or LIST responses, then we need to cache the whole
-			// inbox in orther to do the sort opetarion
+			// inbox in order to do the sort opetarion
 			if ( this.inbox.Columns[field].Ordinal>3 ) {
 				start = 0;
 				end = this.Count;
 			}
-			result = this.inbox.Select("delete=false", sort);
+			this.inbox_view.RowFilter = "delete=false";
+			this.inbox_view.Sort = sort;
 
-			for ( int i=start; (!error) && i<result.GetLength(0) && i<end ; i++ ) {
-				tmpkey = (int)result[i][1];
-				tmpvalue = result[i][3].ToString();
+			for ( int i=start; (!error) && i<this.inbox_view.Count && i<end ; i++ ) {
+				tmpkey = (int)this.inbox_view[i][1];
+				tmpvalue = this.inbox_view[i][3].ToString();
 				// Message added to list but hash and msgnum added do not match with
 				// last server response
-				if ( ( msgs.ContainsKey (tmpkey) && msgs[tmpkey].ToString() != tmpvalue ) ||( msgs.ContainsValue(tmpvalue) && msgs[tmpkey].ToString() != tmpvalue ) ){
+				if ( (msgs.ContainsKey (tmpkey) && !msgs[tmpkey].Equals(tmpvalue)) || (msgs.ContainsValue(tmpvalue) && !msgs[tmpkey].Equals(tmpvalue) ) ){
 					msgs.Remove(tmpkey);
 				}
 				// We want to get headers only if we do not have them
-				if ( result[i][13].Equals(System.DBNull.Value) && !msgs.ContainsKey (tmpkey) ) {
-					msgs.Add( result[i][1], result[i][3].ToString() );
+				if ( this.inbox_view[i][13].Equals(System.DBNull.Value) && !msgs.ContainsKey (tmpkey) ) {
+					msgs.Add( this.inbox_view[i][1], this.inbox_view[i][3].ToString() );
 				}
 			}
+			this.inbox_view.RowFilter = System.String.Empty;
+			this.inbox_view.Sort = System.String.Empty;
 			return !error;
 		}
 		/// <summary>
@@ -227,11 +225,10 @@ namespace anmar.SharpWebMail
 		/// <param name="uid"></param>
 		/// <returns></returns>
 		public System.String getMessageIndex ( System.String uid ) {
-			System.Data.DataRow[] result=null;
 			System.Guid guid = this.getGuid(uid);
 			if ( !guid.Equals(System.Guid.Empty) )
-				result = this.inbox.Select("guid='" + guid.ToString() + "'");
-			return ( result!=null && result.Length==1 )?result[0][1].ToString():System.String.Empty;
+				this.inbox_view.RowFilter = System.String.Concat("guid='", guid, "'");
+			return ( this.inbox_view.Count==1 )?this.inbox_view[0][1].ToString():System.String.Empty;
 		}
 		/// <summary>
 		/// 
@@ -243,20 +240,7 @@ namespace anmar.SharpWebMail
 			}
 			inbox.Columns[0].AutoIncrement=true;
 			inbox.Columns[0].Unique=true;
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="list"></param>
-		/// <param name="uidllist"></param>
-		/// <returns></returns>
-		protected bool initMessageList(System.Int32[] list, System.String[] uidllist) {
-			bool error = false;
-			for ( int i=0 ; i<uidllist.Length; i++) {
-				this.newMessage (i+1, list[i], uidllist[i]);
-			}
-
-			return !error;
+			this.inbox_view = new System.Data.DataView(this.inbox);
 		}
 		/// <summary>
 		/// 
@@ -265,13 +249,12 @@ namespace anmar.SharpWebMail
 		/// <param name="col"></param>
 		/// <param name="val"></param>
 		protected bool markMessage ( System.String uid, int col, bool val ) {
-			System.Data.DataRow[] result;
 			System.Guid guid = this.getGuid(uid);
 			if ( guid.Equals(System.Guid.Empty) )
 				return false;
-			result = this.inbox.Select("guid='" + guid.ToString() + "'");
-			if ( result.Length==1 && ((bool)result[0][col])==!val ) {
-				result[0][col] = val;
+			this.inbox_view.RowFilter = System.String.Concat("guid='", guid, "'");
+			if ( this.inbox_view.Count==1 && this.inbox_view[0][col].Equals(!val) ) {
+				this.inbox_view[0][col] = val;
 				return true;
 			} else {
 				return false;
@@ -285,29 +268,27 @@ namespace anmar.SharpWebMail
 		/// <returns></returns>
 		public bool newMessage (System.String uidl, anmar.SharpMimeTools.SharpMimeHeader header ) {
 			bool error = false;
-			System.Data.DataRow[] result;
-			uidl = uidl.Replace("'", "''");
-			result = this.inbox.Select("uidl = '" + uidl + "'");
-			if (result.Length == 1 ){
-				result[0][4] = header.From;
-				result[0][5] = "";
-				result[0][6] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.From );
-				result[0][7] = header.To;
-				result[0][8] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.To );
-				result[0][9] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.Reply );
-				result[0][10] = anmar.SharpMimeTools.SharpMimeTools.parserfc2047Header ( header.Subject );
-				result[0][11] = header.Date;
-				result[0][12] = header.MessageID;
-				result[0][13] = header;
-				result[0][14] = anmar.SharpMimeTools.SharpMimeTools.parseDate ( header.Date );
-				result[0][15] = false;
-				result[0][16] = false;
-				if ( result[0][6]!=null ) {
-					System.Collections.IEnumerator fromenum = ((System.Collections.IEnumerable)result[0][6]).GetEnumerator();
-					if ( fromenum.MoveNext() ) {
-						result[0][5] = ((anmar.SharpMimeTools.SharpMimeAddress)fromenum.Current)["name"];
-						if ( result[0][5]==null || result[0][5].ToString().Equals(System.String.Empty) )
-							result[0][5] = ((anmar.SharpMimeTools.SharpMimeAddress)fromenum.Current)["address"];
+			this.inbox_view.RowFilter = System.String.Concat("uidl='", uidl, "'");
+			if (this.inbox_view.Count == 1 ) {
+				System.Data.DataRowView msg = this.inbox_view[0];
+				msg[4] = header.From;
+				msg[5] = "";
+				msg[6] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.From );
+				msg[7] = header.To;
+				msg[8] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.To );
+				msg[9] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.Reply );
+				msg[10] = anmar.SharpMimeTools.SharpMimeTools.parserfc2047Header ( header.Subject );
+				msg[11] = header.Date;
+				msg[12] = header.MessageID;
+				msg[13] = header;
+				msg[14] = anmar.SharpMimeTools.SharpMimeTools.parseDate ( header.Date );
+				msg[15] = false;
+				msg[16] = false;
+				if ( msg[6]!=null ) {
+					foreach ( anmar.SharpMimeTools.SharpMimeAddress item in ((System.Collections.IEnumerable)msg[6]) ) {
+						msg[5] = item["name"];
+						if ( msg[5]==null || msg[5].Equals(System.String.Empty) )
+							msg[5] = item["address"];
 					}
 				}
 			} else {
