@@ -24,6 +24,9 @@ using System;
 
 namespace anmar.SharpWebMail
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public sealed class BasicSanitizer {
 		private static System.Object[] comment = new System.Object[] {
 			// Comment all <script></script> occurrences
@@ -46,6 +49,9 @@ namespace anmar.SharpWebMail
 			new System.Text.RegularExpressions.Regex(@"(<iframe([^<]*(?:(?!</)<){0,1})*</iframe[^>]*>)+", System.Text.RegularExpressions.RegexOptions.IgnoreCase|System.Text.RegularExpressions.RegexOptions.Singleline)
 		};
 		private static System.Text.RegularExpressions.Regex events = new System.Text.RegularExpressions.Regex(@"(?:\b(on)(Abort|Blur|Change|Click|DblClick|DblClick|Error|Focus|KeyDown|KeyPress|KeyPress|Load|MouseDown|MouseMove|MouseMove|MouseOver|MouseUp|Move|Reset|Resize|Select|Submit|Unload)(\s*=))", System.Text.RegularExpressions.RegexOptions.IgnoreCase|System.Text.RegularExpressions.RegexOptions.Singleline);
+		/// <summary>
+		/// 
+		/// </summary>
 		public static System.String SanitizeHTML ( System.String htmlstring, anmar.SharpWebMail.SanitizerMode mode ) {
 			if ( (mode&anmar.SharpWebMail.SanitizerMode.CommentBlocks)==anmar.SharpWebMail.SanitizerMode.CommentBlocks ) {
 				foreach ( System.Text.RegularExpressions.Regex item in  anmar.SharpWebMail.BasicSanitizer.comment ) {
@@ -53,14 +59,23 @@ namespace anmar.SharpWebMail
 				}
 			}
 			if ( (mode&anmar.SharpWebMail.SanitizerMode.RemoveEvents)==anmar.SharpWebMail.SanitizerMode.RemoveEvents ) {
-				htmlstring = anmar.SharpWebMail.BasicSanitizer.events.Replace(htmlstring, "$1 $2$3");
+				htmlstring = anmar.SharpWebMail.BasicSanitizer.events.Replace(htmlstring, "$1_$2$3");
 			}
 			return htmlstring;
 		}
 	}
+	/// <summary>
+	/// 
+	/// </summary>	
 	[Flags]
 	public enum SanitizerMode {
+		/// <summary>
+		/// 
+		/// </summary>
 		CommentBlocks,
+		/// <summary>
+		/// 
+		/// </summary>
 		RemoveEvents
 	}
 }

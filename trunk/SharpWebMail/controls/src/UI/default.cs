@@ -24,6 +24,9 @@ using System;
 
 namespace anmar.SharpWebMail.UI
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class Default : System.Web.UI.Page {
 
 		// General variables
@@ -122,6 +125,9 @@ namespace anmar.SharpWebMail.UI
 				this.SharpUI.nextPageImageButton.Enabled = true;
 			}
 		}
+		/// <summary>
+		/// 
+		/// </summary>
 		protected bool searchPattern ( out System.String pattern ) {
 			bool forcecache = false;
 			System.String Value, format, searchtype;

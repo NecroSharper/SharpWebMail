@@ -1,3 +1,19 @@
+06/30/2004
+ - Make sure the message UIDL is what it should be before getting its body.
+   (this or other message may have been deleted outside of our webmail session)
+ - Start using FCKEditor V2 (Works with gecko powered browsers)
+ - Added initial comment tags (without comments)
+ - Bugfix: The UIDL was not always being URLEncoded before using it in links
+ - Bugfix: Closed bug 981749 - Delete button updates message count twice if
+   clicked twice
+
+06/25/2004
+ - Compiled successfully under Mono Beta 3 (0.96)
+ - Tested under xsp 0.15 and good news is that it works out of the box :)
+   There are only a few small issues to be solved.
+ - Bugfix: When sending a message under mono BodyFormat must be set before
+   setting Body
+
 06/23/2004
  - Version number set to 0.4
 

@@ -31,7 +31,7 @@
     <File name="..\asp.net\search.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
     <File name="..\asp.net\sharpwebmail.css" subtype="Code" buildaction="Nothing" dependson="" data="" />
     <File name="..\asp.net\web.config" subtype="Code" buildaction="Nothing" dependson="" data="" />
-    <File name="..\asp.net\fcke\js\fck_config.js" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\fcke\fckconfig.js" subtype="Code" buildaction="Nothing" dependson="" data="" />
     <File name=".\res\SharpWebMail.resources" subtype="Code" buildaction="EmbedAsResource" dependson="" data="" />
     <File name=".\src\UI\readmessageheaders.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\src\basicsanitizer.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
@@ -39,32 +39,32 @@
   <References>
     <Reference type="Project" refto="SharpMimeTools" localcopy="True" />
     <Reference type="Assembly" refto=".\bin\log4net.dll" localcopy="True" />
-    <Reference type="Assembly" refto=".\bin\FredCK.FCKeditor.dll" localcopy="True" />
+    <Reference type="Assembly" refto=".\bin\FredCK.FCKeditorV2.dll" localcopy="True" />
   </References>
   <DeploymentInformation target="" script="" strategy="Assembly" />
   <Configuration runwithwarnings="False" name="Debug">
-    <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="" />
+    <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
     <Execution commandlineparameters="" consolepause="True" />
     <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
   </Configuration>
   <Configurations active="Debug">
     <Configuration runwithwarnings="False" name="Debug">
-      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="" />
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
       <Execution commandlineparameters="" consolepause="True" />
       <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>
     <Configuration runwithwarnings="False" name="Release">
-      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="True" win32Icon="" noconfig="False" nostdlib="False" />
       <Execution commandlineparameters="" consolepause="True" />
       <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>
     <Configuration runwithwarnings="False" name="DebugMono">
-      <CodeGeneration runtime="Mono" compiler="Mcs" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG;MONO" generatexmldocumentation="False" win32Icon="" />
+      <CodeGeneration runtime="Mono" compiler="Mcs" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG;MONO" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
       <Execution commandlineparameters="" consolepause="True" />
       <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>
     <Configuration runwithwarnings="False" name="ReleaseMono">
-      <CodeGeneration runtime="Mono" compiler="Mcs" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="MONO" generatexmldocumentation="False" win32Icon="" />
+      <CodeGeneration runtime="Mono" compiler="Mcs" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="MONO" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
       <Execution commandlineparameters="" consolepause="True" />
       <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>

@@ -1,5 +1,5 @@
 <%@ Page Language="C#"  Inherits="anmar.SharpWebMail.UI.newmessage" trace="false" validateRequest="false" %>
-<%@ Register TagPrefix="FredCK" Namespace="FredCK" Assembly="FredCK.FCKeditor" %>
+<%@ Register TagPrefix="FredCK" Namespace="FredCK.FCKeditorV2" Assembly="FredCK.FCKeditorV2" %>
 <%@ Register TagPrefix="SharpUI" TagName="globalUI" Src="globalUI.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
