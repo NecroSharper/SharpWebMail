@@ -1,3 +1,6 @@
+10/21/2004
+ - Added Romanian translation. Thanks to Biti.
+
 10/20/2004
  - Version number set to 0.9
  - Added Greek translation.
