@@ -346,6 +346,9 @@ namespace anmar.SharpWebMail.UI
 					if ( addressbooks.Count>0 ) {
 						System.Web.UI.WebControls.HyperLink addressbook = (System.Web.UI.WebControls.HyperLink)this.SharpUI.FindControl("newMessageWindowToEmailLabel");
 						addressbook.NavigateUrl = "javascript:window.open('addressbook.aspx', 'addressbook', 'width=400, height=400, resizable=yes, scrollbars=yes');void(true);";
+						addressbook = (System.Web.UI.WebControls.HyperLink)this.SharpUI.FindControl("msgtoolbarAddressBook");
+						addressbook.NavigateUrl = "javascript:window.open('addressbook.aspx', 'addressbook', 'width=400, height=400, resizable=yes, scrollbars=yes');void(true);";
+						addressbook.Visible = true;
 					}
 				}
 				switch ( (int)Application["sharpwebmail/login/mode"] ) {

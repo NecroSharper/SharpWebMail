@@ -65,6 +65,8 @@
                                 <table width="100%"  border="0">
                                   <tr>
 								    <td width="100%"><img src="images/spacer.gif" width="1" height="1"></td>
+									 <td><asp:HyperLink runat="server" ID="msgtoolbarAddressBook" Visible="false"
+                                           ImageUrl="images/msgtoolbar_book.gif"/><img src="images/spacer.gif" width="8" height="14"></td>
                                     <td>
                                       <asp:ImageButton runat="server" ID="msgtoolbarCancel" OnCommand="msgtoolbarCommand" CommandName="cancel" causesvalidation="false"
                                            ImageUrl="images/msgtoolbar_delete.gif"/>

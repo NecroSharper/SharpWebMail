@@ -1,3 +1,7 @@
+11/06/2004
+ - [New Message] Added an icon to access the address books if there is at least one configured.
+ - Released as version 0.9b (317)
+
 11/04/2004
  - [Inbox] Mono did not like a Guid column, stored as string instead. All guid validation
    remains the same.
