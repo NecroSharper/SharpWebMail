@@ -170,7 +170,6 @@ namespace anmar.SharpWebMail
 			int start = (int)npage * npagesize;
 			start = (start<0)?0:start;
 			int end = start + npagesize;
-			System.String tmpvalue;
 			System.Int32 tmpkey;
 
 			System.String field = sort.Split(' ')[0];
@@ -188,7 +187,6 @@ namespace anmar.SharpWebMail
 				msgs.Clear();
 			for ( int i=start; (!error) && i<this.inbox_view.Count && i<end ; i++ ) {
 				tmpkey = (int)this.inbox_view[i][1];
-				tmpvalue = this.inbox_view[i][3].ToString();
 				// We want to get headers only if we do not have them
 				if ( msgs!=null && !msgs.ContainsKey (tmpkey) && this.inbox_view[i][13].Equals(System.DBNull.Value) ) {
 					msgs.Add( this.inbox_view[i][1], this.inbox_view[i][3].ToString() );
