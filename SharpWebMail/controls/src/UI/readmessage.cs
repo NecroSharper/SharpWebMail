@@ -195,7 +195,7 @@ namespace anmar.SharpWebMail.UI
 						this.SharpUI.setVariableLabels();
 					}
 					// Disable delete button if message is already deleted
-					if ( (bool)details[15]==true )
+					if ( (bool)details[15]==true || ( delete && (bool)details[15]==false ) )
 						((System.Web.UI.WebControls.ImageButton)this.SharpUI.FindControl("msgtoolbarDelete")).Enabled=false;
 					this.readMessageWindowDateTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[14].ToString());
 					this.readMessageWindowFromTextLabel.Text = System.Web.HttpUtility.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (details[4].ToString()).ToString());

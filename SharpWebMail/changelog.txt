@@ -1,3 +1,7 @@
+06/31/2004
+ - Bugfix: the committed fix for bug 981749 did not compile.
+ - Bugfix: Closed bug 981654. No fix needed with current version of FCKEditor
+
 06/30/2004
  - Make sure the message UIDL is what it should be before getting its body.
    (this or other message may have been deleted outside of our webmail session)
