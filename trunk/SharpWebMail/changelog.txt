@@ -1,3 +1,6 @@
+11/02/2004
+ - [Inbox] Start refactorization of the inbox handling code in order to improve performance.
+
 10/27/2004
  - [Login] The culture combo is now properly sorted. It was being sorted by culture
    identifier instead of by culture name.
