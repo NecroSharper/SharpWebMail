@@ -4,7 +4,6 @@
  - Test HTML sanitizer
  - Perhaps an XHTML interface
  - Support for more languages
- - Configure multiple POP3 and SMTP servers and select them based on the domain portion of the username
  - Make everything configurable
  - POP before SMTP
  - SMTP AUTH

@@ -107,7 +107,9 @@ namespace anmar.SharpWebMail.UI
 					foreach ( System.String part in parts ) {
 						try {
 							path = System.IO.Path.Combine (path, part);
-						} catch ( System.ArgumentException ) {
+						} catch ( System.ArgumentException e ) {
+							if ( log.IsErrorEnabled )
+								log.Error("Filename has invalid chars", e);
 							// Remove invalid chars
 							System.String tmppart = part;
 							foreach ( char ichar in System.IO.Path.InvalidPathChars ) {
@@ -131,6 +133,20 @@ namespace anmar.SharpWebMail.UI
 			if ( log.IsDebugEnabled ) log.Debug ("Path: " + path );
 			return path;
 		}
+		private System.String getFrom () {
+			System.String from = null;
+			switch ( (int)Application["sharpwebmail/login/mode"] ) {
+				case 2:
+					from = System.String.Format("{0}<{1}>", this.fromname.Value.Trim(), this.fromemail.Value.Trim());
+					break;
+				case 1:
+				case 3:
+				default:
+					from = System.String.Format("{0}<{1}>", this.fromname.Value.Trim(), User.Identity.Name);
+					break;
+			}
+			return from;
+		}
 		/// <summary>
 		/// 
 		/// </summary>
@@ -145,6 +161,7 @@ namespace anmar.SharpWebMail.UI
 
 			this.FCKEditor = (FredCK.FCKeditorV2.FCKeditor)this.SharpUI.FindControl("FCKEditor");
 			this.fromname = (System.Web.UI.HtmlControls.HtmlInputText)this.SharpUI.FindControl("fromname");
+			this.fromemail = (System.Web.UI.HtmlControls.HtmlInputText)this.SharpUI.FindControl("fromemail");
 			this.subject = (System.Web.UI.HtmlControls.HtmlInputText)this.SharpUI.FindControl("subject");
 			this.toemail = (System.Web.UI.HtmlControls.HtmlInputText)this.SharpUI.FindControl("toemail");
 			
@@ -200,12 +217,17 @@ namespace anmar.SharpWebMail.UI
 		private bool sendMail ( out System.String message ) {
 			bool error = false;
 			message = null;
-
-			System.Web.Mail.SmtpMail.SmtpServer = (System.String)Application["mail_server_smtp"];
+			anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/send/servers"];
+			anmar.SharpWebMail.EmailServer server = selector.Select(User.Identity.Name);
+			if ( server==null || !server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.Smtp ) ) {
+				error = true;
+				return !error;
+			}
+			System.Web.Mail.SmtpMail.SmtpServer = server.Host;
 
 			System.Web.Mail.MailMessage mailMessage = new System.Web.Mail.MailMessage();
 			mailMessage.To = this.toemail.Value;
-			mailMessage.From = this.fromname.Value.Trim() + "<" + User.Identity.Name + ">";
+			mailMessage.From = this.getFrom();
 			mailMessage.Subject = this.subject.Value.Trim();
 			System.String format = Request.Form["format"];
 			if ( format!=null && format.Equals("html") ) {
@@ -263,7 +285,11 @@ namespace anmar.SharpWebMail.UI
 			} catch (System.Exception e) {
 				error = true;
 				message = e.Message;
+#if DEBUG
+				message += "<br>InnerException: " + e.InnerException.Message;
+#endif
 				if ( log.IsErrorEnabled ) log.Error ( "Error sending message", e );
+				if ( log.IsErrorEnabled ) log.Error ( "Error sending message (InnerException)", e.InnerException );
 			}
 			mailMessage = null;
 			return !error;
