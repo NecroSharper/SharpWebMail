@@ -338,9 +338,8 @@ namespace anmar.SharpWebMail.UI
 			System.Web.UI.WebControls.RegularExpressionValidator rev = (System.Web.UI.WebControls.RegularExpressionValidator) this.SharpUI.FindControl("toemailValidator");
 			rev.ValidationExpression = @"^" + anmar.SharpMimeTools.ABNF.addr_spec + @"(;\s*" + anmar.SharpMimeTools.ABNF.addr_spec + @")*$";
 			this.newMessageFromPH=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("newMessageFromPH");
-#if !MONO
+
 			if ( !this.IsPostBack ) {
-#endif
 				if ( Application["sharpwebmail/send/addressbook"]!=null ) {
 					System.Collections.SortedList addressbooks = (System.Collections.SortedList)Application["sharpwebmail/send/addressbook"];
 					if ( addressbooks.Count>0 ) {
@@ -367,9 +366,7 @@ namespace anmar.SharpWebMail.UI
 						newMessageWindowFromEmail.Text = User.Identity.Name;
 						break;
 				}
-#if !MONO
 			}
-#endif
 			this.newMessagePH.Visible = true;
 			return;
 		}

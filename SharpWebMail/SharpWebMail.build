@@ -31,6 +31,7 @@
 			<fileset basedir="${build.dir}">
 				<include name="${build.dir}/*.dll" />
 				<include name="${build.dir}/*.pdb" />
+				<include name="${build.dir}/*.mdb" />
 				<include name="${build.ref}/*.dll" />
 			</fileset>
 		</copy>

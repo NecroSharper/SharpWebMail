@@ -1,3 +1,7 @@
+12/01/2004
+ - [New Message] Update FCKEditor config to 2.0rc1.
+ - [New Message] As mono bug #69200 has been fixed, the workaround is not necessary anymore.
+
 11/15/2004
  - [i18n] Added Chinese (Traditional) translation. Thanks to regis huang.
 

@@ -52,6 +52,9 @@
     <File name="..\asp.net\addressbook.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
     <File name=".\src\sharpwebmailconfighandler.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\res\SharpWebMail.pt-BR.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\SharpWebMail.build" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.en.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.zh-CHT.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="SharpMimeTools" localcopy="True" />
