@@ -245,6 +245,8 @@ namespace anmar.SharpWebMail
 		/// <param name="val"></param>
 		protected bool markMessage ( System.String uidl, int col, bool val ) {
 			System.Data.DataRow[] result;
+			if ( uidl==null )
+				return false;
 			uidl = uidl.Replace("'", "''");
 			result = this.inbox.Select("uidl='" + uidl + "'");
 			if ( result.Length==1 && ((bool)result[0][col])==!val ) {

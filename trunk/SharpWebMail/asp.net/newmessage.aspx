@@ -12,12 +12,9 @@
 <script type="text/javascript"><!--
 	window.onload = function () {
 		var oFrame = window.frames[ 'SharpUI:FCKEditor___Frame' ];
+		if ( typeof (oFrame)=='undefined' )
+			oFrame = window.frames[0];
 		if ( typeof (oFrame)=='object' ) {
-			if ( !oFrame.FCKBrowserInfo.IsIE ) {
-				oFrame.document.getElementById('eSource');
-				oFrame.document.getElementById('eWysiwyg').style.display = "";
-				oFrame.document.getElementById('eSource').style.display = "none";
-			}
 			for ( var i=0; i<window.document.sharpwebmailform.format.length; i++ ) {
 				if ( window.document.sharpwebmailform.format[i].value=="html" ) {
 					window.document.sharpwebmailform.format[i].disabled=false;
@@ -30,6 +27,8 @@
 	}
 	function switchFCKEditorMode ( mode ) {
 		var oFrame = window.frames[ 'SharpUI:FCKEditor___Frame' ];
+		if ( typeof (oFrame)=='undefined' )
+			oFrame = window.frames[0];
 		if ( typeof (oFrame)=='object' ) {
 			var FCK = oFrame.FCK;
 			if ( typeof (FCK)=='object' ) {
