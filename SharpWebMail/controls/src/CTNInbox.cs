@@ -24,9 +24,18 @@ using System;
 
 namespace anmar.SharpWebMail
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class CTNInbox {
 		private static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.Data.DataTable inbox;
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.Object[] names = {   "index", typeof(System.Int32),			//  0
 											  "msgnum", typeof(System.Int32),			//  1
 											  "Size", typeof(System.Int32),				//  2
@@ -44,16 +53,35 @@ namespace anmar.SharpWebMail
 											  "Date", typeof(System.DateTime),			// 14
 											  "delete", typeof(System.Boolean),			// 15
 											  "read", typeof(System.Boolean)};			// 16
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.Int32 mcount = 0;
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.Int32 msize = 0;
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.String sort = "msgnum DESC";
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public CTNInbox() {
 			this.init();
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="names"></param>
 		public CTNInbox( System.String[] names ) {
 			this.names = names;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
 		public System.Object[] this [ System.Object uidl ] {
 			get {
 				uidl = uidl.ToString().Replace("'", "''");
@@ -70,6 +98,9 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="list"></param>
+		/// <param name="uidllist"></param>
+		/// <returns></returns>
 		public bool buildMessageTable ( System.Int32[] list, System.String[] uidllist ) {
 			bool error = false;
 
@@ -117,6 +148,10 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="msgs"></param>
+		/// <param name="npage"></param>
+		/// <param name="npagesize"></param>
+		/// <returns></returns>
 		public bool buildMessageList ( System.Collections.Hashtable msgs, int npage, int npagesize ) {
 			bool error = false;
 			int start = (int)npage * npagesize;
@@ -151,9 +186,13 @@ namespace anmar.SharpWebMail
 			}
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="uidl"></param>
 		public void deleteMessage ( System.String uidl ) {
-			this.markMessage( uidl, 15, true );
-			this.mcount--;
+			if ( this.markMessage( uidl, 15, true ) )
+				this.mcount--;
 			return;
 		}
 		/// <summary>
@@ -165,6 +204,8 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="uidl"></param>
+		/// <returns></returns>
 		public System.String getMessageIndex ( System.String uidl ) {
 			System.Data.DataRow[] result;
 			uidl = uidl.Replace("'", "''");
@@ -185,6 +226,9 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="list"></param>
+		/// <param name="uidllist"></param>
+		/// <returns></returns>
 		protected bool initMessageList(System.Int32[] list, System.String[] uidllist) {
 			bool error = false;
 			for ( int i=0 ; i<uidllist.Length; i++) {
@@ -193,18 +237,29 @@ namespace anmar.SharpWebMail
 
 			return !error;
 		}
-		protected void markMessage ( System.String uidl, int col, bool val ) {
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="uidl"></param>
+		/// <param name="col"></param>
+		/// <param name="val"></param>
+		protected bool markMessage ( System.String uidl, int col, bool val ) {
 			System.Data.DataRow[] result;
 			uidl = uidl.Replace("'", "''");
 			result = this.inbox.Select("uidl='" + uidl + "'");
-			if ( result.Length==1 ) {
+			if ( result.Length==1 && result[0][col]==!val ) {
 				result[0][col] = val;
+				return true
+			} else {
+				return false;
 			}
-			return;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="uidl"></param>
+		/// <param name="header"></param>
+		/// <returns></returns>
 		public bool newMessage (System.String uidl, anmar.SharpMimeTools.SharpMimeHeader header ) {
 			bool error = false;
 			System.Data.DataRow[] result;
@@ -232,6 +287,9 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="index"></param>
+		/// <param name="size"></param>
+		/// <param name="uidl"></param>
 		public void newMessage (System.Int32 index, System.Int32 size, System.String uidl) {
 			System.Data.DataRow tmpRow;
 			tmpRow = inbox.NewRow();
@@ -247,13 +305,21 @@ namespace anmar.SharpWebMail
 			this.mcount++;
 			this.msize += size;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="uidl"></param>
 		public void readMessage ( System.String uidl ) {
 			this.markMessage( uidl, 16, true );
 			return;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="uidl"></param>
 		public void undeleteMessage ( System.String uidl ) {
-			this.markMessage( uidl, 15, false );
-			this.mcount++;
+			if ( this.markMessage( uidl, 15, false ))
+				this.mcount++;
 			return;
 		}
 		/// <summary>

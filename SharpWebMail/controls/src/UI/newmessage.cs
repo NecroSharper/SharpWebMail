@@ -52,7 +52,7 @@ namespace anmar.SharpWebMail.UI
 		protected System.Web.UI.WebControls.Label newMessageWindowConfirmation;
 
 		//Editor
-		protected FredCK.FCKeditor FCKEditor; 
+		protected FredCK.FCKeditorV2.FCKeditor FCKEditor; 
 
 		//Panels
 		protected System.Web.UI.WebControls.Panel attachmentsPanel;
@@ -135,7 +135,7 @@ namespace anmar.SharpWebMail.UI
 			this.newMessageWindowAttachmentsList=(System.Web.UI.WebControls.CheckBoxList )this.SharpUI.FindControl("newMessageWindowAttachmentsList");
 			this.newMessageWindowAttachmentsAddedList=(System.Web.UI.WebControls.DataList )this.SharpUI.FindControl("newMessageWindowAttachmentsAddedList");
 
-			this.FCKEditor = (FredCK.FCKeditor)this.SharpUI.FindControl("FCKEditor");
+			this.FCKEditor = (FredCK.FCKeditorV2.FCKeditor)this.SharpUI.FindControl("FCKEditor");
 			this.fromname = (System.Web.UI.HtmlControls.HtmlInputText)this.SharpUI.FindControl("fromname");
 			this.subject = (System.Web.UI.HtmlControls.HtmlInputText)this.SharpUI.FindControl("subject");
 			this.toemail = (System.Web.UI.HtmlControls.HtmlInputText)this.SharpUI.FindControl("toemail");
@@ -181,8 +181,8 @@ namespace anmar.SharpWebMail.UI
 								this.toemail.Value += address["address"];
 							}
 						}
-						this.FCKEditor.CanUpload = FredCK.EnablePropertyValues.False;
-						this.FCKEditor.CanBrowse = FredCK.EnablePropertyValues.False;
+						//this.FCKEditor.CanUpload = FredCK.EnablePropertyValues.False;
+						//this.FCKEditor.CanBrowse = FredCK.EnablePropertyValues.False;
 					}
 					details = null;
 				}
@@ -201,8 +201,8 @@ namespace anmar.SharpWebMail.UI
 			mailMessage.To = this.toemail.Value;
 			mailMessage.From = this.fromname.Value.Trim() + "<" + User.Identity.Name + ">";
 			mailMessage.Subject = this.subject.Value.Trim();
-			mailMessage.Body = bodyStart + FCKEditor.Value + bodyEnd;
 			mailMessage.BodyFormat = System.Web.Mail.MailFormat.Html;
+			mailMessage.Body = bodyStart + FCKEditor.Value + bodyEnd;
 
 			if ( this.Header != null ) {
 				// RFC 2822 3.6.4. Identification fields

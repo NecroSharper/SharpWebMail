@@ -24,20 +24,57 @@ using System;
 
 namespace anmar.SharpWebMail
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class CTNSimplePOP3Client {
 		private static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		private anmar.SharpWebMail.CTNSimpleTCPClient client;
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.Boolean connected;
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.Int32 portnumber;
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.String hostname;
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.String lastResponse;
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.String password;
+		/// <summary>
+		/// 
+		/// </summary>
 		protected System.String username;
 		
+		/// <summary>
+		/// 
+		/// </summary>
 		protected readonly static System.String commandEnd = "\r\n";
+		/// <summary>
+		/// 
+		/// </summary>
 		protected readonly static System.String responseEnd = "\r\n.\r\n";
+		/// <summary>
+		/// 
+		/// </summary>
 		protected readonly static System.String responseEndSL = "\r\n";
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="host"></param>
+		/// <param name="port"></param>
+		/// <param name="user"></param>
+		/// <param name="pass"></param>
 		public CTNSimplePOP3Client( System.String host, System.Int32 port, System.String user, System.String pass ) {
 			client = new anmar.SharpWebMail.CTNSimpleTCPClient();
 			this.hostname = host;
@@ -45,6 +82,14 @@ namespace anmar.SharpWebMail
 			this.portnumber = port;
 			this.username = user;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="host"></param>
+		/// <param name="port"></param>
+		/// <param name="user"></param>
+		/// <param name="pass"></param>
+		/// <param name="timeout"></param>
 		public CTNSimplePOP3Client( System.String host, System.Int32 port, System.String user, System.String pass, System.Double timeout ) {
 			client = new anmar.SharpWebMail.CTNSimpleTCPClient(timeout);
 			this.hostname = host;
@@ -52,6 +97,10 @@ namespace anmar.SharpWebMail
 			this.portnumber = port;
 			this.username = user;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		protected bool connect () {
 			bool error = false;
 			System.String response = null;
@@ -69,6 +118,11 @@ namespace anmar.SharpWebMail
 			}
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="mindex"></param>
+		/// <returns></returns>
 		protected bool dele ( int mindex ) {
 			bool error = false;
 
@@ -77,6 +131,10 @@ namespace anmar.SharpWebMail
 
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		protected bool disconnect () {
 			bool error = false;
 
@@ -88,9 +146,22 @@ namespace anmar.SharpWebMail
 
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="response"></param>
+		/// <returns></returns>
 		protected bool evaluateresponse ( System.String response ) {
 			return response.ToLower().Trim().StartsWith("+ok");
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="inbox"></param>
+		/// <param name="npage"></param>
+		/// <param name="npagesize"></param>
+		/// <param name="askserver"></param>
+		/// <returns></returns>
 		public bool getInboxIndex ( anmar.SharpWebMail.CTNInbox inbox, int npage, int npagesize, bool askserver ) {
 			bool error = false;
 			int total = 0;
@@ -149,17 +220,38 @@ namespace anmar.SharpWebMail
 
 			return !error;
 		}
-
-		public bool getMessage ( ref System.IO.MemoryStream Message, int mindex ) {
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="Message"></param>
+		/// <param name="mindex"></param>
+		/// <param name="uidl"></param>
+		/// <returns></returns>
+		public bool getMessage ( ref System.IO.MemoryStream Message, int mindex, System.String uidl ) {
 			bool error = false;
 
 			error = !this.connect();
 			error = (error)?true:!this.login ( this.username, this.password );
+			if ( !error && uidl!=null ) {
+				System.String[] uidllist = new System.String[mindex];
+				error = !this.uidl( uidllist, mindex );
+				// Make sure mindex message is there and its UIDL is uidl
+				if ( error || uidllist[mindex-1]==null || !uidllist[mindex-1].Equals(uidl) ) {
+					error = true;
+				}
+				uidllist=null;
+			}
 			error = (error)?true:!this.retr ( mindex, ref Message );
 			this.quit();
 
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="Header"></param>
+		/// <param name="mindex"></param>
+		/// <returns></returns>
 		protected bool getMessageHeader ( ref anmar.SharpMimeTools.SharpMimeHeader Header, int mindex ) {
 			bool error = false;
 			System.IO.MemoryStream header = new System.IO.MemoryStream ();
@@ -171,6 +263,12 @@ namespace anmar.SharpWebMail
 
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="user"></param>
+		/// <param name="pass"></param>
+		/// <returns></returns>
 		protected bool login ( System.String user, System.String pass ) {
 			bool error = false;
 
@@ -182,6 +280,11 @@ namespace anmar.SharpWebMail
 
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="list"></param>
+		/// <returns></returns>
 		protected bool list ( System.Int32[] list) {
 			bool error = false;
 			System.IO.MemoryStream response = new System.IO.MemoryStream();
@@ -189,7 +292,7 @@ namespace anmar.SharpWebMail
 
 			// Send LIST and parse response
 			// Send LIST Command
-			error = !this.sendCommand( "LIST", ref response );
+			error = !this.sendCommand( "LIST", ref response, false );
 			//Parse the result
 			if (!error) {
 				System.IO.StreamReader resp = new System.IO.StreamReader(response);
@@ -205,6 +308,12 @@ namespace anmar.SharpWebMail
 			}
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="inbox"></param>
+		/// <param name="all"></param>
+		/// <returns></returns>
 		public bool purgeInbox ( anmar.SharpWebMail.CTNInbox inbox, bool all ) {
 			bool error = false;
 			System.String filter;
@@ -222,14 +331,25 @@ namespace anmar.SharpWebMail
 			}
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="mindex"></param>
+		/// <param name="response"></param>
+		/// <returns></returns>
 		protected bool retr (int mindex, ref System.IO.MemoryStream response) {
 			bool error = false;
 			// Send RETR for mindex message
 			// Send RETR Command
-			error = !this.sendCommand( "RETR " + mindex, ref response );
+			error = !this.sendCommand( "RETR " + mindex, ref response, false );
 
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="cmd"></param>
+		/// <returns></returns>
 		protected bool sendCommand ( System.String cmd ) {
 			bool error = false;
 			System.String response = null;
@@ -251,7 +371,14 @@ namespace anmar.SharpWebMail
 
 			return !error;
 		}
-		protected bool sendCommand ( System.String cmd, ref System.IO.MemoryStream response ) {
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="cmd"></param>
+		/// <param name="response"></param>
+		/// <param name="SLReponse"></param>
+		/// <returns></returns>
+		protected bool sendCommand ( System.String cmd, ref System.IO.MemoryStream response, bool SLReponse ) {
 			bool error = false;
 
 			//Send cmd and evaluate response
@@ -259,7 +386,7 @@ namespace anmar.SharpWebMail
 				// Send cmd
 				error = !client.sendCommand( cmd, commandEnd );
 				// Read Response
-				error = (error)?true:!client.readResponse(ref response, responseEnd);
+				error = (error)?true:!client.readResponse(ref response, ((SLReponse)?responseEndSL:responseEnd) );
 
 				System.Byte[] readBytes = new System.Byte[3];
 				response.Seek(0,0);
@@ -274,6 +401,12 @@ namespace anmar.SharpWebMail
 
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="num"></param>
+		/// <param name="numbytes"></param>
+		/// <returns></returns>
 		protected bool stat (ref int num, ref int numbytes) {
 			bool error = false;
 			// Send STAT and parse response
@@ -293,14 +426,27 @@ namespace anmar.SharpWebMail
 			}
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="mindex"></param>
+		/// <param name="nlines"></param>
+		/// <param name="response"></param>
+		/// <returns></returns>
 		protected bool top (int mindex, ulong nlines, ref System.IO.MemoryStream response) {
 			bool error = false;
 			// Send TOP for mindex message and get nlines lines of the message
 			// Send TOP Command
-			error = !this.sendCommand( "TOP " + mindex + " " + nlines, ref response );
+			error = !this.sendCommand( "TOP " + mindex + " " + nlines, ref response, false );
 
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="list"></param>
+		/// <param name="mindex"></param>
+		/// <returns></returns>
 		protected bool uidl ( System.String[] list, int mindex ) {
 			bool error = false;
 			System.IO.MemoryStream response = new System.IO.MemoryStream();
@@ -308,7 +454,7 @@ namespace anmar.SharpWebMail
 
 			// Send UIDL and parse response
 			// Send UIDL Command
-			error = !this.sendCommand( "UIDL " + ((mindex>0)?mindex.ToString():System.String.Empty), ref response );
+			error = !this.sendCommand( "UIDL " + ((mindex>0)?mindex.ToString():System.String.Empty), ref response, (mindex>0) );
 			//Parse the result
 			if ( !error ) {
 				System.IO.StreamReader resp = new System.IO.StreamReader(response);
@@ -329,6 +475,10 @@ namespace anmar.SharpWebMail
 			}
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		protected bool quit () {
 			bool error = false;
 
@@ -338,11 +488,17 @@ namespace anmar.SharpWebMail
 
 			return !error;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
 		public string errormessage {
 			get {
 				return client.errormessage;
 			}
 		}
+		/// <summary>
+		/// 
+		/// </summary>
 		public string lastMessage {
 			get {
 				return this.lastResponse;

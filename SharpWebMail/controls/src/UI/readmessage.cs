@@ -151,7 +151,7 @@ namespace anmar.SharpWebMail.UI
 				this.newMessageWindowTitle=(System.Web.UI.WebControls.Label )this.SharpUI.FindControl("newMessageWindowTitle");
 				this.readMessageWindowBodyTextHolder=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("readMessageWindowBodyTextHolder");
 				this.readMessageWindowAttachmentsHolder=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("readMessageWindowAttachmentsHolder");
-				((System.Web.UI.WebControls.HyperLink)this.SharpUI.FindControl("msgtoolbarHeader")).Attributes.Add ("onclick", "window.open('headers.aspx?msgid=" + msgid + "', '_blank', 'menubar=no, toolbar=no, resizable=yes, scrollbars=yes, width=500, height=300')");
+				((System.Web.UI.WebControls.HyperLink)this.SharpUI.FindControl("msgtoolbarHeader")).Attributes.Add ("onclick", "window.open('headers.aspx?msgid=" + Server.UrlEncode(msgid) + "', '_blank', 'menubar=no, toolbar=no, resizable=yes, scrollbars=yes, width=500, height=300')");
 			}
 
 			// Disable some things
@@ -190,7 +190,7 @@ namespace anmar.SharpWebMail.UI
 				System.Object[] details = this.SharpUI.Inbox[ msgid ];
 				if ( details != null && details.Length>0 ) {
 					//Delete message
-					if ( delete ) {
+					if ( delete && (bool)details[15]==false ) {
 						this.SharpUI.Inbox.deleteMessage ( msgid );
 						this.SharpUI.setVariableLabels();
 					}
@@ -206,7 +206,7 @@ namespace anmar.SharpWebMail.UI
 						this.newMessageWindowTitle.Text = this.SharpUI.LocalizedRS.GetString("noSubject");
 					anmar.SharpWebMail.CTNSimplePOP3Client client = (anmar.SharpWebMail.CTNSimplePOP3Client)Session["client"];
 					System.IO.MemoryStream ms = new System.IO.MemoryStream ();
-					if ( client.getMessage ( ref ms, System.Int32.Parse(details[1].ToString()) ) ) {
+					if ( client.getMessage ( ref ms, System.Int32.Parse(details[1].ToString() ) , msgid ) ) {
 						anmar.SharpMimeTools.SharpMimeMessage mm = new anmar.SharpMimeTools.SharpMimeMessage ( ms );
 						this.readMessageWindowCcTextLabel.Text = System.Web.HttpUtility.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (mm.Header.Cc).ToString());
 						this.decodeMessage ( mm, this.readMessageWindowBodyTextHolder );
