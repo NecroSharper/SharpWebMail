@@ -32,7 +32,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTrademark("This program is under GPL v2 or later")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("0.9.*")]
+[assembly: AssemblyVersion("0.10.*")]
 
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]

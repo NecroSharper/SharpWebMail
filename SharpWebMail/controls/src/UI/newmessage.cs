@@ -54,11 +54,11 @@ namespace anmar.SharpWebMail.UI
 		//Editor
 		protected FredCK.FCKeditorV2.FCKeditor FCKEditor; 
 
-		//Panels
-		protected System.Web.UI.WebControls.Panel attachmentsPanel;
-		protected System.Web.UI.WebControls.Panel confirmationPanel;
-		protected System.Web.UI.WebControls.Panel newMessageFromPanel;
-		protected System.Web.UI.WebControls.Panel newMessagePanel;
+		//PlaceHolders
+		protected System.Web.UI.WebControls.PlaceHolder attachmentsPH;
+		protected System.Web.UI.WebControls.PlaceHolder confirmationPH;
+		protected System.Web.UI.WebControls.PlaceHolder newMessageFromPH;
+		protected System.Web.UI.WebControls.PlaceHolder newMessagePH;
 
 		protected System.Web.UI.WebControls.PlaceHolder newattachmentPH;
 
@@ -152,9 +152,9 @@ namespace anmar.SharpWebMail.UI
 		/// </summary>
 		protected void mainInterface ( anmar.SharpWebMail.CTNInbox inbox ) {
 			this.newattachmentPH=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("newattachmentPH");
-			this.attachmentsPanel=(System.Web.UI.WebControls.Panel )this.SharpUI.FindControl("attachmentsPanel");
-			this.confirmationPanel=(System.Web.UI.WebControls.Panel )this.SharpUI.FindControl("confirmationPanel");
-			this.newMessagePanel=(System.Web.UI.WebControls.Panel )this.SharpUI.FindControl("newMessagePanel");
+			this.attachmentsPH=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("attachmentsPH");
+			this.confirmationPH=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("confirmationPH");
+			this.newMessagePH=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("newMessagePH");
 			this.newMessageWindowAttachFile=( System.Web.UI.HtmlControls.HtmlInputFile )this.SharpUI.FindControl("newMessageWindowAttachFile");
 			this.newMessageWindowAttachmentsList=(System.Web.UI.WebControls.CheckBoxList )this.SharpUI.FindControl("newMessageWindowAttachmentsList");
 			this.newMessageWindowAttachmentsAddedList=(System.Web.UI.WebControls.DataList )this.SharpUI.FindControl("newMessageWindowAttachmentsAddedList");
@@ -175,9 +175,9 @@ namespace anmar.SharpWebMail.UI
 
 			this.SharpUI.refreshPageImageButton.Click += new System.Web.UI.ImageClickEventHandler(refreshPageButton_Click);
 
-			// Disable Panels
-			this.attachmentsPanel.Visible = false;
-			this.confirmationPanel.Visible = false;
+			// Disable PlaceHolders
+			this.attachmentsPH.Visible = false;
+			this.confirmationPH.Visible = false;
 
 			// Disable some things
 			this.SharpUI.nextPageImageButton.Enabled = false;
@@ -311,9 +311,9 @@ namespace anmar.SharpWebMail.UI
 
 		private void showAttachmentsPanel () {
 			if ( Session["sharpwebmail/send/message/temppath"]!=null || Session["sharpwebmail/read/message/temppath"]!=null ) {
-				this.newMessagePanel.Visible = false;
+				this.newMessagePH.Visible = false;
 				this.sharpwebmailform.Enctype = "multipart/form-data";
-				this.attachmentsPanel.Visible = true;
+				this.attachmentsPH.Visible = true;
 				if ( Session["sharpwebmail/send/message/temppath"]==null ) {
 					this.newattachmentPH.Visible = false;
 				}
@@ -326,8 +326,8 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		private void showConfirmationPanel () {
-			this.newMessagePanel.Visible = false;
-			this.confirmationPanel.Visible = true;
+			this.newMessagePH.Visible = false;
+			this.confirmationPH.Visible = true;
 			return;
 		}
 
@@ -337,7 +337,7 @@ namespace anmar.SharpWebMail.UI
 		private void showMessagePanel () {
 			System.Web.UI.WebControls.RegularExpressionValidator rev = (System.Web.UI.WebControls.RegularExpressionValidator) this.SharpUI.FindControl("toemailValidator");
 			rev.ValidationExpression = @"^" + anmar.SharpMimeTools.ABNF.addr_spec + @"(;\s*" + anmar.SharpMimeTools.ABNF.addr_spec + @")*$";
-			this.newMessageFromPanel=(System.Web.UI.WebControls.Panel )this.SharpUI.FindControl("newMessageFromPanel");
+			this.newMessageFromPH=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("newMessageFromPH");
 #if !MONO
 			if ( !this.IsPostBack ) {
 #endif
@@ -353,7 +353,7 @@ namespace anmar.SharpWebMail.UI
 				}
 				switch ( (int)Application["sharpwebmail/login/mode"] ) {
 					case 2:
-						this.newMessageFromPanel.Visible = true;
+						this.newMessageFromPH.Visible = true;
 						rev = (System.Web.UI.WebControls.RegularExpressionValidator) this.SharpUI.FindControl("fromemailValidator");
 						rev.ValidationExpression = "^" + anmar.SharpMimeTools.ABNF.addr_spec + "$";
 						if ( this.fromemail.Value.Length==0 && Session["DisplayEmail"]!=null ) {
@@ -370,7 +370,7 @@ namespace anmar.SharpWebMail.UI
 #if !MONO
 			}
 #endif
-			this.newMessagePanel.Visible = true;
+			this.newMessagePH.Visible = true;
 			return;
 		}
 		#endregion Private Methods
