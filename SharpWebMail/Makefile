@@ -37,6 +37,7 @@ SOURCES_SWM = $(BASE_SWM)/controls/src/UI/*.cs \
 		$(BASE_SWM)/controls/src/serverselector.cs \
 		$(BASE_SWM)/controls/src/emailclientfactory.cs \
 		$(BASE_SWM)/controls/src/iemailclient.cs \
+		$(BASE_SWM)/controls/src/sharpwebmailconfighandler.cs \
 		$(BASE_SWM)/controls/src/simpleemailclient.cs \
 		$(BASE_SWM)/controls/src/simpleimapclient.cs 
 
@@ -44,7 +45,7 @@ SOURCES_SWM = $(BASE_SWM)/controls/src/UI/*.cs \
 REFERENCES_SMT= System.Web $(BASE_REF)/log4net
 REFS_SMT= $(addsuffix .dll, $(addprefix /r:, $(REFERENCES_SMT)))
 
-REFERENCES_SWM= System.Web System.Data $(BASE_REF)/log4net  $(BASE_REF)/FredCK.FCKeditorV2 $(BIN_SMT)/SharpMimeTools
+REFERENCES_SWM= System.Web System.Data System.DirectoryServices $(BASE_REF)/log4net  $(BASE_REF)/FredCK.FCKeditorV2 $(BIN_SMT)/SharpMimeTools
 REFS_SWM= $(addsuffix .dll, $(addprefix /r:, $(REFERENCES_SWM)))  
 
 all: SharpMimeTools SharpWebMail
@@ -94,6 +95,9 @@ lang:
 			al /nologo /target:library /embed:$(RESOURCES)/SharpWebMail.$$lang.resources,SharpWebMail.$$lang.resources /culture:$$lang /out:$(ASP_NET)/bin/$$lang/SharpWebMail.resources.dll; \
 		fi; \
 	done; \
+	if [ ! -d $(ASP_NET)/bin/$$lang/ ]; then \
+		mkdir $(ASP_NET)/bin/en/; \
+	fi; \
 	al /nologo /target:library /embed:$(RESOURCES)/SharpWebMail.resources,SharpWebMail.en.resources /culture:en /out:$(ASP_NET)/bin/en/SharpWebMail.resources.dll; \
 
 clean:

@@ -54,7 +54,7 @@ namespace anmar.SharpWebMail
 											  "Date", typeof(System.DateTime),			// 14
 											  "delete", typeof(System.Boolean),			// 15
 											  "read", typeof(System.Boolean),			// 16
-											  "guid", typeof(System.Guid)};			// 17
+											  "guid", typeof(System.String)};			// 17
 		/// <summary>
 		/// 
 		/// </summary>
@@ -313,7 +313,7 @@ namespace anmar.SharpWebMail
 			tmpRow[13] = System.DBNull.Value;
 			tmpRow[15] = false;
 			tmpRow[16] = false;
-			tmpRow[17] = System.Guid.NewGuid();
+			tmpRow[17] = System.Guid.NewGuid().ToString();
 			inbox.Rows.Add (tmpRow);
 			this.mcount++;
 			this.msize += size;
