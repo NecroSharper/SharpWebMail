@@ -1,5 +1,5 @@
   SharpWebMail - ASP.NET Web Mail application written in C#
-    v0.9b     - http://anmar.eu.org/projects/sharpwebmail/
+    v0.10b     - http://anmar.eu.org/projects/sharpwebmail/
 
 Introduction
 --------------------------------
@@ -61,6 +61,21 @@ Installation notes
 Copy the contents of asp.net folder into destination folder and
 tweak web.config settings.
 
+The asp.net/bin folder has the binary version for MS .NET 1.1 (release build).
+
+If you are using other framework take the binaries from the bin folder of the distribution.
+There are builds for the following platforms:
+ - Microsoft .NET Framework 1.1
+ - Microsoft .NET Framework 2.0 Beta 1
+ - Mono 1.0
+ - Mono 2.0
+
+In each one you can select between debug and release version. With the debug one you can see more
+information about exceptions, but its performance will be worse.
+
+The dependencies must be copied also for the new platform. And the localized dlls must be rebuilt using
+the provided controls/bin/resources.cmd
+
 Building
 --------------------------------
 
@@ -82,7 +97,6 @@ Authors
 
  - Angel Marin <anmar at gmx.net> - http://anmar.eu.org/
 
-
 License
 --------------------------------
 
@@ -91,6 +105,7 @@ License
 History
 --------------------------------
 
+01/02/2005 - version 0.10b  - Released milestone 0.10
 11/06/2004 - version 0.9b   - Released milestone 0.9
 10/16/2004 - version 0.8b   - Released milestone 0.8
 09/13/2004 - version 0.7b   - Released milestone 0.7
@@ -103,4 +118,4 @@ History
 
 
 --------------------------------
-Angel Marin 2003 - 2004 - http://anmar.eu.org/
+Angel Marin 2003-2005 - http://anmar.eu.org/

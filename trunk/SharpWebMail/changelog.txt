@@ -1,3 +1,13 @@
+01/02/2005
+ - Update copyright notice.
+ - [Project] Add build targets for 2.0.
+ - [Project] Remove build targets for mono as it is not handled poperly by SD.
+ - [Project] Define build simbols NET_1_1, NET_2_0, API_1_1 and API_2_0.
+ - [nant] Define build simbols RELEASE, NET_1_1, NET_2_0, MONO_1_0, MONO_2_0, API_1_1 and API_2_0.
+ - [nant] Allow depencencies to be common to different framework versions.
+ - Adjust Makefile
+ - Released as version 0.10b (440)
+
 12/28/2004
  - [Inbox] Bugfix: Using an enumerator when we want to delete items is not a wise idea.
  - [nant] Change location of bin folder.
