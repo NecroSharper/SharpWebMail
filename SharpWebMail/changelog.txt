@@ -1,4 +1,11 @@
-08/16/2004
+10/02/2004
+ - Updated cultures_neutral.txt and cultures_specific.txt to reflect .NET 1.1 SP1
+   changes.
+ - Changed the logic in language selection code. Now if none of the accepted languajes
+   of the client can be parsed, or aren't supported, the default_lang setting is used.
+   If it is configured to something not available then english is used.
+
+09/16/2004
  - Version number set to 0.8
  - Added French translation. Thanks to Michel C.
  - After several issues with email servers' uid generation, I've changed the

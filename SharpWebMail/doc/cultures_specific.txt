@@ -1,4 +1,4 @@
-﻿Specific Cultures .NET Framework 1.1
+﻿Specific Cultures .NET Framework 1.1 SP1
 
 Culture    English Name                                            Parent Culture
 ---------- ------------------------------------------------------- --------------
@@ -115,8 +115,8 @@ sa-IN      Sanskrit (India)                                        sa
 sk-SK      Slovak (Slovakia)                                       sk
 sl-SI      Slovenian (Slovenia)                                    sl
 sq-AL      Albanian (Albania)                                      sq
-sr-SP-Cyrl Serbian (Cyrillic) (Serbia)                             hr
-sr-SP-Latn Serbian (Latin) (Serbia)                                hr
+sr-SP-Cyrl Serbian (Cyrillic) (Serbia and Montenegro)              sr
+sr-SP-Latn Serbian (Latin) (Serbia and Montenegro)                 sr
 sv-FI      Swedish (Finland)                                       sv
 sv-SE      Swedish (Sweden)                                        sv
 sw-KE      Swahili (Kenya)                                         sw
