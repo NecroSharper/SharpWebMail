@@ -79,7 +79,7 @@ namespace anmar.SharpWebMail.UI
 			}
 		}
 		protected void closeSession () {
-			if ( (IsPostBack)&&(Request.IsAuthenticated == true) ) {
+			if ( Request.IsAuthenticated ) {
 				anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
 				// Delete messages marked for deletion
 				if ( client!=null ) {
@@ -99,7 +99,7 @@ namespace anmar.SharpWebMail.UI
 				Session.Remove ("DisplayEmail");
 				Session.Remove ("DisplayName");
 				// Go to login page
-				Response.Redirect("login.aspx");
+				Response.Redirect("default.aspx");
 			}
 		}
 		protected void mainInterface (  ) {
@@ -180,12 +180,10 @@ namespace anmar.SharpWebMail.UI
 		/*
 		 * Page Events
 		*/
-		protected void Page_Disposed ( System.EventArgs args ) {
-			Session["inbox"] = this.inbox;
-			this.inbox = null;
-			this.resources = null;
-		}
 		protected void Page_Init () {
+			if ( Request.IsAuthenticated && Session["client"]==null )
+				this.closeSession();
+
 		    if ( this.centralPanel!=null ) {
 	            this.centralPanel.InstantiateIn (this.centralPanelHolder);
 		    }

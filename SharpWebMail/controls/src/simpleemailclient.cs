@@ -90,7 +90,7 @@ namespace anmar.SharpWebMail
 		/// <param name="user"></param>
 		/// <param name="pass"></param>
 		/// <param name="timeout"></param>
-		public SimpleEmailClient( System.String host, System.Int32 port, System.String user, System.String pass, System.Double timeout ) {
+		public SimpleEmailClient( System.String host, System.Int32 port, System.String user, System.String pass, long timeout ) {
 			client = new anmar.SharpWebMail.CTNSimpleTCPClient(timeout);
 			this.hostname = host;
 			this.password = pass;

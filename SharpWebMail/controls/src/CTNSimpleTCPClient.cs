@@ -30,12 +30,12 @@ namespace anmar.SharpWebMail
 		private static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		protected System.String lastErrorMessage;
 		protected System.Net.Sockets.TcpClient client;
-		protected System.Double timeoutResponse = 20000;
+		protected long timeoutResponse = 20000;
 
 		public CTNSimpleTCPClient() {
 		}
 		
-		public CTNSimpleTCPClient(System.Double timeout ) {
+		public CTNSimpleTCPClient( long timeout ) {
 			this.timeoutResponse = timeout;
 		}
 
@@ -115,19 +115,18 @@ namespace anmar.SharpWebMail
 			byte[] readBytes = new byte[client.ReceiveBufferSize];
 			int nbytes = 0;
 			System.String lastBoundary = System.String.Empty;
-			System.Timers.Timer aTimer = new System.Timers.Timer(this.timeoutResponse);
+			WaitState state = new WaitState(true);
+			System.Threading.Timer aTimer = new System.Threading.Timer(new System.Threading.TimerCallback(this.StopWaiting), state, System.Threading.Timeout.Infinite,  System.Threading.Timeout.Infinite);
 
 			if ( log.IsDebugEnabled ) log.Debug ( "Reading response" );
 			// We wait until data is available but only if Stream is open
 			// We setup a timer that stops the loop after x seconds
-			aTimer.AutoReset = false;
-			aTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.stopWaiting);
-
-			for ( aTimer.Enabled = true; !error && ns.CanRead && ns.CanWrite && !ns.DataAvailable && aTimer.Enabled ; ){System.Threading.Thread.Sleep(50);}
+			for ( aTimer.Change(this.timeoutResponse,  System.Threading.Timeout.Infinite); !error && ns.CanRead && ns.CanWrite && !ns.DataAvailable && state.Status; ){System.Threading.Thread.Sleep(50);}
+			state.Status = true;
 
 			// If I can read from NetworkStream and there is
 			// some data, I get it
-			for ( aTimer.Interval = this.timeoutResponse; !error && ns.CanRead && aTimer.Enabled && (ns.DataAvailable || !(lastBoundary.Equals(waitFor)) ) ; nbytes = 0) {
+			for ( aTimer.Change(this.timeoutResponse,  System.Threading.Timeout.Infinite); !error && ns.CanRead && state.Status && (ns.DataAvailable || !(lastBoundary.Equals(waitFor)) ) ; nbytes = 0) {
 				try {
 					if ( ns.DataAvailable )
 						nbytes = ns.Read( readBytes, 0, client.ReceiveBufferSize );
@@ -164,7 +163,8 @@ namespace anmar.SharpWebMail
 						}
 					}
 					// Reset timer
-					aTimer.Interval = this.timeoutResponse;
+					aTimer.Change(this.timeoutResponse,  System.Threading.Timeout.Infinite);
+					state.Status = true;
 				}
 			}
 			response.Flush();
@@ -223,7 +223,8 @@ namespace anmar.SharpWebMail
 			}
 			return !error;
 		}
-		protected void stopWaiting (System.Object source, System.Timers.ElapsedEventArgs e) {
+		protected void StopWaiting (System.Object state) {
+			((WaitState)state).Status = false;
 			return;
 		}
 
@@ -232,5 +233,16 @@ namespace anmar.SharpWebMail
 				return this.lastErrorMessage;
 			}
 		}
+		private class WaitState {
+			private bool wait;
+			public WaitState (bool wait) {
+				this.wait = wait;
+			}
+			public bool Status {
+				get { return this.wait;}
+				set { this.wait=value;}
+			}
+		}
 	}
+	
 }
