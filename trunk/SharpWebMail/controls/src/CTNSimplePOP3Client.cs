@@ -49,7 +49,7 @@ namespace anmar.SharpWebMail
 		/// <param name="user"></param>
 		/// <param name="pass"></param>
 		/// <param name="timeout"></param>
-		public CTNSimplePOP3Client( System.String host, System.Int32 port, System.String user, System.String pass, System.Double timeout ) : base(host, port, user, pass, timeout) {
+		public CTNSimplePOP3Client( System.String host, System.Int32 port, System.String user, System.String pass, long timeout ) : base(host, port, user, pass, timeout) {
 			this.commandEnd = "\r\n";
 			this.responseEnd = "\r\n.\r\n";
 			this.responseEndSL = "\r\n";

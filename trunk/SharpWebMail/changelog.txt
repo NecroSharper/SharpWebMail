@@ -1,3 +1,14 @@
+05/08/2005
+ - [config] Fix formatting.
+ - [config] Enable slidingExpiration to the default <authentication> config.
+ - [net] Timeout setting for clients is an integer.
+ - [net] There is no need of a real Timer to timeout read operations so now use the lightweight version.
+   Now fewer system resources should be needed.
+ - [GlobalUI] Removed some unused code.
+ - [GlobalUI] Redirect to default.aspx when closing the session, the Forms Authenticator should do the
+   rest of the work.
+ - [GlobalUI] If we are authenticated, but session data is not consistent, then close session.
+
 05/05/2005
  - [i18n] Added German translation. Thanks to Christian O. Metz.
 

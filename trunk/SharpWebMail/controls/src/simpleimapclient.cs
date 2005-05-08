@@ -66,7 +66,7 @@ namespace anmar.SharpWebMail
 		/// <param name="user"></param>
 		/// <param name="pass"></param>
 		/// <param name="timeout"></param>
-		public SimpleIMAPClient( System.String host, System.Int32 port, System.String user, System.String pass, System.Double timeout ) : base(host, port, user, pass, timeout) {
+		public SimpleIMAPClient( System.String host, System.Int32 port, System.String user, System.String pass, long timeout ) : base(host, port, user, pass, timeout) {
 			this.folder = "INBOX";
 			this.server_delimiter = "/";
 			this.taggen = new System.Random();
