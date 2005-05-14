@@ -43,6 +43,8 @@ namespace anmar.SharpWebMail
 			bool error = false;
 			this.init();
 			try {
+				if ( log.IsDebugEnabled )
+					log.Debug(System.String.Concat("Connecting to host: ", host, " port: ", port));
 				client.Connect( host, port );
 			} catch ( System.ArgumentNullException e ) {
 				error = true;
