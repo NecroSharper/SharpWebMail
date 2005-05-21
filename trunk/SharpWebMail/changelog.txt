@@ -1,3 +1,6 @@
+05/21/2005
+ - [i18n] Added Turkish translation. Thanks to Bogac Guven.
+
 05/15/2005
  - [New Message] Updated FCKeditor config to 2.0fc.
 
