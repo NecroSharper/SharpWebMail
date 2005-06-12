@@ -54,7 +54,7 @@ SOURCES_SWM = $(BASE_SWM)/controls/src/UI/*.cs \
 REFERENCES_SMT= System.Web $(BASE_REF)/log4net
 REFS_SMT= $(addsuffix .dll, $(addprefix /r:, $(REFERENCES_SMT)))
 
-REFERENCES_SWM= System.Web System.Data System.DirectoryServices $(BASE_REF)/log4net  $(BASE_REF)/FredCK.FCKeditorV2 $(BIN_SMT)/SharpMimeTools $(BASE_REF)/OpenSmtp
+REFERENCES_SWM= System.Web System.Data System.DirectoryServices $(BASE_REF)/log4net  $(BASE_REF)/FredCK.FCKeditorV2 $(BIN_SMT)/SharpMimeTools $(BASE_REF)/OpenSmtp $(BASE_REF)/DotNetOpenMail
 REFS_SWM= $(addsuffix .dll, $(addprefix /r:, $(REFERENCES_SWM)))  
 
 all: SharpMimeTools SharpWebMail
