@@ -248,6 +248,8 @@ namespace anmar.SharpWebMail.UI
 							if ( attachment!=null ) {
 								if ( message is System.Web.Mail.MailMessage )
 									((System.Web.Mail.MailMessage)message).Attachments.Add(new System.Web.Mail.MailAttachment(attachment));
+								else if ( message is DotNetOpenMail.EmailMessage )
+									((DotNetOpenMail.EmailMessage)message).AddMixedAttachment(new DotNetOpenMail.FileAttachment(new System.IO.FileInfo(attachment)));
 								else if ( message is OpenSmtp.Mail.MailMessage )
 									((OpenSmtp.Mail.MailMessage)message).AddAttachment(attachment);
 								if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("Attached {0}", attachment) );
@@ -302,6 +304,54 @@ namespace anmar.SharpWebMail.UI
 #endif
 				if ( log.IsErrorEnabled ) log.Error ( "Error sending message", e );
 				if ( log.IsErrorEnabled ) log.Error ( "Error sending message (InnerException)", e.InnerException );
+			}
+			mailMessage = null;
+			return message;
+		}
+		private System.String SendMailDotNetOpenMail ( anmar.SharpWebMail.EmailServerInfo server ) {
+			System.String message = null;
+			DotNetOpenMail.EmailMessage mailMessage = new DotNetOpenMail.EmailMessage();
+			mailMessage.FromAddress = new DotNetOpenMail.EmailAddress(this.GetFromAddress(), this.fromname.Value);
+			System.String[] tokens = anmar.SharpMimeTools.ABNF.address_regex.Split(this.toemail.Value);
+			foreach ( System.String token in tokens ) {
+				if ( anmar.SharpMimeTools.ABNF.address_regex.IsMatch(token ) )
+					mailMessage.AddToAddress (new DotNetOpenMail.EmailAddress(token.Trim()));
+			}
+			mailMessage.Subject = this.subject.Value.Trim();
+			System.String format = Request.Form["format"];
+			if ( format!=null && format.Equals("html") ) {
+				mailMessage.HtmlPart = new DotNetOpenMail.HtmlAttachment(bodyStart + FCKEditor.Value + bodyEnd);
+			} else {
+				mailMessage.TextPart = new DotNetOpenMail.TextAttachment(FCKEditor.Value);
+			}
+
+			if ( this._headers != null ) {
+				// RFC 2822 3.6.4. Identification fields
+				if ( this._headers["Message-ID"]!=null ) {
+					mailMessage.AddCustomHeader("In-Reply-To", this._headers["Message-ID"]);
+					mailMessage.AddCustomHeader("References", this._headers["Message-ID"]);
+				}
+				if ( this._headers["References"]!=null ) {
+					mailMessage.AddCustomHeader("References", System.String.Concat (this._headers["References"], " ", this._headers["Message-ID"]).Trim());
+				} else if ( this._headers["In-Reply-To"]!=null && this._headers["In-Reply-To"].IndexOf('>')==this._headers["In-Reply-To"].LastIndexOf('>') ) {
+					mailMessage.AddCustomHeader("References", System.String.Concat (this._headers["In-Reply-To"], " ", this._headers["Message-ID"]).Trim());
+				}
+			}
+			mailMessage.XMailer = System.String.Concat (Application["product"], " ", Application["version"]);
+			this.ProcessMessageAttachments(mailMessage);
+			try {
+				if ( log.IsDebugEnabled) log.Error ( "Sending message" );
+				DotNetOpenMail.SmtpServer SmtpMail = new DotNetOpenMail.SmtpServer(server.Host, server.Port);
+				if ( server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.SmtpAuth) ) {
+					anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
+					SmtpMail.SmtpAuthToken = new DotNetOpenMail.SmtpAuth.SmtpAuthToken(client.UserName, client.Password);
+				}
+				mailMessage.Send(SmtpMail);
+				SmtpMail=null;
+				if ( log.IsDebugEnabled) log.Error ( "Message sent" );
+			} catch (System.Exception e) {
+				message = e.Message;
+				if ( log.IsErrorEnabled ) log.Error ( "Error sending message", e );
 			}
 			mailMessage = null;
 			return message;
@@ -491,6 +541,8 @@ namespace anmar.SharpWebMail.UI
 				                      || server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.SmtpAuth) ) ) {
 					if ( Application["sharpwebmail/send/message/smtp_engine"].Equals("opensmtp") )
 						message = this.SendMailOpenSmtp(server);
+					else if ( Application["sharpwebmail/send/message/smtp_engine"].Equals("dotnetopenmail") )
+						message = this.SendMailDotNetOpenMail(server);
 					else
 						message = this.SendMail( server );
 	

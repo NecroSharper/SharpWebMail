@@ -1,3 +1,9 @@
+06/12/2005
+ - [New Message] Added support to DotNetOpenMail as the SMTP engine.
+ - [config] Documented the possibility to use DotNetOpenMail.
+ - [nant] Added DotNetOpenMail reference.
+ - Added DotNetOpenMail reference to the makefile.
+
 05/21/2005
  - [i18n] Added Turkish translation. Thanks to Bogac Guven.
 
