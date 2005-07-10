@@ -71,7 +71,7 @@
 				<include name="${build.ref.platform}/log4net.dll" />
 				<include name="${build.ref.platform}/OpenSmtp.dll" />
 				<include name="${build.ref.platform}/DotNetOpenMail.dll" />
-				<include name="${build.ref.platform.version}/SharpMimeTools.dll" />
+				<include name="${build.ref.platform}/SharpMimeTools.dll" />
 				<include name="System.Data.dll" />
 				<include name="System.Directoryservices.dll" />
 				<include name="System.Web.dll" />

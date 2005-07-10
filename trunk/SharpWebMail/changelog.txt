@@ -1,5 +1,7 @@
 07/10/2005
  - [i18n] Added Arabic translation. Thanks to Chawki Mguedmini.
+ - [nant] Changed a reference path.
+ - [Project] Fixed a reference path.
 
 06/12/2005
  - [New Message] Added support to DotNetOpenMail as the SMTP engine.
