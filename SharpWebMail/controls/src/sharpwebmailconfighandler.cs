@@ -91,6 +91,7 @@ namespace anmar.SharpWebMail
 			config.Add ( "sharpwebmail/read/inbox/stat", 2 );
 			config.Add ( "sharpwebmail/read/message/sanitizer_mode", 0 );
 			config.Add ( "sharpwebmail/read/message/temppath", System.String.Empty );
+			config.Add ( "sharpwebmail/send/message/attach_ui", "normal" );
 			config.Add ( "sharpwebmail/send/message/sanitizer_mode", 0 );
 			config.Add ( "sharpwebmail/send/message/smtp_engine", System.String.Empty );
 			config.Add ( "sharpwebmail/send/message/temppath", System.String.Empty );
