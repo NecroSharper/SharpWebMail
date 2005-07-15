@@ -1,3 +1,8 @@
+07/15/2005
+ - [Config] Added sort option in the inbox section. It sets the expression used to sort
+   the messages in the inbox.
+ - [inbox] Use the above option as the default sort expression for the inbox.
+
 07/10/2005
  - [i18n] Added Arabic translation. Thanks to Chawki Mguedmini.
  - [nant] Changed a reference path.

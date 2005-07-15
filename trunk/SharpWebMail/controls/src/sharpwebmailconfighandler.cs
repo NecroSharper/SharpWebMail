@@ -87,6 +87,7 @@ namespace anmar.SharpWebMail
 			config.Add ( "sharpwebmail/login/serverselection", System.String.Empty );
 			config.Add ( "sharpwebmail/login/title", System.String.Empty );
 			config.Add ( "sharpwebmail/read/inbox/pagesize", 10 );
+			config.Add ( "sharpwebmail/read/inbox/sort", "msgnum DESC" );
 			config.Add ( "sharpwebmail/read/inbox/stat", 2 );
 			config.Add ( "sharpwebmail/read/message/sanitizer_mode", 0 );
 			config.Add ( "sharpwebmail/read/message/temppath", System.String.Empty );
