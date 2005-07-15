@@ -2,6 +2,11 @@
  - [Config] Added sort option in the inbox section. It sets the expression used to sort
    the messages in the inbox.
  - [inbox] Use the above option as the default sort expression for the inbox.
+ - [New Message] Now when you add a new file it's automatically selected as an attachment.
+ - [Config] Added attach_ui option in the send section. If controls the way the user interface
+   for adding attachments works.
+ - [New Message] If attach_ui is set to simple, then once uploaded the new file, return to the
+   message.
 
 07/10/2005
  - [i18n] Added Arabic translation. Thanks to Chawki Mguedmini.

@@ -72,14 +72,33 @@ namespace anmar.SharpWebMail.UI
 		#region Private Methods
 
 		protected void bindAttachments () {
+			System.Collections.ArrayList selected = null;
 			System.Collections.SortedList attachments = new System.Collections.SortedList();
 			bindAttachments ( attachments, Session["sharpwebmail/read/message/temppath"] );
 			if ( !Session["sharpwebmail/read/message/temppath"].Equals(Session["sharpwebmail/send/message/temppath"]) )
 				bindAttachments ( attachments, Session["sharpwebmail/send/message/temppath"] );
+			if ( this.newMessageWindowAttachmentsList.SelectedIndex!=-1 ) {
+				selected = new System.Collections.ArrayList();
+				foreach ( System.Web.UI.WebControls.ListItem item in this.newMessageWindowAttachmentsList.Items ) {
+					if ( item.Selected )
+						selected.Add(item.Value);
+				}
+			}
+
 			this.newMessageWindowAttachmentsList.DataSource = attachments;
 			this.newMessageWindowAttachmentsList.DataTextField = "Value";
 			this.newMessageWindowAttachmentsList.DataValueField = "Key";
 			this.newMessageWindowAttachmentsList.DataBind();
+			if ( selected!=null ) {
+				foreach ( System.String itemselected in selected ) {
+					foreach ( System.Web.UI.WebControls.ListItem item in this.newMessageWindowAttachmentsList.Items ) {
+						if ( item.Value.Equals(itemselected) ) {
+							item.Selected = true;
+							break;
+						}
+					}
+				}
+			}
 		}
 		protected void bindAttachments ( System.Collections.SortedList attachments, System.Object pathname ) {
 			if ( pathname!=null ) {
@@ -490,9 +509,17 @@ namespace anmar.SharpWebMail.UI
 				System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo ( path );
 				try {
 					dir.Create();
-					if ( dir.GetFiles (System.IO.Path.GetFileName(this.newMessageWindowAttachFile.PostedFile.FileName) ).Length==0 )
-						this.newMessageWindowAttachFile.PostedFile.SaveAs (System.IO.Path.Combine (path, System.IO.Path.GetFileName(this.newMessageWindowAttachFile.PostedFile.FileName)));
-					this.bindAttachments();
+					System.String filename = System.IO.Path.GetFileName(this.newMessageWindowAttachFile.PostedFile.FileName);
+					if ( dir.GetFiles (filename).Length==0 ) {
+						this.newMessageWindowAttachFile.PostedFile.SaveAs (System.IO.Path.Combine (path, filename));
+						this.bindAttachments();
+						foreach ( System.Web.UI.WebControls.ListItem item in this.newMessageWindowAttachmentsList.Items ) {
+							if ( item.Value.Equals(System.IO.Path.Combine(dir.Name, filename)) )
+								item.Selected = true;
+						}
+						if ( Application["sharpwebmail/send/message/attach_ui"].Equals("simple") )
+							this.Attach_Click(sender, args);
+					}
 				} catch ( System.Exception e ) {
 					if ( log.IsErrorEnabled )
 						log.Error ("", e);
