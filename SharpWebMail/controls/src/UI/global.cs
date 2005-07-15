@@ -50,7 +50,10 @@ namespace anmar.SharpWebMail.UI
 			Session["effectiveculture"] = getEffectiveCulture(System.Threading.Thread.CurrentThread.CurrentCulture);
 			Session["resources"] = resources.GetResourceSet(System.Threading.Thread.CurrentThread.CurrentUICulture, true, true);
 			// Inbox Object
-			Session["inbox"] = new anmar.SharpWebMail.CTNInbox();
+			anmar.SharpWebMail.CTNInbox inbox = new anmar.SharpWebMail.CTNInbox();
+			if ( Application["sharpwebmail/read/inbox/sort"]!=null )
+				inbox.SortExpression = Application["sharpwebmail/read/inbox/sort"].ToString();
+			Session["inbox"] = inbox;
 
 			Session["sharpwebmail/read/message/temppath"] = parseTempFolder(Application["sharpwebmail/read/message/temppath"], Session.SessionID);
 			Session["sharpwebmail/send/message/temppath"] = parseTempFolder(Application["sharpwebmail/send/message/temppath"], Session.SessionID);

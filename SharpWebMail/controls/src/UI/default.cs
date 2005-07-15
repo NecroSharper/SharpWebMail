@@ -33,7 +33,7 @@ namespace anmar.SharpWebMail.UI
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		protected bool resetsearch = false;
 		protected bool refresh = false;
-		protected System.String sort = "msgnum DESC";
+		protected System.String sort;
 		protected anmar.SharpWebMail.UI.globalUI SharpUI;
 		protected System.Collections.Specialized.StringCollection delete = null;
 
@@ -73,6 +73,9 @@ namespace anmar.SharpWebMail.UI
 			this.buildDataGrid ();
 			System.Data.DataView tmpV = this.SharpUI.Inbox.Inbox;
 			this.sort = this.SharpUI.Inbox.SortExpression;
+			if ( (this.sort==null || this.sort.Length==0) && Application["sharpwebmail/read/inbox/sort"]!=null ) {
+				this.sort = Application["sharpwebmail/read/inbox/sort"].ToString();
+			}
 			if ( this.sort==null || this.sort.Length==0 ) {
 				this.sort = "msgnum DESC";
 			}
