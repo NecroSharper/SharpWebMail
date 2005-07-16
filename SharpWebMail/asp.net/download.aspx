@@ -1,1 +1,0 @@
-<%@ Page Language="C#"  Inherits="anmar.SharpWebMail.UI.download" trace="false" validateRequest="true" %>
