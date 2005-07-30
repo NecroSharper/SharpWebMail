@@ -1,3 +1,6 @@
+07/30/2005
+ - [i18n] Updated Swedish translation. Thanks to Jerry Lidén.
+
 07/15/2005
  - [Config] Added sort option in the inbox section. It sets the expression used to sort
    the messages in the inbox.
