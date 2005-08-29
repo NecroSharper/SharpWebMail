@@ -1,3 +1,11 @@
+08/29/2005
+ - [i18n] Added Hungarian translation. Thanks to Peter Molnar.
+
+08/13/2005
+ - [inbox] Check the valitity of the SortExpression before allowing it.
+ - [Project] Reference the SharpMimeTools dll instead of the project to make both
+   projects completely independent.
+
 07/30/2005
  - [i18n] Updated Swedish translation. Thanks to Jerry Lidén.
 
