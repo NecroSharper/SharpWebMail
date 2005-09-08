@@ -399,8 +399,11 @@ namespace anmar.SharpWebMail
 				return this.sort;
 			}
 			set {
-				if ( value!=null && value.Length>0 )
-					this.sort = value;
+				if ( value!=null && value.Length>0 ) {
+					System.String field = value.Split(' ')[0];
+					if ( this.inbox.Columns.Contains(field) )
+						this.sort = value;
+				}
 			}
 		}
 	}

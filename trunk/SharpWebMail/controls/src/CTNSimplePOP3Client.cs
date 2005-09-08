@@ -76,8 +76,12 @@ namespace anmar.SharpWebMail
 					command = "LIST";
 					break;
 				case anmar.SharpWebMail.EmailClientCommand.ListUID:
-					if ( args.Length==1 )
-						command = System.String.Format("UIDL {0}", args[0]);
+					if ( args.Length==1 ) {
+						if ( args[0]==null || args[0].Equals(System.String.Empty) )
+							command = "UIDL";
+						else
+							command = System.String.Concat("UIDL ", args[0]);
+					}
 					break;
 				case anmar.SharpWebMail.EmailClientCommand.Logout:
 					command = "QUIT";

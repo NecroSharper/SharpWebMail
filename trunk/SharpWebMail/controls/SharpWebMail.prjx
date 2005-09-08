@@ -58,13 +58,18 @@
     <File name=".\res\SharpWebMail.nl.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
     <File name=".\res\SharpWebMail.pl.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
     <File name=".\res\SharpWebMail.sv.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.ar.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.de.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.hu.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.id.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\res\SharpWebMail.tr.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
   </Contents>
   <References>
-    <Reference type="Project" refto="SharpMimeTools" localcopy="True" />
     <Reference type="Assembly" refto="..\bin\log4net.dll" localcopy="True" />
     <Reference type="Assembly" refto="..\bin\FredCK.FCKeditorV2.dll" localcopy="True" />
     <Reference type="Assembly" refto="..\bin\OpenSmtp.dll" localcopy="True" />
     <Reference type="Assembly" refto="..\bin\DotNetOpenMail.dll" localcopy="True" />
+    <Reference type="Assembly" refto="..\bin\net\SharpMimeTools.dll" localcopy="True" />
   </References>
   <DeploymentInformation target="" script="" strategy="Assembly" />
   <Configuration runwithwarnings="False" name="Debug">

@@ -1,13 +1,13 @@
 09/08/2005
  - [i18n] Added Indonesian translation. Thanks to Riwut Libinuko.
-
-08/29/2005
- - [i18n] Added Hungarian translation. Thanks to Peter Molnar.
-
-08/13/2005
  - [inbox] Check the valitity of the SortExpression before allowing it.
  - [Project] Reference the SharpMimeTools dll instead of the project to make both
    projects completely independent.
+ - [Makefile] Do no build SharpMimeTools, just reference it.
+ - [pop3client] Do not send extra space when sending UIDL command.
+
+08/29/2005
+ - [i18n] Added Hungarian translation. Thanks to Peter Molnar.
 
 07/30/2005
  - [i18n] Updated Swedish translation. Thanks to Jerry Lidén.
