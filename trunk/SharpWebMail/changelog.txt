@@ -1,3 +1,6 @@
+09/08/2005
+ - [i18n] Added Indonesian translation. Thanks to Riwut Libinuko.
+
 08/29/2005
  - [i18n] Added Hungarian translation. Thanks to Peter Molnar.
 
