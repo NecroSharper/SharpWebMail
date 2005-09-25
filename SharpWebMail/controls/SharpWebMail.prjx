@@ -65,10 +65,10 @@
     <File name=".\res\SharpWebMail.tr.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
   </Contents>
   <References>
-    <Reference type="Assembly" refto="..\bin\log4net.dll" localcopy="True" />
-    <Reference type="Assembly" refto="..\bin\FredCK.FCKeditorV2.dll" localcopy="True" />
-    <Reference type="Assembly" refto="..\bin\OpenSmtp.dll" localcopy="True" />
-    <Reference type="Assembly" refto="..\bin\DotNetOpenMail.dll" localcopy="True" />
+    <Reference type="Assembly" refto="..\bin\net\log4net.dll" localcopy="True" />
+    <Reference type="Assembly" refto="..\bin\net\FredCK.FCKeditorV2.dll" localcopy="True" />
+    <Reference type="Assembly" refto="..\bin\net\OpenSmtp.dll" localcopy="True" />
+    <Reference type="Assembly" refto="..\bin\net\DotNetOpenMail.dll" localcopy="True" />
     <Reference type="Assembly" refto="..\bin\net\SharpMimeTools.dll" localcopy="True" />
   </References>
   <DeploymentInformation target="" script="" strategy="Assembly" />

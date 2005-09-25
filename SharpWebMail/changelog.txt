@@ -1,3 +1,6 @@
+09/25/2005
+ - [Project] Update the location of the references.
+
 09/14/2005
  - [web.config] Change the sample for sharpwebmail/login/enablequerystringlogin option so it
    does not use &amp; to avoid copy&paste mistakes.
