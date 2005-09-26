@@ -153,7 +153,7 @@
                               <td colspan="2" height="200">
                                   <FredCK:FCKeditor id="FCKEditor" height="210" runat="server" BasePath="fcke/" />
                               </td>
-                              <td><ASP:RequiredFieldValidator id="ReqbodyValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="FCKEditor" /></td>
+                              <td><ASP:RequiredFieldValidator id="ReqbodyValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="FCKEditor" EnableClientScript="false" /></td>
                             </tr>
                             <tr> 
                               <td colspan="2" align="center"><asp:button id="newMessageWindowSendButton" CausesValidation="true" onClick="Send_Click" runat="server" text="Send" /> 

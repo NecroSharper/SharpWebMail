@@ -1,3 +1,9 @@
+09/26/2005
+ - [New Message] Updated FCKeditor config to 2.0.
+ - [New Message] In the update to FCKeditor 2.0fc config a couple of options were changed
+   to different default values by mistake.
+ - [New Message] Disabled the client validator for FCKeditor as it doesn't work properly.
+ 
 09/25/2005
  - [Project] Update the location of the references.
 
