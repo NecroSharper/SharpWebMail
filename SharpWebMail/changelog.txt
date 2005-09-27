@@ -1,4 +1,16 @@
 09/26/2005
+ - [ServerSelector] Add debug info.
+ - [Login] Add debug info.
+ - [Login] Bugfix: the redirect was being done before some vital operations. This could lead
+   to invalid logins.
+ - [TCPClient] Catch more generic exceptions when reading from network.
+ - [TCPClient] readBytes: Mono has some strange behavior with the length of the buffer when doing subsequent
+   writes. Workaround it until further investigation.
+ - [TCPClient] readBytes: Discard read data earlier when we have had a read error.
+ - [TCPClient] readString: The response should be logged only when we have a response.
+ 
+
+09/26/2005
  - [New Message] Updated FCKeditor config to 2.0.
  - [New Message] In the update to FCKeditor 2.0fc config a couple of options were changed
    to different default values by mistake.

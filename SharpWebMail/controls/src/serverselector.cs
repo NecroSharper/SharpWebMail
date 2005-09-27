@@ -57,10 +57,16 @@ namespace anmar.SharpWebMail
 		public anmar.SharpWebMail.EmailServerInfo Select ( System.String key, bool match ) {
 			foreach( anmar.SharpWebMail.EmailServerInfo item in this._servers ) {
 				if ( item.Condition!=null && match ) {
-					if ( item.Condition.IsMatch(key) )
+					if ( item.Condition.IsMatch(key) ) {
+						if ( log.IsDebugEnabled )
+							log.Debug (System.String.Concat("[", item.Name, "] selected for condicion [", item.Condition, "] and input [", key, "]" ));
 						return item;
-				} else if ( !match && item.Name!=null && item.Name.Equals(key) )
+					}
+				} else if ( !match && item.Name!=null && item.Name.Equals(key) ) {
+					if ( log.IsDebugEnabled )
+						log.Debug (System.String.Concat("[", item.Name, "] selected for input [", key, "]" ));
 					return item;
+				}
 			}
 			return null;
 		}
