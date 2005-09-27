@@ -130,11 +130,15 @@ namespace anmar.SharpWebMail
 			// some data, I get it
 			for ( aTimer.Change(this.timeoutResponse,  System.Threading.Timeout.Infinite); !error && ns.CanRead && state.Status && (ns.DataAvailable || !(lastBoundary.Equals(waitFor)) ) ; nbytes = 0) {
 				try {
-					if ( ns.DataAvailable )
+					if ( ns.DataAvailable ) {
+#if MONO
+						// Reinitialize buffer to make mono happy
+						readBytes = new byte[client.ReceiveBufferSize];
+#endif
 						nbytes = ns.Read( readBytes, 0, client.ReceiveBufferSize );
-					else
+					} else
 						System.Threading.Thread.Sleep(50);
-				} catch ( System.IO.IOException e ) {
+				} catch ( System.Exception e ) {
 					error = true;
 					nbytes = 0;
 					lastErrorMessage = "Read error";
@@ -170,8 +174,12 @@ namespace anmar.SharpWebMail
 				}
 			}
 			response.Flush();
-			if ( log.IsDebugEnabled ) log.Debug ( "Reading response finished" );
-			error = (error||response.Length==0)?true:false;
+			if ( log.IsDebugEnabled ) log.Debug ( System.String.Concat("Reading response finished. Error: ", error) );
+			// Discard response if there has been a read error.
+			if ( error )
+				response.SetLength(0);
+			else if ( response.Length==0 )
+				error = true;
 			return !error;
 		}
 		protected bool readString ( System.Net.Sockets.NetworkStream ns, ref System.String response, System.String waitFor, bool machresponseend) {
@@ -183,8 +191,8 @@ namespace anmar.SharpWebMail
 			if ( !error ) {
 				response = System.Text.Encoding.ASCII.GetString(stream.GetBuffer(), 0, (int)stream.Length );
 				response = response.Trim();
+				if ( log.IsDebugEnabled ) log.Debug ( "Response string read: " + response );
 			}
-			if ( log.IsDebugEnabled ) log.Debug ( "Response string read: " + response );
 			error = (error||response.Length==0)?true:false;
 			return !error;
 		}

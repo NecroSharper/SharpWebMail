@@ -25,6 +25,7 @@ using System;
 namespace anmar.SharpWebMail.UI
 {
 	public class Login : System.Web.UI.Page {
+		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		// Labels
 		protected System.Web.UI.WebControls.Label errorMsgLogin;
@@ -92,7 +93,6 @@ namespace anmar.SharpWebMail.UI
 						folder = "inbox";
 					inbox.CurrentFolder = folder;
 					if ( client!=null && client.GetFolderIndex ( inbox, 0, (int)Application["sharpwebmail/read/inbox/pagesize"], true ) ) {
-						System.Web.Security.FormsAuthentication.RedirectFromLoginPage(this.username.Value, false);
 						Session["client"] = client;
 						Session["inbox"] = inbox;
 						if ( Application["sharpwebmail/send/addressbook"]!=null ) {
@@ -113,6 +113,9 @@ namespace anmar.SharpWebMail.UI
 								}
 							}
 						}
+						if ( log.IsDebugEnabled )
+							log.Debug (System.String.Concat("Successful authentication for user [", this.username.Value, "], found [", inbox.Count, "] messages. Setting cookie and redirecting."));
+						System.Web.Security.FormsAuthentication.RedirectFromLoginPage(this.username.Value, false);
 					} else {
 						errorMsgLogin.Visible=true;
 					}
