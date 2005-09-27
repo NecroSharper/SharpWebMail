@@ -181,8 +181,11 @@ namespace anmar.SharpWebMail.UI
 		 * Page Events
 		*/
 		protected void Page_Init () {
-			if ( Request.IsAuthenticated && Session["client"]==null )
+			if ( Request.IsAuthenticated && Session["client"]==null ) {
+				if ( log.IsDebugEnabled )
+					log.Debug (System.String.Concat("Session [", this.Session.SessionID, "] has inconsistent state, restarting."));
 				this.closeSession();
+			}
 
 		    if ( this.centralPanel!=null ) {
 	            this.centralPanel.InstantiateIn (this.centralPanelHolder);
