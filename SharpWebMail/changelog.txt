@@ -8,7 +8,8 @@
    writes. Workaround it until further investigation.
  - [TCPClient] readBytes: Discard read data earlier when we have had a read error.
  - [TCPClient] readString: The response should be logged only when we have a response.
- 
+ - [GlobalUI] Add debug info.
+ - [i18n] Updated Portuguese (Brazil) translation. Thanks to Raphael Lima.
 
 09/26/2005
  - [New Message] Updated FCKeditor config to 2.0.
