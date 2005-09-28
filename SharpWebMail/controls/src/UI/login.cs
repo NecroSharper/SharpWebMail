@@ -61,10 +61,12 @@ namespace anmar.SharpWebMail.UI
 		protected void CultureChange ( System.Object sender, System.EventArgs args ) {
 			if ( selectculture!=null ) {
 				try {
-					int effectiveculture = System.Int32.Parse(selectculture.Value);
-					Session["effectiveculture"] = effectiveculture;
-					Session["resources"] = ((System.Resources.ResourceManager)Application["resources"]).GetResourceSet(new System.Globalization.CultureInfo(effectiveculture), true,true);
-				} catch ( System.Exception ){}
+					Session["resources"] = ((System.Resources.ResourceManager)Application["resources"]).GetResourceSet(new System.Globalization.CultureInfo(selectculture.Value), true,true);
+					Session["effectiveculture"] = selectculture.Value;
+				} catch ( System.Exception e ) {
+					if ( log.IsErrorEnabled )
+						log.Error(System.String.Concat("Error changing culture to [", selectculture.Value, "]"), e);
+				}
 			}
 		}
 		protected void Login_Click ( System.Object sender, System.EventArgs args ) {
