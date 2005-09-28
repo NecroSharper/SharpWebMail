@@ -1,4 +1,12 @@
-09/26/2005
+09/28/2005
+ - [Login] Do not store the effective culture until it's been successfully set.
+ - [Global] Store the available culture by name.
+ - [Global] ParseCultures can now parse cultures given in nested arrays.
+ - [Global] Set the culture on each request instead only on session init. This should give localization
+   of datetime format.
+ - [Global] If lang parameter is in the query string of a request, it's set as the effective culture.
+
+09/27/2005
  - [ServerSelector] Add debug info.
  - [Login] Add debug info.
  - [Login] Bugfix: the redirect was being done before some vital operations. This could lead
