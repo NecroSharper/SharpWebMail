@@ -1,5 +1,5 @@
   SharpWebMail - ASP.NET Web Mail application written in C#
-    v0.11b     - http://anmar.eu.org/projects/sharpwebmail/
+    v0.12b     - http://anmar.eu.org/projects/sharpwebmail/
 
 Introduction
 --------------------------------
@@ -105,6 +105,7 @@ License
 History
 --------------------------------
 
+09/28/2005 - version 0.12b  - Released milestone 0.12
 03/13/2005 - version 0.11b  - Released milestone 0.11
 01/02/2005 - version 0.10b  - Released milestone 0.10
 11/06/2004 - version 0.9b   - Released milestone 0.9
