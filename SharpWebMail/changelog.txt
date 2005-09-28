@@ -5,6 +5,11 @@
  - [Global] Set the culture on each request instead only on session init. This should give localization
    of datetime format.
  - [Global] If lang parameter is in the query string of a request, it's set as the effective culture.
+ - [i18n] Added the tool CustomCultures to allow the installation of cultures not supported by .NET
+   as custom cultures. It only works under .NET 2.0
+ - [i18n] Added Burmese (my) culture to CustomCultures tool. Thanks to Michael Sync.
+ - [i18n] Added Burmese translation. Thanks to Michael Sync.
+ - [nant] Added build-customcultures target for the above tool.
 
 09/27/2005
  - [ServerSelector] Add debug info.

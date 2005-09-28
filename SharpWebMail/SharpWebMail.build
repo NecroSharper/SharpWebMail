@@ -12,6 +12,7 @@
 	<property name="build.res" value="" />
 	<fileset id="build.files.source">
 		<include name="${build.basedir}/controls/src/**/*.cs" />
+		<exclude name="**/tools/**" />
 		<exclude name="**debug**" />
 	</fileset>
 	<fileset id="build.files.general">
@@ -81,6 +82,20 @@
 			</resources>
 		</csc>
 	</target>
+	<target name="build-customcultures" depends="build-pre">
+		<if test="${not(version::to-string(framework::get-version(framework::get-target-framework()))=='2.0')}">
+			<fail message="CustomCultures does not support the '${framework::get-target-framework()}' framework" />
+		</if>
+		<mkdir dir="${build.ref.platform.version}" unless="${directory::exists(build.ref.platform.version)}" />
+		<csc target="exe" warnaserror="false" debug="${build.debug}" output="${build.ref.platform.version}/CustomCultures.exe">
+			<sources>
+				<include name="${build.basedir}/controls/src/tools/customcultures.cs" />
+			</sources>
+			<references>
+				<include name="sysglobl.dll" />
+			</references>
+		</csc>
+	</target>
 	<target name="debug" description="Debug build">
 		<property name="build.debug" value="true" />
 		<property name="build.config" value="debug" />
@@ -108,8 +123,8 @@
 	<!-- Framework targets -->
 	<target name="set-framework-config">
 		<if test="${not(target::exists('set-'+framework::get-target-framework()+'-config'))}">
-            <fail message="The '${framework::get-target-framework()}' framework is not supported" />
-        </if>
+			<fail message="The '${framework::get-target-framework()}' framework is not supported" />
+		</if>
         <call target="set-${framework::get-target-framework()}-config" />
 	</target>
 	<!-- Set default .NET config values -->
