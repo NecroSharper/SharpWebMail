@@ -10,6 +10,7 @@
  - [i18n] Added Burmese (my) culture to CustomCultures tool. Thanks to Michael Sync.
  - [i18n] Added Burmese translation. Thanks to Michael Sync.
  - [nant] Added build-customcultures target for the above tool.
+ - Released as version 0.12b [533]
 
 09/27/2005
  - [ServerSelector] Add debug info.
