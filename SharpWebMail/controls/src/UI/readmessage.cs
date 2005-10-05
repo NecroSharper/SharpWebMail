@@ -80,7 +80,7 @@ namespace anmar.SharpWebMail.UI
 						label.Text = mm.BodyDecoded;
 						if ( mm.IsTextBrowserDisplay ) {
 							label.Text = System.Web.HttpUtility.HtmlEncode (label.Text);
-							label.Text = label.Text.Insert (0, "<pre>");
+							label.Text = label.Text.Insert (0, "<pre id=\"message\">");
 							label.Text = label.Text.Insert (label.Text.Length, "</pre>");
 						} else {
 							label.CssClass = "XPFormText";
