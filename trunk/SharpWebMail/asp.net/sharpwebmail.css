@@ -222,3 +222,6 @@
 .XPWindowFoot:hover {
 	color: #FF0000;
 }
+pre#message {
+	overflow: auto;
+}
