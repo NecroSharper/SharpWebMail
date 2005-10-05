@@ -1,3 +1,7 @@
+10/05/2005
+ - [Global] A couple of null checks missing.
+ - [Global] CustomCultures source did not have the license statement.
+
 09/28/2005
  - [Login] Do not store the effective culture until it's been successfully set.
  - [Global] Store the available culture by name.

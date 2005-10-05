@@ -51,8 +51,10 @@ namespace anmar.SharpWebMail.UI
 			if ( culture!=null && lang[1]!=culture.Name ) {
 				System.Threading.Thread.CurrentThread.CurrentCulture = culture;
 				System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
-				Session["resources"] = resources.GetResourceSet(culture, true, true);
-				this.Session["effectiveculture"] = getEffectiveCulture(culture);
+				if ( this.Context.Session!=null ) {
+					Session["resources"] = resources.GetResourceSet(culture, true, true);
+					Session["effectiveculture"] = getEffectiveCulture(culture);
+				}
 			}
 		}
 
@@ -150,6 +152,8 @@ namespace anmar.SharpWebMail.UI
 			System.Globalization.CultureInfo culture = null;
 			if ( cultures!=null ) {
 				foreach ( System.Object item in cultures ) {
+					if ( item==null )
+						continue;
 					if ( item is System.Array )
 						culture = ParseCultures(item as System.Object[]);
 					else if ( item is System.String )
