@@ -1,6 +1,8 @@
 10/23/2005
  - Version number set to 0.13
  - [Addressbook] Address books can now be sorted.
+ - [Global] Duplicates of available cultures were not being detected properly.
+ - [Global] Custom cultures were not being supported properly.
 
 10/22/2005
  - [i18n] Updated zh-CHT (Regis Huang), hu (Peter Molnar), my (Michael Syc),
