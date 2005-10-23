@@ -45,11 +45,21 @@
 			ItemStyle-CssClass="XPInboxItemA"
 			AlternatingItemStyle-CssClass="XPInboxItemB"
 			AutoGenerateColumns="false"
-			OnDeleteCommand="AddressBookDataGrid_Delete">
+			OnDeleteCommand="AddressBookDataGrid_Delete"
+			AllowSorting="true"
+			OnSortCommand="AddressBookDataGrid_Sort">
 			<Columns>
 				<asp:TemplateColumn>
 					<HeaderTemplate>
+						<asp:ImageButton id="SortButtonNameUp" runat="server"
+							CommandName="sort" CommandArgument="[NameColumn] ASC"
+							ImageUrl="images/sort_up.gif"
+							/>
 						<asp:Label id="addressbookNameLabel" runat="server" />
+						<asp:ImageButton id="SortButtonNameDown" runat="server"
+							CommandName="sort" CommandArgument="[NameColumn] DESC"
+							ImageUrl="images/sort_down.gif"
+							/>
 					</HeaderTemplate>
 					<ItemTemplate>
 						<asp:Label runat="server"
@@ -58,7 +68,15 @@
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
 					<HeaderTemplate>
+						<asp:ImageButton id="SortButtonEMailUp" runat="server"
+							CommandName="sort" CommandArgument="[EmailColumn] ASC"
+							ImageUrl="images/sort_up.gif"
+							/>
 						<asp:Label id="addressbookEmailLabel" runat="server" />
+						<asp:ImageButton id="SortButtonEMailDown" runat="server"
+							CommandName="sort" CommandArgument="[EmailColumn] DESC"
+							ImageUrl="images/sort_down.gif"
+							/>
 					</HeaderTemplate>
 					<ItemTemplate>
 						<a href="newmessage.aspx?to=<%# System.Web.HttpUtility.UrlEncode (((System.Data.DataRowView)Container.DataItem)[1].ToString()) %>">

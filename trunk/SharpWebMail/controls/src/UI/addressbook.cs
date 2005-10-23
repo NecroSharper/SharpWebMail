@@ -31,6 +31,7 @@ namespace anmar.SharpWebMail.UI
 		protected System.Web.UI.HtmlControls.HtmlSelect addressbookselect;
 		protected System.Web.UI.WebControls.Label addressbooklabel;
 		private System.Collections.Specialized.StringCollection _delete_items = null;
+		private System.String _sort_expression = "[NameColumn] ASC";
 
 		public static System.Collections.Specialized.ListDictionary GetAddressbook (System.String name, System.Object books) {
 			if ( name==null || name.Length==0 || books==null || !(books is System.Collections.SortedList) )
@@ -233,6 +234,10 @@ namespace anmar.SharpWebMail.UI
 				AddressBookDataGrid_PageIndexChanged (sender, new System.Web.UI.WebControls.DataGridPageChangedEventArgs ( sender, this.AddressBookDataGrid.CurrentPageIndex-1 ));
 			}
 		}
+		protected void AddressBookDataGrid_Sort ( System.Object sender, System.Web.UI.WebControls.DataGridSortCommandEventArgs args ) {
+			this.AddressBookDataGrid.CurrentPageIndex = 0;
+			this._sort_expression = args.SortExpression;
+		}
 		protected void Page_Init () {
 			this.EnsureChildControls();
 			// Full page things
@@ -270,7 +275,21 @@ namespace anmar.SharpWebMail.UI
 			System.Collections.Specialized.ListDictionary addressbook = GetAddressbook(addressbookselect.Value, Application["sharpwebmail/send/addressbook"]);
 			if ( addressbook!=null && !addressbook["type"].Equals("none") ) {
 				this.AddressBookDataGrid.PageSize = (int)addressbook["pagesize"];
-				this.AddressBookDataGrid.DataSource = GetDataSource(addressbook, false, Session["client"] as anmar.SharpWebMail.IEmailClient );
+				System.Data.DataTable data = GetDataSource(addressbook, false, Session["client"] as anmar.SharpWebMail.IEmailClient );
+				if ( data!=null ) {
+					if ( this._sort_expression!=null && this._sort_expression.Length>0 ) {
+						if ( this._sort_expression.IndexOf("[NameColumn]")!=-1 ) {
+							this._sort_expression = this._sort_expression.Replace("[NameColumn]", addressbook["NameColumn"].ToString());
+						} else if ( this._sort_expression.IndexOf("[EmailColumn]")!=-1 ) {
+							this._sort_expression = this._sort_expression.Replace("[EmailColumn]", addressbook["EmailColumn"].ToString());
+						} else {
+							this._sort_expression = null;
+						}
+						if ( this._sort_expression!=null )
+							data.DefaultView.Sort = this._sort_expression;
+					}
+					this.AddressBookDataGrid.DataSource = data.DefaultView;
+				}
 				// Not editable
 				if ( !((bool)addressbook["allowupdate"]) ) {
 					if ( this.SharpUI!=null && this.AddressBookDataGrid.Columns.Count>1 ) {
