@@ -30,7 +30,7 @@
 								    <td nowrap><asp:ImageButton runat="server" ID="msgtoolbarReply" OnCommand="msgtoolbarCommand" CommandName="reply"
                                            ImageUrl="images/msgtoolbar_reply.gif"/>
 									<img src="images/spacer.gif" width="3" height="14"></td>
-									<td nowrap><asp:ImageButton runat="server" ID="msgtoolbarForward" OnCommand="msgtoolbarCommand" CommandName="forward" enabled="false"
+									<td nowrap><asp:ImageButton runat="server" ID="msgtoolbarForward" OnCommand="msgtoolbarCommand" CommandName="forward"
                                            ImageUrl="images/msgtoolbar_forward.gif"/>
 										   <img src="images/spacer.gif" width="3" height="14"></td>
 								    <td><asp:HyperLink runat="server" ID="msgtoolbarHeader" NavigateUrl="javascript:void(0);"

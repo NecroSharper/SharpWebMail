@@ -163,9 +163,10 @@ namespace anmar.SharpWebMail.UI
 					delete = true;
 					break;
 				case "forward":
+					Response.Redirect(System.String.Concat("newmessage.aspx?", this.Request.QueryString, "&mode=forward"), false);
 					break;
 				case "reply":
-					Server.Transfer("newmessage.aspx", true);
+					Response.Redirect(System.String.Concat("newmessage.aspx?", this.Request.QueryString, "&mode=reply"), false);
 					break;
 			}
 		}
@@ -183,30 +184,26 @@ namespace anmar.SharpWebMail.UI
 		}
 		protected void Page_PreRender ( System.Object sender, System.EventArgs args ) {
 			if ( msgid != null ) {
-				System.Object[] details = this.SharpUI.Inbox[ msgid ];
+				bool deleted = false;
 				System.IO.MemoryStream ms = null;
-				// We retrieve the message body
-				if ( details != null && details.Length>0 ) {
-					anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
-					ms = new System.IO.MemoryStream ();
-					if ( !client.GetMessage ( ms, (int)details[1] , details[3].ToString() ) ) {
-						// Message not found in that possition so we re-scan the server in order to find the new location
-						this.SharpUI.Inbox.CurrentFolder = details[18].ToString();
-						client.GetFolderIndex(this.SharpUI.Inbox, 0, 0, true);
-						details = this.SharpUI.Inbox[ msgid ];
-						if ( details==null || !client.GetMessage (ms, (int)details[1] , details[3].ToString()) )
-						    details=null;
-					}
-					client = null;
-				}
-				if ( details != null ) {
-					//Delete message
-					if ( delete && details[15].Equals(false) ) {
-						this.SharpUI.Inbox.deleteMessage ( msgid );
+				if ( delete ) {
+					deleted = this.SharpUI.Inbox.DeleteMessage(msgid);
+					if ( deleted )
 						this.SharpUI.setVariableLabels();
-					}
+				}
+				// Delete messaged, we have to commit changes
+				if ( deleted && (bool)Application["sharpwebmail/read/inbox/commit_ondelete"] ) {
+					this.SharpUI.Inbox.Client.PurgeInbox( this.SharpUI.Inbox, false );
+					Response.Redirect("default.aspx");
+				} else {
+					// We retrieve the message body
+					this.SharpUI.Inbox.CurrentFolder = this.SharpUI.Inbox.GetMessageFolder(msgid);
+					ms = this.SharpUI.Inbox.GetMessage(msgid);
+				}
+				if ( ms!=null ) {
+					System.Object[] details = this.SharpUI.Inbox[ msgid ];
 					// Disable delete button if message is already deleted
-					if ( details[15].Equals(true) || ( delete && details[15].Equals(false) ) )
+					if ( details[15].Equals(true) || deleted )
 						((System.Web.UI.WebControls.ImageButton)this.SharpUI.FindControl("msgtoolbarDelete")).Enabled=false;
 					this.readMessageWindowDateTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[14].ToString());
 					this.readMessageWindowFromTextLabel.Text = System.Web.HttpUtility.HtmlEncode (details[6].ToString());
@@ -221,11 +218,13 @@ namespace anmar.SharpWebMail.UI
 						this.decodeMessage ( mm, this.readMessageWindowBodyTextHolder );
 						mm = null;
 						this.SharpUI.Inbox.readMessage ( msgid );
-						ms.Close();
 					}
+					details = null;
 				}
+				if ( ms!=null && ms.CanRead )
+					ms.Close();
 				ms = null;
-				details = null;
+				
 			}
 		}
 	}

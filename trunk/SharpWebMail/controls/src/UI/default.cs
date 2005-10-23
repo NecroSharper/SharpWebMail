@@ -259,7 +259,10 @@ namespace anmar.SharpWebMail.UI
 				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
 				foreach ( System.String item in this.delete ) {
 					if ( item!=null )
-						inbox.deleteMessage ( item );
+						inbox.DeleteMessage ( item );
+				}
+				if ( (bool)Application["sharpwebmail/read/inbox/commit_ondelete"] ) {
+					inbox.Client.PurgeInbox( inbox, false );
 				}
 				this.SharpUI.setVariableLabels();
 			}
@@ -280,7 +283,8 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		protected void InboxDataGrid_PageIndexChanged ( System.Object sender, System.Web.UI.WebControls.DataGridPageChangedEventArgs args ) {
-			this.InboxDataGrid.CurrentPageIndex = args.NewPageIndex;
+			if ( args.NewPageIndex>=0 && args.NewPageIndex<this.InboxDataGrid.PageCount )
+				this.InboxDataGrid.CurrentPageIndex = args.NewPageIndex;
 		}
 		/// <summary>
 		/// 
@@ -293,7 +297,7 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		protected void nextPageButton_Click ( System.Object sender, System.Web.UI.ImageClickEventArgs args ) {
-			if ( this.InboxDataGrid.CurrentPageIndex < this.InboxDataGrid.PageCount ) {
+			if ( (this.InboxDataGrid.CurrentPageIndex+1)<this.InboxDataGrid.PageCount ) {
 				InboxDataGrid_PageIndexChanged ( sender, new System.Web.UI.WebControls.DataGridPageChangedEventArgs ( sender, this.InboxDataGrid.CurrentPageIndex+1 ) );
 			}
 		}

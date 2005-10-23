@@ -69,6 +69,10 @@ namespace anmar.SharpWebMail
 		/// 
 		/// </summary>
 		protected System.String sort = "msgnum DESC";
+		/// <summary>
+		/// 
+		/// </summary>
+		protected anmar.SharpWebMail.IEmailClient _client = null;
 
 		/// <summary>
 		/// 
@@ -85,13 +89,10 @@ namespace anmar.SharpWebMail
 		}
 		public System.Object[] this [ System.String uid ] {
 			get {
-				try {
-					return this[new System.Guid(uid)];
-				} catch ( System.Exception e ) {
-					if ( log.IsErrorEnabled )
-						log.Error("Error parsing UID", e);
-					return null;
-				}
+				System.Data.DataRowView msg = this.GetMessageObject(uid);
+				if ( msg!=null )
+					return msg.Row.ItemArray;
+				return null;
 			}
 		}
 		/// <summary>
@@ -99,14 +100,10 @@ namespace anmar.SharpWebMail
 		/// </summary>
 		public System.Object[] this [ System.Guid guid ] {
 			get {
-				this.inbox_view.RowFilter = System.String.Format ("guid='{0}'", guid);
-				if ( this.inbox_view.Count==1 ) {
-					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("{0} guid='{0}' found", guid));
-					return this.inbox_view[0].Row.ItemArray;
-				} else {
-					if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("guid='{0}' not found", guid));
-					return null;
-				}
+				System.Data.DataRowView msg = this.GetMessageObject(guid);
+				if ( msg!=null )
+					return msg.Row.ItemArray;
+				return null;
 			}
 		}
 		/// <summary>
@@ -148,7 +145,8 @@ namespace anmar.SharpWebMail
 				for ( int i=0 ; i<this.inbox.Rows.Count; i++ ) {
 					System.Data.DataRow item = this.inbox.Rows[i];
 					if ( !uidl.Contains(item[3].ToString() ) ) {
-						this.mcount--;
+						if ( item[15].Equals(false) )
+							this.mcount--;
 						this.msize -= (int)item[2];
 						item.Delete();
 						i--;
@@ -200,10 +198,12 @@ namespace anmar.SharpWebMail
 		/// 
 		/// </summary>
 		/// <param name="uid"></param>
-		public void deleteMessage ( System.String uid ) {
-			if ( this.markMessage( uid, 15, true ) )
+		public bool DeleteMessage ( System.String uid ) {
+			if ( this.markMessage( uid, 15, true ) ) {
 				this.mcount--;
-			return;
+				return true;
+			}
+			return false;
 		}
 		/// <summary>
 		/// 
@@ -220,16 +220,69 @@ namespace anmar.SharpWebMail
 				return System.Guid.Empty;
 			}
 		}
+		public System.IO.MemoryStream GetMessage (System.String uid) {
+			if ( this._client==null )
+				return null;
+			System.Data.DataRowView details = this.GetMessageObject(uid);
+			if ( details!=null )
+				return this.GetMessage((int)details[1], details[3].ToString());
+			else
+				return null;
+		}
+		public System.IO.MemoryStream GetMessage (int mindex, System.String uid) {
+			if ( this._client==null )
+				return null;
+			System.IO.MemoryStream ms = new System.IO.MemoryStream ();
+			if ( !this._client.GetMessage ( ms, mindex , uid ) ) {
+				// Message not found in that possition so we re-scan the server in order to find the new location
+				this._client.GetFolderIndex(this, 0, 0, true);
+				System.Data.DataRowView details = this.GetMessageObject(uid);
+				if ( details==null || !this._client.GetMessage (ms, (int)details[1] , details[3].ToString()) ) {
+					if ( ms.CanRead )
+						ms.Close();
+					ms=null;
+				}
+				details = null;
+			}
+			return ms;
+		}
+		public System.String GetMessageFolder ( System.String uid ) {
+			System.Data.DataRowView msg = this.GetMessageObject(uid);
+			if ( msg!=null )
+				return msg[18].ToString();
+			else
+				return System.String.Empty;
+		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="uid"></param>
 		/// <returns></returns>
 		public System.String getMessageIndex ( System.String uid ) {
+			System.Data.DataRowView msg = this.GetMessageObject(uid);
+			if ( msg!=null )
+				return msg[1].ToString();
+			else
+				return System.String.Empty;
+		}
+		private System.Data.DataRowView GetMessageObject( System.String uid ) {
 			System.Guid guid = this.getGuid(uid);
 			if ( !guid.Equals(System.Guid.Empty) )
-				this.inbox_view.RowFilter = System.String.Concat("guid='", guid, "'");
-			return ( this.inbox_view.Count==1 )?this.inbox_view[0][1].ToString():System.String.Empty;
+				return this.GetMessageObject(new System.Guid(uid));
+			else if ( log.IsErrorEnabled ) {
+				log.Error("Error parsing UID");
+			}
+			return null;
+		}
+		private System.Data.DataRowView GetMessageObject( System.Guid guid ) {
+			this.inbox_view.RowFilter = System.String.Concat("guid='", guid, "'");
+			if ( this.inbox_view.Count==1 ) {
+				if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("{0} guid='{0}' found", guid));
+				return this.inbox_view[0];
+			} else {
+				if ( log.IsDebugEnabled ) log.Debug ( System.String.Format ("guid='{0}' not found", guid));
+				return null;
+			}
 		}
 		/// <summary>
 		/// 
@@ -250,16 +303,12 @@ namespace anmar.SharpWebMail
 		/// <param name="col"></param>
 		/// <param name="val"></param>
 		protected bool markMessage ( System.String uid, int col, bool val ) {
-			System.Guid guid = this.getGuid(uid);
-			if ( guid.Equals(System.Guid.Empty) )
-				return false;
-			this.inbox_view.RowFilter = System.String.Concat("guid='", guid, "'");
-			if ( this.inbox_view.Count==1 && !this.inbox_view[0][col].Equals(val) ) {
-				this.inbox_view[0][col] = val;
+			System.Data.DataRowView msg = this.GetMessageObject(uid);
+			if ( msg!=null && !msg[col].Equals(val)) {
+				msg[col] = val;
 				return true;
-			} else {
-				return false;
 			}
+			return false;
 		}
 		/// <summary>
 		/// 
@@ -344,6 +393,13 @@ namespace anmar.SharpWebMail
 			if ( this.markMessage( uid, 15, false ))
 				this.mcount++;
 			return;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public anmar.SharpWebMail.IEmailClient Client {
+			get { return this._client; }
+			set { this._client = value; }
 		}
 		/// <summary>
 		/// 

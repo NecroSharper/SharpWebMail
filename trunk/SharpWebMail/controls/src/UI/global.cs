@@ -107,6 +107,9 @@ namespace anmar.SharpWebMail.UI
 				Application.Add(item.Key.ToString(), item.Value);
 			}
 			config = null;
+			if ( Application["sharpwebmail/send/addressbook"]!=null ) {
+				Application["sharpwebmail/general/addressbooks"] = true;
+			}
 			TestAvailableCultures();
 			System.Collections.SortedList availablecultures_values = new System.Collections.SortedList(availablecultures.Count);
 			foreach ( System.Collections.DictionaryEntry item in availablecultures ) {

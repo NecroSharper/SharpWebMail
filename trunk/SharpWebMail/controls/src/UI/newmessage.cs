@@ -34,6 +34,7 @@ namespace anmar.SharpWebMail.UI
 		private static System.String bodyEnd = "</body></html>";
 		private  anmar.SharpMimeTools.SharpMimeHeader _headers=null;
 		private int UI_case=0;
+		private anmar.SharpWebMail.UI.MessageMode _message_mode = anmar.SharpWebMail.UI.MessageMode.None;
 		
 		#endregion General variables
 
@@ -71,6 +72,14 @@ namespace anmar.SharpWebMail.UI
 
 		#region Private Methods
 
+		protected void AttachmentSelect ( System.String key ) {
+			foreach ( System.Web.UI.WebControls.ListItem item in this.newMessageWindowAttachmentsList.Items ) {
+				if ( item.Value.Equals(key) ) {
+					item.Selected = true;
+					break;
+				}
+			}
+		}
 		protected void bindAttachments () {
 			System.Collections.ArrayList selected = null;
 			System.Collections.SortedList attachments = new System.Collections.SortedList();
@@ -91,12 +100,7 @@ namespace anmar.SharpWebMail.UI
 			this.newMessageWindowAttachmentsList.DataBind();
 			if ( selected!=null ) {
 				foreach ( System.String itemselected in selected ) {
-					foreach ( System.Web.UI.WebControls.ListItem item in this.newMessageWindowAttachmentsList.Items ) {
-						if ( item.Value.Equals(itemselected) ) {
-							item.Selected = true;
-							break;
-						}
-					}
+					this.AttachmentSelect(itemselected);
 				}
 			}
 		}
@@ -201,40 +205,124 @@ namespace anmar.SharpWebMail.UI
 			// Disable some things
 			this.SharpUI.nextPageImageButton.Enabled = false;
 			this.SharpUI.prevPageImageButton.Enabled = false;
-
+			// Get mode
+			if ( Page.Request.QueryString["mode"]!=null ) {
+				try {
+					this._message_mode = (anmar.SharpWebMail.UI.MessageMode)System.Enum.Parse(typeof(anmar.SharpWebMail.UI.MessageMode), Page.Request.QueryString["mode"], true);
+				} catch ( System.Exception ){}
+			}
+			// Get message ID
 			System.String msgid = System.Web.HttpUtility.HtmlEncode (Page.Request.QueryString["msgid"]);
 			System.Guid guid = System.Guid.Empty;
-			if ( msgid != null)
+			if ( msgid!=null )
 				guid = new System.Guid(msgid);
-			if ( !guid.Equals( System.Guid.Empty) ) {
+			if ( !this.IsPostBack && !guid.Equals( System.Guid.Empty) ) {
 				System.Object[] details = inbox[ guid ];
-				if ( details != null ) {
+				if ( details!=null ) {
+					if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.None) )
+						this._message_mode = anmar.SharpWebMail.UI.MessageMode.reply;
 					this._headers = (anmar.SharpMimeTools.SharpMimeHeader) details[13];
 					if ( !this.IsPostBack ) {
-						this.subject.Value = System.String.Format ("{0}:", this.SharpUI.LocalizedRS.GetString("replyPrefix"));
+						bool html_content = this.FCKEditor.CheckBrowserCompatibility();
+						System.Text.StringBuilder sb_body = null;
+						this.subject.Value = System.String.Concat (this.SharpUI.LocalizedRS.GetString(System.String.Concat(this._message_mode, "Prefix")), ":");
 						if ( details[10].ToString().ToLower().IndexOf (this.subject.Value.ToLower())!=-1 ) {
 							this.subject.Value = details[10].ToString().Trim();
 						} else {
-							this.subject.Value = System.String.Format ("{0} {1}", this.subject.Value, details[10].ToString()).Trim();
+							this.subject.Value = System.String.Concat (this.subject.Value, " ", details[10]).Trim();
 						}
-						// From name if present on original message's To header
-						foreach ( anmar.SharpMimeTools.SharpMimeAddress address in (System.Collections.IEnumerable) details[8] ) {
-							if ( address["address"]!=null && address["address"].Equals( User.Identity.Name )
-								&& address["name"].Length>0 && !address["address"].Equals(address["name"]) ) {
-								this.fromname.Value = address["name"];
-								break;
+						// Get the original message
+						inbox.CurrentFolder = details[18].ToString();
+						System.IO.MemoryStream ms = inbox.GetMessage((int)details[1], msgid);
+						anmar.SharpMimeTools.SharpMessage message = null;
+						if ( ms!=null && ms.CanRead ) {
+							System.String path = null;
+							if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.forward) ) {
+								path = Session["sharpwebmail/read/message/temppath"].ToString();
+								path = System.IO.Path.Combine (path, msgid);
+								path = System.IO.Path.GetFullPath(path);
+							}
+							message = new anmar.SharpMimeTools.SharpMessage(ms, true, html_content, path);
+							sb_body = new System.Text.StringBuilder();
+						}
+						if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.reply) ) {
+							// From name if present on original message's To header
+							// and we don't have it already
+							if ( Session["DisplayName"]==null ) {
+								foreach ( anmar.SharpMimeTools.SharpMimeAddress address in (System.Collections.IEnumerable) details[8] ) {
+									if ( address["address"]!=null && address["address"].Equals( User.Identity.Name )
+										&& address["name"].Length>0 && !address["address"].Equals(address["name"]) ) {
+										this.fromname.Value = address["name"];
+										break;
+									}
+								}
+							}
+							// To addresses
+							foreach ( anmar.SharpMimeTools.SharpMimeAddress address in (System.Collections.IEnumerable) details[9] ) {
+								if ( address["address"]!=null && !address["address"].Equals( User.Identity.Name ) ) {
+									if ( this.toemail.Value.Length >0 )
+										this.toemail.Value += ", ";
+									this.toemail.Value += address["address"];
+								}
+							}
+						} else if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.forward) ) {
+							// If the original message has attachments, preserve them
+							if ( message!=null && message.Attachments!=null &&  message.Attachments.Count>0 ) {
+								this.bindAttachments();
+								foreach ( anmar.SharpMimeTools.SharpAttachment attachment in message.Attachments ) {
+									if ( attachment.SavedFile==null )
+										continue;
+									this.AttachmentSelect(System.IO.Path.Combine(attachment.SavedFile.Directory.Name, attachment.SavedFile.Name));
+								}
+								this.Attach_Click(this, null);
 							}
 						}
-						// To addresses
-						foreach ( anmar.SharpMimeTools.SharpMimeAddress address in (System.Collections.IEnumerable) details[9] ) {
-							if ( address["address"]!=null && !address["address"].Equals( User.Identity.Name ) ) {
-								if ( this.toemail.Value.Length >0 )
-									this.toemail.Value += ", ";
-								this.toemail.Value += address["address"];
-							}
+						// Preserve the original body and some properties
+						if ( message!=null ) {
+							System.String line_end = null;
+							if ( html_content )
+								line_end = "<br />\r\n";
+							else
+								line_end = "\r\n";
+							sb_body.Append(this.SharpUI.LocalizedRS.GetString(System.String.Concat(this._message_mode, "PrefixBody")));
+							sb_body.Append(line_end);
+							sb_body.Append(this.SharpUI.LocalizedRS.GetString("newMessageWindowFromNameLabel"));
+							sb_body.Append(" ");
+							sb_body.Append(message.From);
+							sb_body.Append(" [mailto:");
+							sb_body.Append(message.FromAddress);
+							sb_body.Append("]");
+							sb_body.Append(line_end);
+							sb_body.Append(this.SharpUI.LocalizedRS.GetString("newMessageWindowDateLabel"));
+							sb_body.Append(" ");
+							sb_body.Append(message.Date.ToString());
+							sb_body.Append(line_end);
+							sb_body.Append(this.SharpUI.LocalizedRS.GetString("newMessageWindowToEmailLabel"));
+							sb_body.Append(" ");
+							if ( html_content )
+								sb_body.Append(System.Web.HttpUtility.HtmlEncode(message.To.ToString()));
+							else
+								sb_body.Append(message.To);
+							sb_body.Append(line_end);
+							sb_body.Append(this.SharpUI.LocalizedRS.GetString("newMessageWindowSubjectLabel"));
+							sb_body.Append(" ");
+							sb_body.Append(message.Subject);
+							sb_body.Append(line_end);
+							sb_body.Append(line_end);
+							if ( !message.HasHtmlBody &&  html_content )
+								sb_body.Append("<pre>");
+							sb_body.Append(message.Body);
+							if ( !message.HasHtmlBody &&  html_content )
+								sb_body.Append("</pre>");
+							this.FCKEditor.Value = sb_body.ToString();
 						}
 					}
 					details = null;
+				}
+			} else if ( !this.IsPostBack ) {
+				System.String to = Page.Request.QueryString["to"];
+				if ( to!=null && to.Length>0 ) {
+					this.toemail.Value = to;
 				}
 			}
 			if ( this.fromname.Value.Length>0 || this.IsPostBack )
@@ -548,7 +636,7 @@ namespace anmar.SharpWebMail.UI
 		protected void msgtoolbarCommand ( System.Object sender, System.Web.UI.WebControls.CommandEventArgs args ) {
 			switch ( args.CommandName ) {
 				case "cancel":
-					Server.Transfer("newmessage.aspx", true);
+					Server.Transfer(System.String.Concat("newmessage.aspx?", Request.QueryString), false);
 					break;
 			}
 		}
@@ -615,5 +703,10 @@ namespace anmar.SharpWebMail.UI
 			}
 		}
 		#endregion Page Events
+	}
+	public enum MessageMode {
+		None,
+		reply,
+		forward
 	}
 }
