@@ -1,5 +1,6 @@
 10/23/2005
  - Version number set to 0.13
+ - [Addressbook] Address books can now be sorted.
 
 10/22/2005
  - [i18n] Updated zh-CHT (Regis Huang), hu (Peter Molnar), my (Michael Syc),
