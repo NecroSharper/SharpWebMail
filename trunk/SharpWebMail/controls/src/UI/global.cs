@@ -49,7 +49,8 @@ namespace anmar.SharpWebMail.UI
 				lang[1] = this.Session["effectiveculture"].ToString();
 			System.Globalization.CultureInfo culture = this.ParseCultures ( lang, Request.UserLanguages );
 			if ( culture!=null && lang[1]!=culture.Name ) {
-				System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+				if ( !culture.IsNeutralCulture )
+					System.Threading.Thread.CurrentThread.CurrentCulture = culture;
 				System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
 				if ( this.Context.Session!=null ) {
 					Session["resources"] = resources.GetResourceSet(culture, true, true);
@@ -145,6 +146,8 @@ namespace anmar.SharpWebMail.UI
 			System.Globalization.CultureInfo culture = null;
 			try {
 				culture = System.Globalization.CultureInfo.CreateSpecificCulture(culturename);
+				if ( culturename.Length>0 && culture.Equals(System.Globalization.CultureInfo.InvariantCulture) )
+					culture = ParseCulture(culturename);
 			} catch ( System.Exception e ) {
 				if ( log.IsErrorEnabled )
 					log.Error("Error parsing specific culture", e);
@@ -191,7 +194,7 @@ namespace anmar.SharpWebMail.UI
 		private void TestAvailableCultures() {
 			availablecultures = new System.Collections.Specialized.HybridDictionary();
 			foreach ( System.Globalization.CultureInfo item in System.Globalization.CultureInfo.GetCultures( System.Globalization.CultureTypes.AllCultures) )  {
-				if ( !item.Equals(System.Globalization.CultureInfo.InvariantCulture) && !availablecultures.Contains(item.LCID) && resources.GetResourceSet(item, true, false)!=null )
+				if ( !item.Equals(System.Globalization.CultureInfo.InvariantCulture) && !availablecultures.Contains(item.Name) && resources.GetResourceSet(item, true, false)!=null )
 					availablecultures.Add(item.Name, item.EnglishName);
 			}
 		}
