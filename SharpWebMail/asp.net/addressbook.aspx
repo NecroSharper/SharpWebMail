@@ -45,12 +45,12 @@ function add_rcpt (email) {
 						<asp:Label id="inboxHeaderNumber" Text="<%# this.AddressBookDataGrid.Columns[0].HeaderText %>" runat="server" />
 					</HeaderTemplate>
 					<ItemTemplate>
-						<a href="javascript:add_rcpt('<%#((System.Collections.DictionaryEntry)Container.DataItem).Key%>')">
+						<a href="javascript:add_rcpt('<%#((System.Data.DataRowView)Container.DataItem)[1].ToString()%>')">
 						<asp:Label runat="server"
-							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Collections.DictionaryEntry)Container.DataItem).Value.ToString()) %>' />
+							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)[0].ToString()) %>' />
 							-
 							<asp:Label runat="server"
-							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Collections.DictionaryEntry)Container.DataItem).Key.ToString()) %>' />
+							Text='<%# System.Web.HttpUtility.HtmlEncode (((System.Data.DataRowView)Container.DataItem)[1].ToString()) %>' />
 						</a>
 					</ItemTemplate>
 				</asp:TemplateColumn>

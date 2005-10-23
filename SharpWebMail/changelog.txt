@@ -1,3 +1,76 @@
+10/23/2005
+ - Version number set to 0.13
+
+10/22/2005
+ - [i18n] Updated zh-CHT (Regis Huang), hu (Peter Molnar), my (Michael Syc),
+   sv (Robert Wallström), pl (Roman Dmowski), fr (Michel C)
+ - [i18n] Updated the other translations [ar, da, el, ro, sr, tr, vi] with the
+   english strings.
+
+10/19/2005
+ - [Addressbook] When there is a successful insert, present a blank form to allow
+   other inserts instead of showing the edit page for the inserted entry.
+
+10/18/2005
+ - [Addressbook] ViewState playing bad when multiple address books are defined and
+   the update feature is not the same in all of them.
+ - [Addressbook] Update process can throw exceptions, it should be handled properly.
+
+10/17/2005
+ - [i18n] Updated id (Riwut Libinuko), de (Christian Metz) and ru (Alex).
+ - [Addressbook] Disable edit/delete/import columns/links when the address book is not
+   write enabled.
+
+10/16/2005
+ - [i18n] Updated es (me), nl (Jos Bloemers), pt-BR (Raphael Lima, Christian Emil Hoh)
+   and it (Antonello Franzil).
+ - [New Message] Allow feeding the 'to' field through a query string parameter.
+ - [GlobalUI] Move 'bytes' string to the translation file.
+ - [GlobalUI] Add the address book link.
+ - [GlobalUI] Add code to handle the visibility and behavior of the address book link.
+ - [config] Added a global setting (sharpwebmail/general/addressbooks) to easy test if there
+   are address books configured.
+ - [Global] Update the above when there are address books configured.
+ - [Inbox] The boundary checks in the pager weren't correct.
+ - [Addressbook] Initial implementation of the full page index.
+ - [Addressbook] Initial implementation of the edit page.
+ - [Addressbook] Initial implementation of the import/export page.
+ - [Addressbook] Adapt handlers to behave properly in full page/popup situations.
+ - [Addressbook] Create the basic schema to store the retrieved addresses.
+ - [Addressbook] Change address book access code to now return a table instead of the simple dictionary.
+ - [Login] Update to code to adapt to the above change.
+ - [Addressbook] Add code to handle the update process.
+ - [Addressbook] Add handlers for the delete from the index situation.
+ - [Addressbook] Add links for the edit/import pages in the full page index.
+ - [config] Added 'AllowUpdate' and 'OwnerColumn' options to <addressbook> elements to configure
+   the write mode address books.
+
+10/15/2005
+ - [Inbox] Refactor parts of the code to improve usability.
+ - [ReadMessage] Use the new methods to get messages.
+ - [ReadMessage] Enable the forward button.
+ - [NewMessage] Implement forwarding.
+ - [NewMessage] Show the original body when replying a message.
+ 
+10/09/2005
+ - [Inbox] Added a checkbox to select all messages.
+ - [Inbox] Add a reference to the client, associated to the inbox.
+ - [Inbox] If a message was already marked as deleted, the message count was decreased twice
+   when it was effectively deleted.
+ - [GlobalUI] Use the client instance associated to the inbox.
+ - [Logout] Logout after all operations related to the logout are finished.
+ - [Login] Associate the client to the inbox.
+ - [Inbox] When inbox/commit_ondelete option is true, delete all marked messages from server after
+   setting the mark.
+ - [Logout] When inbox/commit_onexit option is true, delete all marked messages from server when
+   the user logout is performed.
+ - [ReadMessage] When message/commit_ondelete option is true, delete the message from server after
+   hitting the delete button.
+ - [GlobalUI] When message/commit_ondelete and inbox/commit_ondelete options are true, disable the
+   trash link.
+ - [Config] Add inbox/commit_onexit, inbox/commit_ondelete and message/commit_ondelete settings to
+   control the way the messages are deleted from server.
+
 10/07/2005
  - [New Message] Updated FCKeditor config to 2.1.
 

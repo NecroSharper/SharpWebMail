@@ -96,6 +96,10 @@
                     </tr>
                     <tr> 
                       <td></td>
+                      <td nowrap valign="middle"><asp:LinkButton id="addressbookLinkButton" EnableViewState="false" CssClass="XPFormLabel" onClick="addressbookLinkButton_Click" CausesValidation="false" runat="server" /></td>
+                    </tr>
+                    <tr> 
+                      <td></td>
                       <td nowrap valign="middle"><asp:LinkButton id="newMessageLinkButton" EnableViewState="false" CssClass="XPFormLabel" onClick="newMessageLinkButton_Click" CausesValidation="false" runat="server" /></td>
                     </tr>
                     <tr> 

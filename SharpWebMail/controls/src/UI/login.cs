@@ -90,6 +90,7 @@ namespace anmar.SharpWebMail.UI
 						server = selector.Select(this.username.Value, true);
 					anmar.SharpWebMail.IEmailClient client = anmar.SharpWebMail.EmailClientFactory.CreateEmailClient(server, this.username.Value, password.Value );
 					anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+					inbox.Client = client;
 					System.String folder = Page.Request.QueryString["mode"];
 					if ( folder==null )
 						folder = "inbox";
@@ -101,17 +102,13 @@ namespace anmar.SharpWebMail.UI
 							System.Collections.SortedList addressbooks = (System.Collections.SortedList)Application["sharpwebmail/send/addressbook"];
 							foreach ( System.Collections.Specialized.ListDictionary addressbook in addressbooks.Values ) {
 								if ( addressbook.Contains("searchstringrealname") ) {
-									System.Collections.SortedList result = anmar.SharpWebMail.UI.AddressBook.GetDataSource(addressbook, true, client);
+									System.Data.DataTable result = anmar.SharpWebMail.UI.AddressBook.GetDataSource(addressbook, true, client);
 									if ( result==null )
 										continue;
-									foreach ( System.String item in result.Keys ) {
-										if ( item.Equals(this.username.Value) ) {
-											Session["DisplayName"] = result[item];
-											break;
-										}
+									if ( result.Rows.Count==1 ) {
+										Session["DisplayName"] = result.Rows[0][addressbook["namecolumn"].ToString()];
+										break;
 									}
-									result = null;
-									break;
 								}
 							}
 						}

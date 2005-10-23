@@ -398,6 +398,7 @@ namespace anmar.SharpWebMail
 				error = (error)?error:!this.getListToIndex ( null, total, inbox, 0, 0 );
 				result.RowFilter = filter;
 				error = (error)?error:!this.deletemessages(result);
+				error = (error)?error:!this.getListToIndex ( null, total, inbox, 0, 0 );
 				this.quit();
 			}
 			result.RowFilter = System.String.Empty;

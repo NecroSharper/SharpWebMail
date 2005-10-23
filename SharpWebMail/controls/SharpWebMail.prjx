@@ -63,6 +63,11 @@
     <File name=".\res\SharpWebMail.hu.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
     <File name=".\res\SharpWebMail.id.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
     <File name=".\res\SharpWebMail.tr.resources" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\addressbookfull.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\addressbook_edit.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name="..\asp.net\addressbook_data.aspx" subtype="Code" buildaction="Nothing" dependson="" data="" />
+    <File name=".\src\UI\addressbook_edit.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\src\UI\addressbook_data.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Assembly" refto="..\bin\net\log4net.dll" localcopy="True" />
@@ -72,19 +77,19 @@
     <Reference type="Assembly" refto="..\bin\net\SharpMimeTools.dll" localcopy="True" />
   </References>
   <DeploymentInformation target="" script="" strategy="Assembly" />
-  <Configuration runwithwarnings="False" name="Debug">
-    <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
+  <Configuration runwithwarnings="False" name="Release">
+    <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
     <Execution commandlineparameters="" consolepause="True" />
     <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
   </Configuration>
-  <Configurations active="Debug">
+  <Configurations active="Release">
     <Configuration runwithwarnings="False" name="Debug">
       <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="True" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="DEBUG" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
       <Execution commandlineparameters="" consolepause="True" />
       <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>
     <Configuration runwithwarnings="False" name="Release">
-      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="True" win32Icon="" noconfig="False" nostdlib="False" />
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
       <Execution commandlineparameters="" consolepause="True" />
       <Output directory="..\asp.net\bin" assembly="SharpWebMail" executeScript="" executeBeforeBuild="" executeAfterBuild=".\res\resources.cmd" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>

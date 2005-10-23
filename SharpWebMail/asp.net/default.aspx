@@ -9,6 +9,18 @@
 <link rel="stylesheet" type="text/css" href="sharpwebmail.css">
 </head>
 <body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<script type="text/javascript"><!--
+	function select_all_messages (checked, form) {
+		for ( var i=0; i<form.elements.length; i++ ) {
+			var item = form.elements[i];
+			if ( item.type=='checkbox' && item.name.lastIndexOf(':delete')>0 ) {
+				if ( checked!=item.checked )
+					item.checked=checked;
+			}
+		}
+		
+	}
+//--></script>
 <form id="sharpwebmailform" method="post" runat="server">
 <SharpUI:globalUI id="SharpUI" runat="server">
 <CentralPanel>
@@ -119,8 +131,9 @@
 				</asp:TemplateColumn>
 				<asp:TemplateColumn>
 					<HeaderTemplate>
-						<asp:ImageButton runat="server" ID="msgtoolbarDelete" ToolTip='<%# InboxDataGrid.Columns[5].HeaderText %>' ImageAlign="Middle" CommandName="delete"
+						<asp:ImageButton runat="server" ID="msgtoolbarDelete" ToolTip='<%# InboxDataGrid.Columns[5].HeaderText %>' ImageAlign="Baseline" CommandName="delete"
                                          ImageUrl="images/msgtoolbar_delete.gif"/>
+						<input type="checkbox" title="<%# InboxDataGrid.Columns[5].HeaderText %>" onclick="select_all_messages(this.checked, this.form);" value="" />
 					</HeaderTemplate>
 					<ItemTemplate>
 						<input type="checkbox" title='<%# InboxDataGrid.Columns[5].HeaderText %>' OnServerChange="InboxDataGrid_DeleteCheckBox" ID="delete" runat="server" value='<%#((System.Data.DataRowView)Container.DataItem)["guid"]%>' />

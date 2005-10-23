@@ -26,10 +26,30 @@ namespace anmar.SharpWebMail.UI
 {
 	public class AddressBook : System.Web.UI.Page {
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		protected anmar.SharpWebMail.UI.globalUI SharpUI;
 		protected System.Web.UI.WebControls.DataGrid AddressBookDataGrid;
 		protected System.Web.UI.HtmlControls.HtmlSelect addressbookselect;
+		protected System.Web.UI.WebControls.Label addressbooklabel;
+		private System.Collections.Specialized.StringCollection _delete_items = null;
 
-		public static System.Collections.SortedList GetDataSource (System.Collections.Specialized.ListDictionary addressbook, bool specific, anmar.SharpWebMail.IEmailClient client ) {
+		public static System.Collections.Specialized.ListDictionary GetAddressbook (System.String name, System.Object books) {
+			if ( name==null || name.Length==0 || books==null || !(books is System.Collections.SortedList) )
+				return null;
+			System.Collections.SortedList addressbooks = (System.Collections.SortedList)books;
+			if ( addressbooks.ContainsKey(name) ) {
+				return (System.Collections.Specialized.ListDictionary)addressbooks[name];
+			}
+			return null;
+		}
+		private static System.Data.Common.DbDataAdapter GetDataAdapter (System.String type, System.String connectstring, System.String connectusername, System.String connectpassword, System.String searchfilter) {
+			if ( type.Equals("odbc") )
+				return new System.Data.Odbc.OdbcDataAdapter(searchfilter, connectstring);
+			else if ( type.Equals("oledb") )
+				return new System.Data.OleDb.OleDbDataAdapter(searchfilter, connectstring);
+			else
+				return null;
+		}
+		public static System.Data.DataTable GetDataSource (System.Collections.Specialized.ListDictionary addressbook, bool specific, anmar.SharpWebMail.IEmailClient client ) {
 			if ( !addressbook.Contains("connectionstring") 
 			    || !addressbook.Contains("searchstring") )
 				return null;
@@ -54,18 +74,22 @@ namespace anmar.SharpWebMail.UI
 				searchfilter=searchfilter.Replace("$USERNAME$", System.String.Empty);
 			System.String namecolumn = addressbook["namecolumn"].ToString();
 			System.String mailcolumn = addressbook["emailcolumn"].ToString();
+			System.String ownercolumn = "owner";
+			if ( addressbook.Contains("usernamecolumn") )
+				ownercolumn = addressbook["usernamecolumn"].ToString();
 			if ( addressbook["type"].Equals("ldap") )
-				return GetDataSourceLDAP(connectstring, connectusername, connectpassword, searchfilter, namecolumn, mailcolumn);
+				return GetDataSourceLDAP(addressbook["name"].ToString(), connectstring, connectusername, connectpassword, searchfilter, namecolumn, mailcolumn, ownercolumn);
 			else if ( addressbook["type"].Equals("odbc") )
-				return GetDataSourceODBC(connectstring, connectusername, connectpassword, searchfilter, namecolumn, mailcolumn);
+				return GetDataSourceODBC(addressbook["name"].ToString(), connectstring, connectusername, connectpassword, searchfilter, namecolumn, mailcolumn, ownercolumn);
 			else if ( addressbook["type"].Equals("oledb") )
-				return GetDataSourceOLEDB(connectstring, connectusername, connectpassword, searchfilter, namecolumn, mailcolumn);
+				return GetDataSourceOLEDB(addressbook["name"].ToString(), connectstring, connectusername, connectpassword, searchfilter, namecolumn, mailcolumn, ownercolumn);
 			else
 				return null;
 		}
-		private static System.Collections.SortedList GetDataSourceData (System.Data.Common.DbDataAdapter adapter, System.String namecolumn, System.String mailcolumn) {
-			System.Collections.SortedList datasource = new System.Collections.SortedList();
-			System.Data.DataSet data = new System.Data.DataSet();
+		private static System.Data.DataTable GetDataSourceData (System.Data.Common.DbDataAdapter adapter, System.String namecolumn, System.String mailcolumn, System.String ownercolumn, System.String book) {
+			if ( adapter==null )
+				return null;
+			System.Data.DataTable data = GetDataSourceDataTable (namecolumn, mailcolumn, ownercolumn, book);
 			try {
 				adapter.Fill(data);
 			} catch ( System.Exception e ) {
@@ -73,19 +97,20 @@ namespace anmar.SharpWebMail.UI
 					log.Error("Error while doing query", e);
 				return null;
 			}
-			if ( data.Tables.Count>0 ) {
-				foreach ( System.Data.DataTable table in data.Tables ) {
-					if ( !table.Columns.Contains(namecolumn) || !table.Columns.Contains(mailcolumn) )
-						continue;
-					foreach ( System.Data.DataRow item in table.Rows )
-						if ( !datasource.ContainsKey(item[mailcolumn]) )
-							datasource.Add(item[mailcolumn], item[namecolumn] );
-				}
-			}
-			return datasource;
+			return data;
 		}
-		private static System.Collections.SortedList GetDataSourceLDAP (System.String connectstring, System.String connectusername, System.String connectpassword, System.String searchfilter, System.String namecolumn, System.String mailcolumn) {
-			System.Collections.SortedList datasource = new System.Collections.SortedList();
+		private static System.Data.DataTable GetDataSourceDataTable (System.String namecolumn, System.String mailcolumn, System.String ownercolumn, System.String book) {
+			System.Data.DataTable table = new System.Data.DataTable("addressbook");
+			table.Columns.Add(new System.Data.DataColumn(namecolumn, typeof(System.String)));
+			table.Columns.Add(new System.Data.DataColumn(mailcolumn, typeof(System.String)));
+			table.Columns.Add(new System.Data.DataColumn("addressbook", typeof(System.String)));
+			table.Columns.Add(new System.Data.DataColumn(ownercolumn, typeof(System.String)));
+			table.Columns[1].Unique = true;
+			table.Columns[2].DefaultValue = book;
+			return table;
+		}
+		private static System.Data.DataTable GetDataSourceLDAP (System.String book, System.String connectstring, System.String connectusername, System.String connectpassword, System.String searchfilter, System.String namecolumn, System.String mailcolumn, System.String ownercolumn) {
+			System.Data.DataTable datasource = GetDataSourceDataTable(namecolumn, mailcolumn, ownercolumn, book);
 			System.DirectoryServices.DirectoryEntry direntry = new System.DirectoryServices.DirectoryEntry(connectstring);
 			direntry.Username = connectusername;
 			direntry.Password = connectpassword;
@@ -110,47 +135,171 @@ namespace anmar.SharpWebMail.UI
 					name = result.Properties[namecolumn][0].ToString();
 					value = result.Properties[mailcolumn][0].ToString();
 				}
-				if ( name!=null && value!=null && !datasource.ContainsKey(value) )
-					datasource.Add(value, name);
+				if ( name!=null && value!=null ) {
+					try {
+						datasource.Rows.Add(new object[]{name, value});
+					} catch ( System.Exception ){}
+				}
 			}
 			return datasource;
 		}
-		private static System.Collections.SortedList GetDataSourceODBC (System.String connectstring, System.String connectusername, System.String connectpassword, System.String searchfilter, System.String namecolumn, System.String mailcolumn) {
-			System.Data.Odbc.OdbcDataAdapter adapter = new System.Data.Odbc.OdbcDataAdapter(searchfilter, connectstring);
-			return GetDataSourceData(adapter, namecolumn, mailcolumn);
+		private static System.Data.DataTable GetDataSourceODBC (System.String book, System.String connectstring, System.String connectusername, System.String connectpassword, System.String searchfilter, System.String namecolumn, System.String mailcolumn, System.String ownercolumn) {
+			return GetDataSourceData(GetDataAdapter("odbc", connectstring, connectusername, connectpassword, searchfilter), namecolumn, mailcolumn, ownercolumn, book);
 		}
-		private static System.Collections.SortedList GetDataSourceOLEDB (System.String connectstring, System.String connectusername, System.String connectpassword, System.String searchfilter, System.String namecolumn, System.String mailcolumn) {
-			System.Data.OleDb.OleDbDataAdapter adapter = new System.Data.OleDb.OleDbDataAdapter(searchfilter, connectstring);
-			return GetDataSourceData(adapter, namecolumn, mailcolumn);
+		private static System.Data.DataTable GetDataSourceOLEDB (System.String book, System.String connectstring, System.String connectusername, System.String connectpassword, System.String searchfilter, System.String namecolumn, System.String mailcolumn, System.String ownercolumn) {
+			return GetDataSourceData(GetDataAdapter("oledb", connectstring, connectusername, connectpassword, searchfilter), namecolumn, mailcolumn, ownercolumn, book);
+		}
+		public static bool UpdateDataSource (System.Data.DataTable data, System.Collections.Specialized.ListDictionary addressbook, anmar.SharpWebMail.IEmailClient client) {
+			bool error = false;
+			if ( data==null || addressbook==null || !addressbook.Contains("connectionstring") 
+			    || !addressbook.Contains("searchstring") || !addressbook.Contains("allowupdate") || !((bool)addressbook["allowupdate"]) )
+				return false;
+			System.String connectstring = addressbook["connectionstring"].ToString();
+			System.String connectusername = null, connectpassword = null;
+			if ( addressbook.Contains("connectionusername") && addressbook.Contains("connectionpassword") ) {
+				connectusername = addressbook["connectionusername"].ToString();
+				connectpassword = addressbook["connectionpassword"].ToString();
+			} else if ( client!=null ) {
+				connectusername = client.UserName;
+				connectpassword = client.Password;
+			}
+
+			System.String searchfilter = addressbook["searchstring"].ToString();
+			if ( client!=null )
+				searchfilter=searchfilter.Replace("$USERNAME$", client.UserName);
+			else
+				searchfilter=searchfilter.Replace("$USERNAME$", System.String.Empty);
+			System.Data.Common.DbDataAdapter adapter = GetDataAdapter(addressbook["type"].ToString(), connectstring, connectusername, connectpassword, searchfilter);
+			if ( adapter!=null ) {
+				try {
+					if ( addressbook["type"].Equals("odbc") ) {
+						System.Data.Odbc.OdbcCommandBuilder builder = new System.Data.Odbc.OdbcCommandBuilder(adapter as System.Data.Odbc.OdbcDataAdapter);
+						adapter.Update(data);
+					} else if ( addressbook["type"].Equals("oledb") ) {
+						System.Data.OleDb.OleDbCommandBuilder builder = new System.Data.OleDb.OleDbCommandBuilder(adapter as System.Data.OleDb.OleDbDataAdapter);
+						adapter.Update(data);
+					}
+				} catch ( System.Exception e ) {
+					if ( log.IsErrorEnabled )
+						log.Error(System.String.Concat("Error updating address book [", addressbook["name"], "] for user [", client.UserName, "]" ), e);
+					error = true;
+				}
+			} else {
+				error = true;
+			}
+			return !error;
+		}
+
+		protected void AddressBookDataGrid_DeleteCheckBox ( System.Object sender, System.EventArgs args ) {
+			if ( this._delete_items==null )
+				this._delete_items = new System.Collections.Specialized.StringCollection();
+			if ( ((System.Web.UI.HtmlControls.HtmlInputCheckBox)sender).Checked )
+				this._delete_items.Add (((System.Web.UI.HtmlControls.HtmlInputCheckBox)sender).Value);
+		}
+		protected void AddressBookDataGrid_Delete ( System.Object sender, System.Web.UI.WebControls.DataGridCommandEventArgs args ) {
+			if ( this._delete_items!=null && this._delete_items.Count>0 ) {
+				System.Collections.Specialized.ListDictionary addressbook = anmar.SharpWebMail.UI.AddressBook.GetAddressbook(this.addressbookselect.Value, Application["sharpwebmail/send/addressbook"]);
+				System.Data.DataTable data = GetDataSource(addressbook, false, Session["client"] as anmar.SharpWebMail.IEmailClient);
+				if ( data!=null ) {
+					bool delete = false;
+					System.Data.DataView view = data.DefaultView;
+					foreach ( System.String item in this._delete_items ) {
+						view.RowFilter = System.String.Concat(data.Columns[1].ColumnName, "='", item, "'");
+						if ( view.Count==1 ) {
+							view[0].Delete();
+							delete = true;
+						}
+					}
+					if ( delete ) {
+						anmar.SharpWebMail.UI.AddressBook.UpdateDataSource(data, addressbook, Session["client"] as anmar.SharpWebMail.IEmailClient);
+					}
+				}
+			}
 		}
 		protected void AddressBook_Changed ( System.Object sender, System.EventArgs args ) {
 			this.AddressBookDataGrid.CurrentPageIndex = 0;
 		}
 		protected void AddressBookDataGrid_PageIndexChanged ( System.Object sender, System.Web.UI.WebControls.DataGridPageChangedEventArgs args ) {
-			this.AddressBookDataGrid.CurrentPageIndex = args.NewPageIndex;
+			if ( args.NewPageIndex>=0 && args.NewPageIndex<this.AddressBookDataGrid.PageCount )
+				this.AddressBookDataGrid.CurrentPageIndex = args.NewPageIndex;
+		}
+		protected void AddressBookNextPageButton_Click ( System.Object sender, System.Web.UI.ImageClickEventArgs args ) {
+			if ( (this.AddressBookDataGrid.CurrentPageIndex+1)<this.AddressBookDataGrid.PageCount ) {
+				AddressBookDataGrid_PageIndexChanged ( sender, new System.Web.UI.WebControls.DataGridPageChangedEventArgs ( sender, this.AddressBookDataGrid.CurrentPageIndex+1 ) );
+			}
+		}
+		protected void AddressBookPrevPageButton_Click ( System.Object sender, System.Web.UI.ImageClickEventArgs args ) {
+			if ( this.AddressBookDataGrid.CurrentPageIndex>0 ) {
+				AddressBookDataGrid_PageIndexChanged (sender, new System.Web.UI.WebControls.DataGridPageChangedEventArgs ( sender, this.AddressBookDataGrid.CurrentPageIndex-1 ));
+			}
 		}
 		protected void Page_Init () {
+			this.EnsureChildControls();
+			// Full page things
+			if ( this.AddressBookDataGrid==null && this.SharpUI!=null ) {
+				this.addressbookselect=(System.Web.UI.HtmlControls.HtmlSelect)this.SharpUI.FindControl("addressbookselect");
+				this.AddressBookDataGrid=(System.Web.UI.WebControls.DataGrid)this.SharpUI.FindControl("AddressBookDataGrid");
+				this.addressbooklabel=(System.Web.UI.WebControls.Label)this.SharpUI.FindControl("addressbookLabel");
+				this.SharpUI.nextPageImageButton.Click += new System.Web.UI.ImageClickEventHandler(AddressBookNextPageButton_Click);
+				this.SharpUI.prevPageImageButton.Click += new System.Web.UI.ImageClickEventHandler(AddressBookPrevPageButton_Click);
+				this.SharpUI.refreshPageImageButton.Enabled = false;
+				this.AddressBookDataGrid.PagerStyle.NextPageText = this.SharpUI.LocalizedRS.GetString("inboxNextPage");
+				this.AddressBookDataGrid.PagerStyle.PrevPageText = this.SharpUI.LocalizedRS.GetString("inboxPrevPage");
+			}
+			
 			if ( Application["sharpwebmail/send/addressbook"]!=null ) {
 				System.Collections.SortedList addressbooks = (System.Collections.SortedList)Application["sharpwebmail/send/addressbook"];
-				if ( addressbooks.Count>1 )
+				if ( addressbooks.Count>1 ) {
 					addressbookselect.Visible = true;
+					if ( this.addressbooklabel!=null )
+						this.addressbooklabel.Visible = true;
+				}
 				addressbookselect.DataSource = addressbooks;
 				addressbookselect.DataTextField = "Key";
 				addressbookselect.DataValueField = "Key";
 				addressbookselect.DataBind();
-			}
-		}
-		protected void Page_Load( System.Object sender, System.EventArgs args ) {
-			System.Collections.SortedList addressbooks = (System.Collections.SortedList)Application["sharpwebmail/send/addressbook"];
-			System.Collections.Specialized.ListDictionary addressbook = (System.Collections.Specialized.ListDictionary)addressbooks[addressbookselect.Value];
-			if ( !addressbook["type"].Equals("none") ) {
-				this.AddressBookDataGrid.PageSize = (int)addressbook["pagesize"];
-				this.AddressBookDataGrid.DataSource = GetDataSource(addressbook, false, Session["client"] as anmar.SharpWebMail.IEmailClient );
+				if ( !this.IsPostBack ) {
+					System.String book = Request.QueryString["book"];
+					if ( book!=null && book.Length>0 ) {
+						addressbookselect.Value = book;
+					}
+				}
 			}
 		}
 		protected void Page_PreRender( System.Object sender, System.EventArgs args ) {
+			System.Collections.Specialized.ListDictionary addressbook = GetAddressbook(addressbookselect.Value, Application["sharpwebmail/send/addressbook"]);
+			if ( addressbook!=null && !addressbook["type"].Equals("none") ) {
+				this.AddressBookDataGrid.PageSize = (int)addressbook["pagesize"];
+				this.AddressBookDataGrid.DataSource = GetDataSource(addressbook, false, Session["client"] as anmar.SharpWebMail.IEmailClient );
+				// Not editable
+				if ( !((bool)addressbook["allowupdate"]) ) {
+					if ( this.SharpUI!=null && this.AddressBookDataGrid.Columns.Count>1 ) {
+						this.AddressBookDataGrid.Columns[this.AddressBookDataGrid.Columns.Count-1].Visible = false;
+						this.AddressBookDataGrid.Columns[this.AddressBookDataGrid.Columns.Count-2].Visible = false;
+					}
+				// Editable and in full page mode
+				} else if ( this.SharpUI!=null ) {
+					if ( this.AddressBookDataGrid.Columns.Count>1 ) {
+						this.AddressBookDataGrid.Columns[this.AddressBookDataGrid.Columns.Count-1].Visible = true;
+						this.AddressBookDataGrid.Columns[this.AddressBookDataGrid.Columns.Count-2].Visible = true;
+					}
+					System.Web.UI.HtmlControls.HtmlAnchor link = (System.Web.UI.HtmlControls.HtmlAnchor)this.SharpUI.FindControl("addressbookEntryInsert");
+					if ( link!=null ) {
+						link.HRef = System.String.Concat("addressbook_edit.aspx?book=", System.Web.HttpUtility.UrlEncode(this.addressbookselect.Value));
+						link.Visible = true;
+					}
+					link = (System.Web.UI.HtmlControls.HtmlAnchor)this.SharpUI.FindControl("addressbookImportExport");
+					if ( link!=null ) {
+						link.HRef = System.String.Concat("addressbook_data.aspx?book=", System.Web.HttpUtility.UrlEncode(this.addressbookselect.Value));
+						link.Visible = true;
+					}
+				}
+			}
 			System.Resources.ResourceSet resources = (System.Resources.ResourceSet) Session["resources"];;
-			this.AddressBookDataGrid.Columns[0].HeaderText = resources.GetString("newMessageWindowToEmailLabel");
+			// Pop-up mode
+			if ( this.SharpUI==null ) {
+				this.AddressBookDataGrid.Columns[0].HeaderText = resources.GetString("addressbookNameLabel");
+			}
 			this.AddressBookDataGrid.Columns[0].HeaderStyle.Wrap = false;
 			this.AddressBookDataGrid.DataBind();
 		}

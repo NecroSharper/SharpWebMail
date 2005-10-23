@@ -68,10 +68,14 @@ namespace anmar.SharpWebMail
 							tmpaddressbook = null;
 							if ( addressbook.Contains("type") && !addressbook["type"].Equals("none") && addressbook.Contains("name") && !addressbooks.Contains(addressbook["name"]) ) {
 								if ( addressbook.Contains("pagesize") )
-									addressbook["pagesize"] = System.Int32.Parse(addressbook["pagesize"].ToString());
+									addressbook["pagesize"] = ParseConfigElement(addressbook["pagesize"].ToString(), 10);
 								else
 									addressbook["pagesize"] = 10;
 								addressbooks.Add(addressbook["name"], addressbook);
+								if ( addressbook.Contains("allowupdate") )
+									addressbook["allowupdate"] = ParseConfigElement(addressbook["allowupdate"].ToString(), false);
+								else
+									addressbook["allowupdate"] = false;
 							}
 							break;
 					}
@@ -79,6 +83,7 @@ namespace anmar.SharpWebMail
 			}
 		}
 		private void InitConfigDefaults (System.Collections.Hashtable config) {
+			config.Add ( "sharpwebmail/general/addressbooks", false );
 			config.Add ( "sharpwebmail/general/default_lang", "en" );
 			config.Add ( "sharpwebmail/general/title", System.String.Empty );
 			config.Add ( "sharpwebmail/login/append", System.String.Empty );
@@ -86,9 +91,12 @@ namespace anmar.SharpWebMail
 			config.Add ( "sharpwebmail/login/mode", 1 );
 			config.Add ( "sharpwebmail/login/serverselection", System.String.Empty );
 			config.Add ( "sharpwebmail/login/title", System.String.Empty );
+			config.Add ( "sharpwebmail/read/inbox/commit_onexit", true );
+			config.Add ( "sharpwebmail/read/inbox/commit_ondelete", false );
 			config.Add ( "sharpwebmail/read/inbox/pagesize", 10 );
 			config.Add ( "sharpwebmail/read/inbox/sort", "msgnum DESC" );
 			config.Add ( "sharpwebmail/read/inbox/stat", 2 );
+			config.Add ( "sharpwebmail/read/message/commit_ondelete", false );
 			config.Add ( "sharpwebmail/read/message/sanitizer_mode", 0 );
 			config.Add ( "sharpwebmail/read/message/temppath", System.String.Empty );
 			config.Add ( "sharpwebmail/send/message/attach_ui", "normal" );
