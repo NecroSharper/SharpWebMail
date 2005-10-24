@@ -290,27 +290,25 @@ namespace anmar.SharpWebMail.UI
 					}
 					this.AddressBookDataGrid.DataSource = data.DefaultView;
 				}
-				// Not editable
-				if ( !((bool)addressbook["allowupdate"]) ) {
-					if ( this.SharpUI!=null && this.AddressBookDataGrid.Columns.Count>1 ) {
-						this.AddressBookDataGrid.Columns[this.AddressBookDataGrid.Columns.Count-1].Visible = false;
-						this.AddressBookDataGrid.Columns[this.AddressBookDataGrid.Columns.Count-2].Visible = false;
-					}
-				// Editable and in full page mode
-				} else if ( this.SharpUI!=null ) {
+				// Full Page Mode
+				if ( this.SharpUI!=null ) {
+					bool allowupdate = (bool)addressbook["allowupdate"];
+					// Editable columns?
 					if ( this.AddressBookDataGrid.Columns.Count>1 ) {
-						this.AddressBookDataGrid.Columns[this.AddressBookDataGrid.Columns.Count-1].Visible = true;
-						this.AddressBookDataGrid.Columns[this.AddressBookDataGrid.Columns.Count-2].Visible = true;
+						this.AddressBookDataGrid.Columns[this.AddressBookDataGrid.Columns.Count-1].Visible = allowupdate;
+						this.AddressBookDataGrid.Columns[this.AddressBookDataGrid.Columns.Count-2].Visible = allowupdate;
 					}
+					// Editable links?
 					System.Web.UI.HtmlControls.HtmlAnchor link = (System.Web.UI.HtmlControls.HtmlAnchor)this.SharpUI.FindControl("addressbookEntryInsert");
 					if ( link!=null ) {
 						link.HRef = System.String.Concat("addressbook_edit.aspx?book=", System.Web.HttpUtility.UrlEncode(this.addressbookselect.Value));
-						link.Visible = true;
+						link.Visible = allowupdate;
 					}
+					// Editable links?
 					link = (System.Web.UI.HtmlControls.HtmlAnchor)this.SharpUI.FindControl("addressbookImportExport");
 					if ( link!=null ) {
 						link.HRef = System.String.Concat("addressbook_data.aspx?book=", System.Web.HttpUtility.UrlEncode(this.addressbookselect.Value));
-						link.Visible = true;
+						link.Visible = allowupdate;
 					}
 				}
 			}
