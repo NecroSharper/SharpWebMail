@@ -4,6 +4,7 @@
    RFC 2045 default (us-ascii) it will use the default encoding configured in the
    server.
  - [Global] Set the above globally.
+ - [Addressbook] Handle simpler the conditional elements of the UI.
 
 10/23/2005
  - Version number set to 0.13
