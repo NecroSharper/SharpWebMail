@@ -103,6 +103,7 @@ namespace anmar.SharpWebMail
 			config.Add ( "sharpwebmail/send/message/sanitizer_mode", 0 );
 			config.Add ( "sharpwebmail/send/message/smtp_engine", System.String.Empty );
 			config.Add ( "sharpwebmail/send/message/temppath", System.String.Empty );
+			config.Add ( "sharpwebmail/read/message/useserverencoding", false );
 		}
 		private void InitConfigSection ( System.Collections.Hashtable config, System.String section, System.Collections.Hashtable configsection ) {
 			foreach ( System.Collections.DictionaryEntry item in configsection ) {
