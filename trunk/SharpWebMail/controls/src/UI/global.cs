@@ -111,6 +111,9 @@ namespace anmar.SharpWebMail.UI
 			if ( Application["sharpwebmail/send/addressbook"]!=null ) {
 				Application["sharpwebmail/general/addressbooks"] = true;
 			}
+			if ( (bool)Application["sharpwebmail/read/message/useserverencoding"] ) {
+				anmar.SharpMimeTools.SharpMimeHeader.EncodingDefault = System.Text.Encoding.Default;
+			}
 			TestAvailableCultures();
 			System.Collections.SortedList availablecultures_values = new System.Collections.SortedList(availablecultures.Count);
 			foreach ( System.Collections.DictionaryEntry item in availablecultures ) {
