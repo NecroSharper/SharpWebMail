@@ -176,9 +176,11 @@ namespace anmar.SharpWebMail.UI
 					if ( addressbook["type"].Equals("odbc") ) {
 						System.Data.Odbc.OdbcCommandBuilder builder = new System.Data.Odbc.OdbcCommandBuilder(adapter as System.Data.Odbc.OdbcDataAdapter);
 						adapter.Update(data);
+						builder = null;
 					} else if ( addressbook["type"].Equals("oledb") ) {
 						System.Data.OleDb.OleDbCommandBuilder builder = new System.Data.OleDb.OleDbCommandBuilder(adapter as System.Data.OleDb.OleDbDataAdapter);
 						adapter.Update(data);
+						builder = null;
 					}
 				} catch ( System.Exception e ) {
 					if ( log.IsErrorEnabled )
@@ -188,6 +190,7 @@ namespace anmar.SharpWebMail.UI
 			} else {
 				error = true;
 			}
+			adapter = null;
 			return !error;
 		}
 
