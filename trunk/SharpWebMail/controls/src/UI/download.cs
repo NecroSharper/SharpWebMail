@@ -68,6 +68,7 @@ namespace anmar.SharpWebMail.UI
 							header = "attachment";
 						header = System.String.Format ("{0}; filename=\"{1}\"; size=\"{2}\";", header, name, file.Length);
 						Response.AppendHeader("Content-Disposition", header);
+						Response.AppendHeader("Content-Length", file.Length.ToString());
 						Response.WriteFile ( file.FullName );
 					}
 					file = null;

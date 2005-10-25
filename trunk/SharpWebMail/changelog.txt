@@ -1,3 +1,7 @@
+10/25/2005
+ - [Download] The download page wasn't sending the Content-Length header. This caused
+   weird things with exotic clients (e.g. Nokia 9300).
+
 10/24/2005
  - [Config] Add setting (UseServerEncoding) to allow changing the default encoding for
    parsed emails. If UseServerEncoding is set to true, then instead of using the
