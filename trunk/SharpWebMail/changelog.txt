@@ -1,3 +1,8 @@
+10/28/2005
+ - [New Message] Set the tabindex to all the form fields to allow easier TAB usage.
+ - [Addressbook] Set the tabindex to all the form fields to allow easier TAB usage.
+ - [Search] Set the tabindex to all the form fields to allow easier TAB usage.
+
 10/25/2005
  - [Download] The download page wasn't sending the Content-Length header. This caused
    weird things with exotic clients (e.g. Nokia 9300).
