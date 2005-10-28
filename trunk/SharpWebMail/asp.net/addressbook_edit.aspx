@@ -74,8 +74,8 @@
                             <tr> 
                               <td>&nbsp;</td>
                               <td align="left">
-                              	<asp:button id="addressbookEntryUpdate" CausesValidation="true" runat="server" text="Update"  OnClick="AddressUpdate_Click" />
-                              	<asp:button id="addressbookEntryInsert" CausesValidation="true" runat="server" text="Insert"  OnClick="AddressInsert_Click" />
+                              	<asp:button id="addressbookEntryUpdate" CausesValidation="true" runat="server" text="Update"  OnClick="AddressUpdate_Click" tabindex="10" />
+                              	<asp:button id="addressbookEntryInsert" CausesValidation="true" runat="server" text="Insert"  OnClick="AddressInsert_Click" tabindex="10" />
                               </td>
                               <td></td>
                             </tr>
