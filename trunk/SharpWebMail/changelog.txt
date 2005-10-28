@@ -8,7 +8,6 @@
    attachments are included when forwarding messages.
  - [New Message] Added settings (ReplyQuoteChar, ReplyQuoteStyle) to allow quoting
    of the body of the original message when replying.
-
  
 10/25/2005
  - [Download] The download page wasn't sending the Content-Length header. This caused
