@@ -136,6 +136,8 @@ namespace anmar.SharpWebMail.UI
 					((System.Web.UI.WebControls.ImageButton)childcontrol).ToolTip = label;
 				else if ( childcontrol is System.Web.UI.WebControls.Label )
 					((System.Web.UI.WebControls.Label)childcontrol).Text = label;
+				else if ( childcontrol is System.Web.UI.WebControls.Literal )
+					((System.Web.UI.WebControls.Literal)childcontrol).Text = label;
 				else if ( childcontrol is System.Web.UI.WebControls.LinkButton )
 					((System.Web.UI.WebControls.LinkButton)childcontrol).Text = label;
 			}
