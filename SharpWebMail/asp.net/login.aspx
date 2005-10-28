@@ -31,7 +31,7 @@
           <tr> 
             <td> <asp:Label EnableViewState="true" id="loginWindowUsername" CssClass="XPFormLabel" runat="server" /></td>
             <td> 
-              <input id="username" type="text" runat="server" value="" size="25" style="XPInput" name="text" />
+              <input id="username" type="text" runat="server" value="" size="25" style="XPInput" tabindex="10" />
             </td>
             <td> <ASP:RequiredFieldValidator EnableViewState="true" id="RequiredFieldValidator1" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="username" /><ASP:RegularExpressionValidator id="usernameValidator" ControlToValidate="username" runat="server" ErrorMessage="*" Display="Static" />
             </td>
@@ -46,7 +46,7 @@
           <tr> 
             <td> <asp:Label EnableViewState="true" id="loginWindowPassword" CssClass="XPFormLabel" runat="server" /></td>
             <td> 
-              <input id="password" type="password" runat="server" style="XPInput" size="25" name="password" />
+              <input id="password" type="password" runat="server" style="XPInput" size="25" tabindex="10" />
             </td>
             <td> <ASP:RequiredFieldValidator id="RequiredFieldValidator2" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="password" />
             </td>
@@ -54,13 +54,13 @@
           <tr> 
             <td></td>
             <td> 
-              <select id="selectculture" runat="server" OnServerChange="CultureChange" style="XPInput" />
+              <select id="selectculture" runat="server" OnServerChange="CultureChange" style="XPInput" tabindex="10" />
             </td>
             <td></td>
           </tr>
           <tr>
             <td>&nbsp;</td>
-            <td align="center"><asp:button EnableViewState="true" id="loginButton" onclick="Login_Click" runat="server" text="Login" />
+            <td align="center"><asp:button EnableViewState="true" id="loginButton" onclick="Login_Click" runat="server" text="Login" tabindex="10" />
             </td>
             <td>&nbsp;</td>
           </tr>
