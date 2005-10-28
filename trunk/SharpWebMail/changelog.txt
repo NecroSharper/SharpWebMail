@@ -4,7 +4,12 @@
  - [Search] Set the tabindex to all the form fields to allow easier TAB usage.
  - [Login] Set the tabindex to all the form fields to allow easier TAB usage.
  - [GlobalUI] Add support for Literals.
+ - [New Message] Added setting (ForwardAttachments) to allow controlling whether
+   attachments are included when forwarding messages.
+ - [New Message] Added settings (ReplyQuoteChar, ReplyQuoteStyle) to allow quoting
+   of the body of the original message when replying.
 
+ 
 10/25/2005
  - [Download] The download page wasn't sending the Content-Length header. This caused
    weird things with exotic clients (e.g. Nokia 9300).
