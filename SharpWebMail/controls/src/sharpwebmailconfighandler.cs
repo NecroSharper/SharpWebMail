@@ -100,6 +100,9 @@ namespace anmar.SharpWebMail
 			config.Add ( "sharpwebmail/read/message/sanitizer_mode", 0 );
 			config.Add ( "sharpwebmail/read/message/temppath", System.String.Empty );
 			config.Add ( "sharpwebmail/send/message/attach_ui", "normal" );
+			config.Add ( "sharpwebmail/send/message/forwardattachments", true );
+			config.Add ( "sharpwebmail/send/message/replyquotechar", "> " );
+			config.Add ( "sharpwebmail/send/message/replyquotestyle", "padding-left: 5px; margin-left: 5px; border-left: #0000ff 2px solid; margin-left: 0px" );
 			config.Add ( "sharpwebmail/send/message/sanitizer_mode", 0 );
 			config.Add ( "sharpwebmail/send/message/smtp_engine", System.String.Empty );
 			config.Add ( "sharpwebmail/send/message/temppath", System.String.Empty );

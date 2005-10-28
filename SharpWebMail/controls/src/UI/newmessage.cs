@@ -224,7 +224,7 @@ namespace anmar.SharpWebMail.UI
 					this._headers = (anmar.SharpMimeTools.SharpMimeHeader) details[13];
 					if ( !this.IsPostBack ) {
 						bool html_content = this.FCKEditor.CheckBrowserCompatibility();
-						System.Text.StringBuilder sb_body = null;
+						
 						this.subject.Value = System.String.Concat (this.SharpUI.LocalizedRS.GetString(System.String.Concat(this._message_mode, "Prefix")), ":");
 						if ( details[10].ToString().ToLower().IndexOf (this.subject.Value.ToLower())!=-1 ) {
 							this.subject.Value = details[10].ToString().Trim();
@@ -242,8 +242,10 @@ namespace anmar.SharpWebMail.UI
 								path = System.IO.Path.Combine (path, msgid);
 								path = System.IO.Path.GetFullPath(path);
 							}
-							message = new anmar.SharpMimeTools.SharpMessage(ms, true, html_content, path);
-							sb_body = new System.Text.StringBuilder();
+							bool attachments = false;
+							if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.forward) )
+								attachments = (bool)Application["sharpwebmail/send/message/forwardattachments"];
+							message = new anmar.SharpMimeTools.SharpMessage(ms, attachments, html_content, path);
 						}
 						if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.reply) ) {
 							// From name if present on original message's To header
@@ -279,6 +281,7 @@ namespace anmar.SharpWebMail.UI
 						}
 						// Preserve the original body and some properties
 						if ( message!=null ) {
+							System.Text.StringBuilder sb_body = new System.Text.StringBuilder();
 							System.String line_end = null;
 							if ( html_content )
 								line_end = "<br />\r\n";
@@ -314,6 +317,17 @@ namespace anmar.SharpWebMail.UI
 							sb_body.Append(message.Body);
 							if ( !message.HasHtmlBody &&  html_content )
 								sb_body.Append("</pre>");
+							if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.reply) ) {
+								if ( html_content ) {
+									sb_body.Insert(0, System.String.Concat("<blockquote style=\"", Application["sharpwebmail/send/message/replyquotestyle"] ,"\">"));
+									sb_body.Append("</blockquote>");
+								} else {
+									sb_body.Insert(0, Application["sharpwebmail/send/message/replyquotechar"].ToString());
+									sb_body.Replace("\n", System.String.Concat("\n", Application["sharpwebmail/send/message/replyquotechar"]));
+								}
+							}
+							sb_body.Insert(0, line_end);
+							sb_body.Insert(0, " ");
 							this.FCKEditor.Value = sb_body.ToString();
 						}
 					}
