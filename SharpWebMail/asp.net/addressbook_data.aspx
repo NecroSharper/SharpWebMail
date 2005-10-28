@@ -77,9 +77,9 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td align="left">
-                              	<asp:button id="addressbookImport" CausesValidation="true" OnClick="AddressImport_Click" runat="server" />
+                              	<asp:button id="addressbookImport" CausesValidation="true" OnClick="AddressImport_Click" runat="server" tabindex="10" />
                               	<img src="images/spacer.gif" width="6" height="1">
-                              	<asp:button id="addressbookExport" CausesValidation="true" OnClick="AddressExport_Click" runat="server" />
+                              	<asp:button id="addressbookExport" CausesValidation="true" OnClick="AddressExport_Click" runat="server" tabindex="10" />
                               </td>
                               <td></td>
                             </tr>

@@ -50,7 +50,7 @@
                             </tr>
                             <tr> 
                               <td><img src="images/spacer.gif" width="1" height="30"></td>
-                              <td align="right" valign="bottom"><asp:button id="searchWindowSearchButton" runat="server" text="Search" OnClick="Search_Click" /></td>
+                              <td align="right" valign="bottom"><asp:button id="searchWindowSearchButton" runat="server" text="Search" OnClick="Search_Click" tabindex="10" /></td>
                               <td></td>
                             </tr>
                           </table>

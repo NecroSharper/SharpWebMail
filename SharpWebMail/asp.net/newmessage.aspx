@@ -132,7 +132,7 @@
                               <td> </td>
                             </tr>
                             <tr> 
-                              <td nowrap><asp:button id="newMessageWindowAttachmentsButton" causesvalidation="false" onClick="Attachments_Click" runat="server" text="Send" /></td>
+                              <td nowrap><asp:button id="newMessageWindowAttachmentsButton" causesvalidation="false" onClick="Attachments_Click" runat="server" text="Send" tabindex="10" /></td>
                               <td>
                               <asp:DataList id="newMessageWindowAttachmentsAddedList"
                                    CellPadding="0"
@@ -156,7 +156,7 @@
                               <td><ASP:RequiredFieldValidator id="ReqbodyValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="FCKEditor" EnableClientScript="false" /></td>
                             </tr>
                             <tr> 
-                              <td colspan="2" align="center"><asp:button id="newMessageWindowSendButton" CausesValidation="true" onClick="Send_Click" runat="server" text="Send" /> 
+                              <td colspan="2" align="center"><asp:button id="newMessageWindowSendButton" CausesValidation="true" onClick="Send_Click" runat="server" text="Send" tabindex="10" /> 
                               </td>
                               <td>&nbsp;</td>
                             </tr>
@@ -192,7 +192,7 @@
                             </tr>
                             <tr> 
                               <td></td>
-                              <td align="center"><asp:button id="newMessageWindowAttachmentAddButton" onClick="AttachmentAdd_Click" runat="server" Text="Add" />
+                              <td align="center"><asp:button id="newMessageWindowAttachmentAddButton" onClick="AttachmentAdd_Click" runat="server" Text="Add" tabindex="10" />
                               </td>
                               <td> </td>
                             </tr>
@@ -202,7 +202,7 @@
                              </asp:placeholder>
                             <tr> 
                               <td></td>
-                              <td align="center"><asp:button id="newMessageWindowAttachButton" causesvalidation="false" onClick="Attach_Click" runat="server" text="Attach" />
+                              <td align="center"><asp:button id="newMessageWindowAttachButton" causesvalidation="false" onClick="Attach_Click" runat="server" text="Attach" tabindex="10" />
                               </td>
                               <td> </td>
                             </tr>
