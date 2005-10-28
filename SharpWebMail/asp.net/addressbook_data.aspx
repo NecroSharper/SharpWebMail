@@ -55,7 +55,7 @@
                             <tr>
                               <td align="right" nowrap width="1%"><asp:Label id="addressbookDelimiterLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <input id="delimiter" type="text" runat="server"  maxlength="2" value="," class="XPInput" name="text" />
+                                <input id="delimiter" type="text" runat="server"  maxlength="2" value="," class="XPInput" tabindex="10" />
 								<ASP:RequiredFieldValidator id="ReqNameValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="delimiter" /> 
                               </td>
                               <td> </td>
@@ -63,14 +63,14 @@
                             <tr>
                               <td align="right" nowrap width="1%"><asp:Label id="addressbookImportDuplicatesLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <input type="checkbox" ID="duplicates" runat="server" />
+                                <input type="checkbox" ID="duplicates" runat="server" tabindex="10" />
                               </td>
                               <td> </td>
                             </tr>
                             <tr>
                               <td valign="top" align="right" nowrap><asp:Label id="addressbookImportExportData" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <textarea id="data" cols="50" rows="14" type="text" wrap="off" runat="server" />
+                                <textarea id="data" cols="50" rows="14" type="text" wrap="off" runat="server" tabindex="10" />
                               </td>
                               <td> </td>
                             </tr>

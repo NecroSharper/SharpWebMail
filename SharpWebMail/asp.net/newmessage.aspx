@@ -91,7 +91,7 @@
                             <tr> 
                               <td align="right" nowrap width="1%"><asp:Label id="newMessageWindowFromNameLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <input id="fromname" type="text" runat="server" value="" class="XPInputEX" name="text" />
+                                <input id="fromname" type="text" runat="server" value="" class="XPInputEX" tabindex="10" />
 								<ASP:RequiredFieldValidator id="ReqfromnameValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="fromname" /> 
                               </td>
                               <td> </td>
@@ -100,7 +100,7 @@
                               <td align="right" nowrap><asp:Label id="newMessageWindowFromEmailLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> <asp:Label id="newMessageWindowFromEmail" CssClass="XPFormLabel" runat="server"/>
 							  <asp:PlaceHolder id="newMessageFromPH" runat="server" Visible="false">
-							     <input id="fromemail" type="text" runat="server" value="" class="XPInputEX" name="text" />
+							     <input id="fromemail" type="text" runat="server" value="" class="XPInputEX" tabindex="10" />
 								 <ASP:RegularExpressionValidator id="fromemailValidator" ValidationExpression=".+" ControlToValidate="fromemail" runat="server" ErrorMessage="*" Display="Static" /> 
 							  </asp:PlaceHolder>
                               </td>
@@ -109,7 +109,7 @@
                             <tr> 
                               <td align="right" nowrap><asp:HyperLink id="newMessageWindowToEmailLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <input id="toemail" type="text" runat="server" value="" class="XPInputEX" name="text" />
+                                <input id="toemail" type="text" runat="server" value="" class="XPInputEX" tabindex="10" />
 								<ASP:RequiredFieldValidator id="ReqemailValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="toemail" /> 
                                 <ASP:RegularExpressionValidator id="toemailValidator" ValidationExpression=".+" ControlToValidate="toemail" runat="server" ErrorMessage="*" Display="Static" /> 
                               </td>
@@ -118,7 +118,7 @@
                             <tr> 
                               <td align="right" nowrap><asp:Label id="newMessageWindowSubjectLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <input id="subject" type="text" runat="server" value="" class="XPInputEX" name="text" />
+                                <input id="subject" type="text" runat="server" value="" class="XPInputEX" tabindex="10" />
 								<ASP:RequiredFieldValidator id="ReqsubjectValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="subject" /> 
                               </td>
                               <td> </td>
@@ -126,8 +126,8 @@
                             <tr> 
                               <td align="right" nowrap><asp:Label id="newMessageWindowFormatLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <input name="format" type="radio" style="XPInput" value="text" onClick="switchFCKEditorMode(this.value)" checked /> <asp:Label id="newMessageWindowFormatTextLabel" CssClass="XPFormText" runat="server"/>
-								<input name="format" type="radio" style="XPInput" value="html" onClick="switchFCKEditorMode(this.value)" disabled /> <asp:Label id="newMessageWindowFormatHtmlLabel" CssClass="XPFormText" runat="server"/>
+                                <input name="format" type="radio" style="XPInput" value="text" onClick="switchFCKEditorMode(this.value)" checked tabindex="10" /> <asp:Label id="newMessageWindowFormatTextLabel" CssClass="XPFormText" runat="server"/>
+								<input name="format" type="radio" style="XPInput" value="html" onClick="switchFCKEditorMode(this.value)" disabled tabindex="10" /> <asp:Label id="newMessageWindowFormatHtmlLabel" CssClass="XPFormText" runat="server"/>
                               </td>
                               <td> </td>
                             </tr>
@@ -186,7 +186,7 @@
                             <asp:placeholder id="newattachmentPH" runat="server"> 
                             <tr> 
                               <td></td>
-                              <td align="center"><INPUT id="newMessageWindowAttachFile" type="file" size="20" runat="server">
+                              <td align="center"><INPUT id="newMessageWindowAttachFile" type="file" size="20" tabindex="10" runat="server" />
                               </td>
                               <td> </td>
                             </tr>

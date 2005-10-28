@@ -40,12 +40,12 @@
                           <table align="center" width="97%" cellpadding="0" cellspacing="0">
                             <tr> 
                               <td align="left" width="1%" nowrap> <asp:Label id="newMessageWindowFromNameLabel" CssClass="XPFormLabel" runat="server"/></td>
-                              <td nowrap><img src="images/spacer.gif" width="4" height="1"> <input id="fromsearch" type="text" runat="server" value="" style="XPInput" name="text" /></td>
+                              <td nowrap><img src="images/spacer.gif" width="4" height="1"> <input id="fromsearch" type="text" runat="server" value="" style="XPInput" tabindex="10" name="text" /></td>
                               <td width="100%"><img src="images/spacer.gif" width="15" height="1"></td>
                             </tr>
                             <tr> 
                               <td align="left" width="1%" nowrap> <asp:Label id="newMessageWindowSubjectLabel" CssClass="XPFormLabel" runat="server"/></td>
-                              <td nowrap><img src="images/spacer.gif" width="4" height="1"> <input id="subjectsearch" type="text" runat="server" value="" style="XPInput" name="text" /></td>
+                              <td nowrap><img src="images/spacer.gif" width="4" height="1"> <input id="subjectsearch" type="text" runat="server" value="" style="XPInput" tabindex="10" name="text" /></td>
                               <td width="100%"><img src="images/spacer.gif" width="15" height="1"></td>
                             </tr>
                             <tr> 

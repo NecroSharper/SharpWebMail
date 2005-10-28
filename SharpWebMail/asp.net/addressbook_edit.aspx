@@ -58,7 +58,7 @@
                             <tr> 
                               <td align="right" nowrap width="1%"><asp:Label id="addressbookNameLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <input id="name" type="text" runat="server" value="" class="XPInputEX" name="text" />
+                                <input id="name" type="text" runat="server" value="" class="XPInputEX" tabindex="10" />
 								<ASP:RequiredFieldValidator id="ReqNameValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="name" /> 
                               </td>
                               <td> </td>
@@ -66,7 +66,7 @@
                             <tr> 
                               <td align="right" nowrap><asp:Label id="addressbookEmailLabel" CssClass="XPFormLabel" runat="server"/></td>
                               <td> 
-                                <input id="email" type="text" runat="server" value="" class="XPInputEX" name="text" />
+                                <input id="email" type="text" runat="server" value="" class="XPInputEX" tabindex="10" />
 								<ASP:RequiredFieldValidator id="ReqEmailValidator" runat="server" ErrorMessage="*" Display="Static" ControlToValidate="email" /><ASP:RegularExpressionValidator id="REEmailValidator" ControlToValidate="email" runat="server" ErrorMessage="*" Display="Static" /> 
                               </td>
                               <td> </td>
