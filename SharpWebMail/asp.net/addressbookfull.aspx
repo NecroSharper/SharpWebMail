@@ -1,6 +1,6 @@
 <%@ Page Language="C#"  Inherits="anmar.SharpWebMail.UI.AddressBook" trace="false" validateRequest="true" %>
 <%@ Register TagPrefix="SharpUI" TagName="globalUI" Src="globalUI.ascx" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
 <head>
 <title><%=Application["product"]%></title>

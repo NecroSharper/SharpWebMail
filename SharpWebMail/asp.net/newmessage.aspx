@@ -1,7 +1,7 @@
 <%@ Page Language="C#"  Inherits="anmar.SharpWebMail.UI.newmessage" trace="false" validateRequest="false" %>
 <%@ Register TagPrefix="FredCK" Namespace="FredCK.FCKeditorV2" Assembly="FredCK.FCKeditorV2" %>
 <%@ Register TagPrefix="SharpUI" TagName="globalUI" Src="globalUI.ascx" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
 <head>
 <title><%=Application["product"]%></title>
