@@ -1,6 +1,7 @@
 10/29/2005
  - [i18n] Updated tr (Bogac Guven).
  - Adjust the doctype definition of all pages.
+ - Reverted previous change.
 
 10/28/2005
  - [New Message] Set the tabindex to all the form fields to allow easier TAB usage.
