@@ -1,0 +1,908 @@
+11/01/2005
+ - Released as version 0.13b [602]
+
+10/29/2005
+ - [i18n] Updated tr (Bogac Guven).
+ - Adjust the doctype definition of all pages.
+ - Reverted previous change.
+
+10/28/2005
+ - [New Message] Set the tabindex to all the form fields to allow easier TAB usage.
+ - [Addressbook] Set the tabindex to all the form fields to allow easier TAB usage.
+ - [Search] Set the tabindex to all the form fields to allow easier TAB usage.
+ - [Login] Set the tabindex to all the form fields to allow easier TAB usage.
+ - [GlobalUI] Add support for Literals.
+ - [New Message] Added setting (ForwardAttachments) to allow controlling whether
+   attachments are included when forwarding messages.
+ - [New Message] Added settings (ReplyQuoteChar, ReplyQuoteStyle) to allow quoting
+   of the body of the original message when replying.
+ 
+10/25/2005
+ - [Download] The download page wasn't sending the Content-Length header. This caused
+   weird things with exotic clients (e.g. Nokia 9300).
+
+10/24/2005
+ - [Config] Add setting (UseServerEncoding) to allow changing the default encoding for
+   parsed emails. If UseServerEncoding is set to true, then instead of using the
+   RFC 2045 default (us-ascii) it will use the default encoding configured in the
+   server.
+ - [Global] Set the above globally.
+ - [Addressbook] Handle simpler the conditional elements of the UI.
+
+10/23/2005
+ - Version number set to 0.13
+ - [Addressbook] Address books can now be sorted.
+ - [Global] Duplicates of available cultures were not being detected properly.
+ - [Global] Custom cultures were not being supported properly.
+
+10/22/2005
+ - [i18n] Updated zh-CHT (Regis Huang), hu (Peter Molnar), my (Michael Syc),
+   sv (Robert Wallström), pl (Roman Dmowski), fr (Michel C)
+ - [i18n] Updated the other translations [ar, da, el, ro, sr, tr, vi] with the
+   english strings.
+
+10/19/2005
+ - [Addressbook] When there is a successful insert, present a blank form to allow
+   other inserts instead of showing the edit page for the inserted entry.
+
+10/18/2005
+ - [Addressbook] ViewState playing bad when multiple address books are defined and
+   the update feature is not the same in all of them.
+ - [Addressbook] Update process can throw exceptions, it should be handled properly.
+
+10/17/2005
+ - [i18n] Updated id (Riwut Libinuko), de (Christian Metz) and ru (Alex).
+ - [Addressbook] Disable edit/delete/import columns/links when the address book is not
+   write enabled.
+
+10/16/2005
+ - [i18n] Updated es (me), nl (Jos Bloemers), pt-BR (Raphael Lima, Christian Emil Hoh)
+   and it (Antonello Franzil).
+ - [New Message] Allow feeding the 'to' field through a query string parameter.
+ - [GlobalUI] Move 'bytes' string to the translation file.
+ - [GlobalUI] Add the address book link.
+ - [GlobalUI] Add code to handle the visibility and behavior of the address book link.
+ - [config] Added a global setting (sharpwebmail/general/addressbooks) to easy test if there
+   are address books configured.
+ - [Global] Update the above when there are address books configured.
+ - [Inbox] The boundary checks in the pager weren't correct.
+ - [Addressbook] Initial implementation of the full page index.
+ - [Addressbook] Initial implementation of the edit page.
+ - [Addressbook] Initial implementation of the import/export page.
+ - [Addressbook] Adapt handlers to behave properly in full page/popup situations.
+ - [Addressbook] Create the basic schema to store the retrieved addresses.
+ - [Addressbook] Change address book access code to now return a table instead of the simple dictionary.
+ - [Login] Update to code to adapt to the above change.
+ - [Addressbook] Add code to handle the update process.
+ - [Addressbook] Add handlers for the delete from the index situation.
+ - [Addressbook] Add links for the edit/import pages in the full page index.
+ - [config] Added 'AllowUpdate' and 'OwnerColumn' options to <addressbook> elements to configure
+   the write mode address books.
+
+10/15/2005
+ - [Inbox] Refactor parts of the code to improve usability.
+ - [ReadMessage] Use the new methods to get messages.
+ - [ReadMessage] Enable the forward button.
+ - [NewMessage] Implement forwarding.
+ - [NewMessage] Show the original body when replying a message.
+ 
+10/09/2005
+ - [Inbox] Added a checkbox to select all messages.
+ - [Inbox] Add a reference to the client, associated to the inbox.
+ - [Inbox] If a message was already marked as deleted, the message count was decreased twice
+   when it was effectively deleted.
+ - [GlobalUI] Use the client instance associated to the inbox.
+ - [Logout] Logout after all operations related to the logout are finished.
+ - [Login] Associate the client to the inbox.
+ - [Inbox] When inbox/commit_ondelete option is true, delete all marked messages from server after
+   setting the mark.
+ - [Logout] When inbox/commit_onexit option is true, delete all marked messages from server when
+   the user logout is performed.
+ - [ReadMessage] When message/commit_ondelete option is true, delete the message from server after
+   hitting the delete button.
+ - [GlobalUI] When message/commit_ondelete and inbox/commit_ondelete options are true, disable the
+   trash link.
+ - [Config] Add inbox/commit_onexit, inbox/commit_ondelete and message/commit_ondelete settings to
+   control the way the messages are deleted from server.
+
+10/07/2005
+ - [New Message] Updated FCKeditor config to 2.1.
+
+10/05/2005
+ - [Global] A couple of null checks missing.
+ - [Global] CustomCultures source did not have the license statement.
+ - [ReadMessage] Improve aspect of text messages which width overflows the size of the window.
+   This doesn't work with IE, but who cares :)
+
+09/28/2005
+ - [Login] Do not store the effective culture until it's been successfully set.
+ - [Global] Store the available culture by name.
+ - [Global] ParseCultures can now parse cultures given in nested arrays.
+ - [Global] Set the culture on each request instead only on session init. This should give localization
+   of datetime format.
+ - [Global] If lang parameter is in the query string of a request, it's set as the effective culture.
+ - [i18n] Added the tool CustomCultures to allow the installation of cultures not supported by .NET
+   as custom cultures. It only works under .NET 2.0
+ - [i18n] Added Burmese (my) culture to CustomCultures tool. Thanks to Michael Sync.
+ - [i18n] Added Burmese translation. Thanks to Michael Sync.
+ - [nant] Added build-customcultures target for the above tool.
+ - Released as version 0.12b [533]
+
+09/27/2005
+ - [ServerSelector] Add debug info.
+ - [Login] Add debug info.
+ - [Login] Bugfix: the redirect was being done before some vital operations. This could lead
+   to invalid logins.
+ - [TCPClient] Catch more generic exceptions when reading from network.
+ - [TCPClient] readBytes: Mono has some strange behavior with the length of the buffer when doing subsequent
+   writes. Workaround it until further investigation.
+ - [TCPClient] readBytes: Discard read data earlier when we have had a read error.
+ - [TCPClient] readString: The response should be logged only when we have a response.
+ - [GlobalUI] Add debug info.
+ - [i18n] Updated Portuguese (Brazil) translation. Thanks to Raphael Lima.
+
+09/26/2005
+ - [New Message] Updated FCKeditor config to 2.0.
+ - [New Message] In the update to FCKeditor 2.0fc config a couple of options were changed
+   to different default values by mistake.
+ - [New Message] Disabled the client validator for FCKeditor as it doesn't work properly.
+ 
+09/25/2005
+ - [Project] Update the location of the references.
+
+09/14/2005
+ - [web.config] Change the sample for sharpwebmail/login/enablequerystringlogin option so it
+   does not use &amp; to avoid copy&paste mistakes.
+
+09/08/2005
+ - [i18n] Added Indonesian translation. Thanks to Riwut Libinuko.
+ - [inbox] Check the valitity of the SortExpression before allowing it.
+ - [Project] Reference the SharpMimeTools dll instead of the project to make both
+   projects completely independent.
+ - [Makefile] Do no build SharpMimeTools, just reference it.
+ - [pop3client] Do not send extra space when sending UIDL command.
+
+08/29/2005
+ - [i18n] Added Hungarian translation. Thanks to Peter Molnar.
+
+07/30/2005
+ - [i18n] Updated Swedish translation. Thanks to Jerry Lidén.
+
+07/15/2005
+ - [Config] Added sort option in the inbox section. It sets the expression used to sort
+   the messages in the inbox.
+ - [inbox] Use the above option as the default sort expression for the inbox.
+ - [New Message] Now when you add a new file it's automatically selected as an attachment.
+ - [Config] Added attach_ui option in the send section. If controls the way the user interface
+   for adding attachments works.
+ - [New Message] If attach_ui is set to simple, then once uploaded the new file, return to the
+   message.
+
+07/10/2005
+ - [i18n] Added Arabic translation. Thanks to Chawki Mguedmini.
+ - [nant] Changed a reference path.
+ - [Project] Fixed a reference path.
+
+06/12/2005
+ - [New Message] Added support to DotNetOpenMail as the SMTP engine.
+ - [config] Documented the possibility to use DotNetOpenMail.
+ - [nant] Added DotNetOpenMail reference.
+ - Added DotNetOpenMail reference to the makefile.
+
+05/21/2005
+ - [i18n] Added Turkish translation. Thanks to Bogac Guven.
+
+05/15/2005
+ - [New Message] Updated FCKeditor config to 2.0fc.
+
+05/14/2005
+ - Added debug info to connect stage in tcp client.
+
+05/08/2005
+ - [config] Fix formatting.
+ - [config] Enable slidingExpiration to the default <authentication> config.
+ - [net] Timeout setting for clients is an integer.
+ - [net] There is no need of a real Timer to timeout read operations so now use the lightweight version.
+   Now fewer system resources should be needed.
+ - [GlobalUI] Removed some unused code.
+ - [GlobalUI] Redirect to default.aspx when closing the session, the Forms Authenticator should do the
+   rest of the work.
+ - [GlobalUI] If we are authenticated, but session data is not consistent, then close session.
+
+05/05/2005
+ - [i18n] Added German translation. Thanks to Christian O. Metz.
+
+04/03/2005
+ - Version number set to 0.12
+ - [i18n] Added Swedish translation. Thanks to Robert Wallström.
+
+03/13/2005
+ - Released as version 0.11b (456)
+ - [Inbox] Removed unused code.
+ 
+03/02/2005
+ - [New Message] Updated FCKEditor config to 2.0rc3.
+
+02/27/2005
+ - [Config] Simplified the log4net default configuration so it's easier to enable logging.
+ - [Config] Changed the <servers> section syntax, though the old one is already parsed.
+ - [Login] Now it's possible to select the mail server manually.
+ - [Config] Added the option serverselection to login section that gives control over the above.
+ - [Inbox] Bugfix: The purge code was generating an exception when updating the list of messages with the
+   latest server content.
+ 
+01/23/2005
+ - [New Message] Use the static regular expression from SharpMimeTools.
+
+01/22/2005
+ - [i18n] Added Polish translation. Thanks to Roman Dmowski.
+
+01/12/2005
+ - [i18n] Added Dutch translation. Thanks to Jos Bloemers.
+
+01/06/2005
+ - Version number set to 0.11
+ - [New Message] Some servers renumber message index numbers when there are new deliveries, so
+   is this happens the previously cached messages can't be found in the servers. Now if a server
+   does not find the message, we re-scan the inbox so the cached messages are relocated to their new
+   position and can be retrieved.
+ - [Inbox] Bugfix: With servers that behave as described above, the page navigation did not cope well
+   with the situation.
+ - [Trash] Bugfix: With servers that behave as described above, we can end up deleting the incorrect message.
+   Then we look for position changes before doing the deletion.
+ - [Inbox] Bugfix: There were problems when all the messages of the last page were deleted.
+ - [Inbox] Removed old and redundant code in sorter and pager.
+ - [Inbox] Minor performance tweaks.
+ - [Inbox] Rename some properties.
+ - [Inbox] Initial support for multi-folder inbox.
+ - Adjust Makefile paths.
+ - [Inbox] Implemented stat option. It gives control on the frequency of connections to email server to
+   refresh the list of available messages.
+
+01/02/2005
+ - Update copyright notice.
+ - [Project] Add build targets for 2.0.
+ - [Project] Remove build targets for mono as it is not handled poperly by SD.
+ - [Project] Define build simbols NET_1_1, NET_2_0, API_1_1 and API_2_0.
+ - [nant] Define build simbols RELEASE, NET_1_1, NET_2_0, MONO_1_0, MONO_2_0, API_1_1 and API_2_0.
+ - [nant] Allow depencencies to be common to different framework versions.
+ - Adjust Makefile
+ - Released as version 0.10b (440)
+
+12/28/2004
+ - [Inbox] Bugfix: Using an enumerator when we want to delete items is not a wise idea.
+ - [nant] Change location of bin folder.
+ - [Project] Change location of bin folder.
+
+12/21/2004
+ - [New Message] Updated FCKEditor config to 2.0rc2.
+
+12/19/2004
+ - [Inbox] When a Date header is not found, try to get the date from the received header.
+
+12/18/2004
+ - [New Message] Rewritten so it can send the email using .NET System.Web.Mail namespace or
+   opensmtp library. It may be useful for people having problems with MS .NET implementation
+   as it depends on CDO.
+ - [New Message] Added support for SMTP AUTH when using opensmtp as the engine.
+ - [Config] Added new option to select the smtp engine used (the .NET one or opensmtp).
+ - [Config] Added config support for smtpauth value in server protocol fields.
+ - [nant] Added opensmtp assembly to the build process.
+ - Adjust Makefile
+ - [New Message] Revert to FCKEditor 2.0b2 assembly as the one from rc1 does not work when 
+   FCKEditor is not a top level control.
+ - [New Message] Use the correct address separator in To field.
+ - [Address Book] Use the correct address separator.
+
+12/12/2004
+ - [New Message] .NET 2.0 does not set name property in forms, so js code expecting this does
+   not work.
+ - [New Message] System.Web.UI.Page has a Header prop in .NET 2.0, so stop using this name for
+   a field here.
+ - [Project] Create specific build targets for 1.1.
+ - [nant] Added nant build targets for .NET 2.0 and Mono 2.0
+
+12/08/2004
+ - [Config] Allow more value types in config file.
+ - [Login] Allow login credentials to pass in the QueryString to login page.
+ - [Config] Add new option to enable the above behavior (it defaults to disabled).
+ - [Config] Move more configuration logic to the configuration handler.
+
+12/01/2004
+ - [New Message] Update FCKEditor config to 2.0rc1.
+ - [New Message] As mono bug #69200 has been fixed, the workaround is not necessary anymore.
+
+11/15/2004
+ - [i18n] Added Chinese (Traditional) translation. Thanks to regis huang.
+
+11/08/2004
+ - Added nant build file.
+ - [Login] Bugfix: while looking for the real name, the query can return null.
+
+11/07/2004
+ - Version number set to 0.10
+ - [New Message] Stop using panels, use placeholders instead. It makes html output cleaner.
+
+11/06/2004
+ - [New Message] Added an icon to access the address books if there is at least one configured.
+ - Released as version 0.9b (317)
+
+11/04/2004
+ - [Inbox] Mono did not like a Guid column, stored as string instead. All guid validation
+   remains the same.
+ - Adjust Makefile
+
+11/03/2004
+ - [Login] Hide culture combo if it's empty.
+
+11/02/2004
+ - [Inbox] Start refactorization of the inbox handling code in order to improve performance.
+
+10/27/2004
+ - [Login] The culture combo is now properly sorted. It was being sorted by culture
+   identifier instead of by culture name.
+
+10/27/2004
+ - Added Portuguese (Brazil) translation. Thanks to Christian Emil Hoh.
+ - [Address Book] If the connection username is not configured, it tries to connect using
+   the username and password for the current session. This allows per user authentication
+   of the search queries.
+ - [Address Book] Implemented OLEDB and ODBC queries.
+
+10/25/2004
+ - Bugfix: LDAP search was not being performed due to a try-catch wrongly added.
+ - Written a configuration handler, so it's now possible to write more flexible sections.
+   The config file is incompatible with previous ones. (the only needed change is replacing
+   the "configSections" section by the new one, the real config is the same).
+ - Now it is possible to configure multiple Address Books.
+ - If one of the Address Books has configured a special query (SearchStringRealName), the
+   real name of the user will be looked up executing that query. The UserName as authenticated
+   by the mail server, is replaced in that query.
+ - In the query for getting the address book content, the UserName as authenticated by the mail
+   server, is replaced in the query.
+
+10/24/2004
+ - The culture names in login page are now sorted.
+ - Make the input boxes of newmessage page larger.
+ - Added a basic Address Book implementation. It does a simple query to a ldap server
+   and presents the results in a paged table. By clicking on an entry it's added to the
+   'To' input box.
+ - Adjust sleeps of the tcp client.
+ - The messages' headers are now parsed after the mail session has finished instead of
+   parsing each one after retrieved.
+
+10/22/2004
+ - Added Italian translation. Thanks to Antonello Franzil.
+
+10/21/2004
+ - Added Romanian translation. Thanks to Biti.
+
+10/20/2004
+ - Version number set to 0.9
+ - Added Greek translation.
+
+10/16/2004
+ - Released as version 0.8b (296)
+
+10/15/2004
+ - Bugfix: Invalid format in a debug string.
+
+10/14/2004
+ - Bugfix: While parsing cultures, fallback to invariant wasn't properly handled
+ - Bugfix: Adjust the initial sleeps (while waiting to server responses) to something
+   smaller
+
+10/09/2004
+ - Bugfix: Too much resources were being used while waiting to mail servers'
+   responses.
+ - Bugfix: Timeout of tcp client was set too low, so dns and ident delays in the
+   mail server were causing login failures to the client.
+
+10/07/2004
+ - Added Vietnamese translation. Thanks to Pham Vu Dung.
+
+10/05/2004
+ - Now it is possible to select the language of the interface in the login screen.
+
+10/02/2004
+ - Updated cultures_neutral.txt and cultures_specific.txt to reflect .NET 1.1 SP1
+   changes.
+ - Changed the logic in language selection code. Now if none of the accepted languajes
+   of the client can be parsed, or aren't supported, the default_lang setting is used.
+   If it is configured to something not available then english is used.
+
+09/16/2004
+ - Version number set to 0.8
+ - Added French translation. Thanks to Michel C.
+ - After several issues with email servers' uid generation, I've changed the
+   use of the uid in all the application. Now it's only used for sanity check while
+   getting messages from server. For the rest of the application a random GUID
+   is used instead.
+ - Fix: Alternative languages sent by browsers were not being parsed properly.
+ 
+09/13/2004
+ - FCKEditor updated to version 2.0 beta 2.
+ - The editor is now stated with the toolbar collapsed. It should give the impression
+    of a faster load :).
+ - Upgraded to .NET Framework Service Pack 1 and everything works.
+ - Released as version 0.7b (276)
+
+08/25/2004
+ - Added Russian translation. Thanks to Alex.
+ - The files with the culture lists are now sorted.
+
+08/24/2004
+ - Cache the user's full name (and email in login mode 2) after it fills in
+   the information the first time.
+
+08/19/2004
+ - Version number set to 0.7
+
+08/17/2004
+ - Fix: Small speedup reading of network data. Avoids unnecessary tests to find
+   command ends when there is data available for reading.
+ - Fix: Generic tcpclient now determines the response end in a way more compatible
+   with imap responses.
+ - Fix: randomize tag for imap commands.
+ - Released as version 0.6b (260)
+
+08/15/2004
+ - Fix: Search code does not rely on transferring Form to the inbox page. This makes
+   the search page work in mono.
+ - TempFix: Commented the <location> directives added on 07/14/2004 for xsp, as they make
+   it throw an exception with search page. With xsp the login page does not load
+   images on login page, with mod_mono images as loaded if apache handles these
+   queries (mod_mono configured with AddHandler instead of SetHandler).
+
+08/13/2004
+ - Workaround a mono bug.
+ - Finally I have a mono development box ready.  I've tested everything with
+   mono 1.0.1, mod_mono 1.0.1 and apache 2.0.50 and the only unaddressed issue is
+   related with the search page (I'll fix this soon).
+ - Added Makefile for Mono
+
+08/12/2004
+ - Version number set to 0.6
+
+08/11/2004
+ - Released as version 0.5b (244)
+
+08/10/2004
+ - Rewrite the imap client response parsing. Now it's a bit more intelligent.
+ - Abstract way of removing command responses from messages streams.
+ - The imap client now removes command responses from streams.
+ - Bugfix: The timeouts of the tcpclients were too aggressive, big mails on
+   slow connections may have trouble.
+ - Bugfix: A locking network read was being done without being sure about
+   the availability of data.
+
+08/09/2004
+ - Improve Imap client.
+ - Bugfix: The order of the multiple servers configuration wasn't being followed.
+
+08/08/2004
+ - Finished the abstract implementation of the emailclient and the derived pop3client.
+ - Finished the imap client. This initial implementation only allows reading messages
+   in the inbox of the imap server. Now it needs intensive testing.
+ - Some general code cleanups.
+ 
+08/07/2004
+ - Started an abstract emailclient implementation, and changed the pop3client as
+   a derived class of it.
+ - Changes accessibility of pop3client to internal.
+ - Started an IMAP client implementation.
+
+08/06/2004
+ - Bugfix: In the newmessage page, the validation wasn't working under mono 1.0
+ - Bugfix: The validator associated to FCKEditor was causing problems under mono 1.0
+   I've disabled it conditionally until further investigation (it looks as a FCKEditor
+   bug)
+ - Email client usage now does not depend on POP3Client, so it is possible to extend
+   everything to use other email clients (ex. IMAP). Now only an open source IMAP client
+   is needed :)
+
+08/05/2004
+ - Bugfix: When sending a message in login_mode 2, the user supplied email was
+   being ignored and login name was being used instead.
+ - Add: Now multiple servers can be configured for sending and for reading email.
+   The selection is based in regular expressions tested against the username. The
+   first server which pattern matches is used. Read the config file (web.config)
+   for details. The new server selection method allows future additions of other
+   protocols.
+ - Ensure all config options are set.
+ 
+08/04/2004
+ - Added Danish translation. Thanks to Claus Witt.
+
+08/03/2004
+ - Rewritten configuration file. Now it is structured in sections.
+ - Now it is possible to set the temp folder for sending and for
+   reading messages. This allows disabling them independently.
+ - Now the sanitizer can be configured for sending and for reading messages.
+
+07/28/2004
+ - Implemented feature 998814 - Added a checkbox column and a delete command to
+   the inbox for allowing the deletion of messages without reading them. Messages
+   go to trash folder just as when deleted from readmessage page.
+ - The email format chooser in newmessage page tries to find the editor by name and
+   if it fails it tries by index. This fixes a small issue with gecko browsers.
+
+07/22/2004
+ - Version number set to 0.5
+ - Removed some unused js code in newmessage page.
+
+07/21/2004
+ - Released as version 0.4b (214)
+
+07/14/2004
+ - Change the use of column 6 in the Inbox and the way column 5 was parsed.
+   Now they are handled as a collection of addresses
+ - Bugfix: Closed bug 981747 - "Email addresses with commas not parsed correctly"
+ - Bugfix: server-side validation was not being performed when sending messages
+ - Implemented feature 981655 - "Add capability to send messages in Plain Text"
+   Now there is a checkbox that defaults to html where you can choose email format.
+   Anyway html messages are sent in both ways so all mail clients should be able to
+   choose the format they can understand.
+ - Added the resources for the above item
+ - Added a validator to email body. Now it is a required field
+ - Explicitly allow anonymous access to the CSS and images folder. xsp needs this
+
+07/03/2004
+ - Some coding style cleanups
+ - Compiled and tested successfully under Mono 1.0 and xsp 1.0
+
+06/31/2004
+ - Bugfix: the committed fix for bug 981749 did not compile.
+ - Bugfix: Closed bug 981654. No fix needed with current version of FCKEditor
+
+06/30/2004
+ - Make sure the message UIDL is what it should be before getting its body.
+   (this or other message may have been deleted outside of our webmail session)
+ - Start using FCKEditor V2 (Works with gecko powered browsers)
+ - Added initial comment tags (without comments)
+ - Bugfix: The UIDL was not always being URLEncoded before using it in links
+ - Bugfix: Closed bug 981749 - Delete button updates message count twice if
+   clicked twice
+
+06/25/2004
+ - Compiled successfully under Mono Beta 3 (0.96)
+ - Tested under xsp 0.15 and good news is that it works out of the box :)
+   There are only a few small issues to be solved.
+ - Bugfix: When sending a message under mono BodyFormat must be set before
+   setting Body
+
+06/23/2004
+ - Version number set to 0.4
+
+05/29/2004
+ - Released as version 0.3b (184)
+
+05/28/2004
+ - Allow caching of downloaded attachments
+ - Send generic application/octet-stream Content Type to all downloads
+ - Added sanitizer_mode config option to enable/disable the html sanitizer
+ - Minor aspect change. Inbox items are highlighted with a lighter color
+
+05/27/2004
+ - Bugfix: POP3 client was not properly terminating commands, and at least
+   Microsoft Windows POP3 Service Version 1.0 was being confused
+
+05/24/2004
+ - Application_Error logs the exception before clearing it.
+
+05/17/2004
+ - Implemented a basic HTML sanitizer. It has two modes:
+      - CommentBlocks: which tries to comment potentially dangerous tags (or
+        just tags that do not make sense on email).
+        For now it comments: script, applet, embed, object, layer, ilayer,
+        iframe. It also comments everything before and after body
+      - RemoveEvents: which tries to convert all JavaScript 1.3 Event Handlers
+        into syntactically invalid code
+  - When using a paramenter to access the filesystem, make the effort of removing
+    chars that are invalid for the local filesystem 
+  - Consider everything as dangerous input
+  - Bugfix: search patterns were not being maintained properly if the result was
+    more than one page
+
+05/16/2004
+ - Version number set to 0.3
+
+05/15/2004 - version 0.2b
+ - Disable forward button until it is implemented
+ - Bugfix: Cancel button on readmessage page was launching form validation
+ - Add undelete method to inbox class for future use
+ - Bugfix: When deleting a message the message count was set before we had
+   deleted the message, so it was out of sync
+ - Bugfix: When refreshing inbox state, the message count was set before we had
+   the new data
+ - Minor code cleanups
+ - Released as version 0.2b (163)
+
+05/12/2004
+ - Fix some warnings compiling with mono 0.91
+ - Add tooltip texts to all icons
+ - Trash page implemented. Deleted messages are shown there.
+ - Close icon when composing a new mail now discards changes on mail
+ - Login window title is set to system_name configuration setting
+
+05/12/2004
+ - Messages marked for deletion are deleted on logout
+ - The regular expression for email addresses covers better the addr-spec
+   specification
+ - Login process removes unnecessary spaces allowed by addr-spec but probably not
+   a good idea to send them to POP3 server
+ - Fixed several typos
+
+05/11/2004
+ - Send size parameter in content-disposition header when downloading
+   attachments
+ - View headers implemented
+ - Toolbar added to readmessage page. Reply, forward and delete buttons added.
+ 	- Reply implemented
+ 	- Delete implemented (messages are marked for deletion)
+ - Minor changes to the inbox caching code, so it into account deleted messages
+
+05/10/2004
+ - FCKEditor updated to version 1.6
+ - Added ReleaseMono and DebugMono configs to project
+ 
+05/09/2004
+ - Added cultures_neutral.txt and cultures_specific.txt documents as references
+   of existing cultures for building resource files
+ - Ask for auto generation of filename on attachments
+ - Small code cleanups
+ - Allow caching of inbox page so IE back and next buttons work properly
+ - Allow caching of search page so IE back and next buttons work properly
+ - Added login_mode and login_mode_append config directives.
+ - Implemented 3 login modes:
+       1-> Full email required for login
+       2-> Username that is not an email address is allowed. So users
+           have to insert their email address when sending mails
+       3-> Any username is allowed but login_mode_append string is added
+           to the username to compose the email address
+ - The label for username box on login page changes depending on login_mode
+ - The regular expression for email addresses follows RFC 2822 definition
+ - When sending mail multiple "To" addresses are now allowed
+ - Removed unnecessary restrictions on From and Subject textboxes
+ 
+
+05/07/2004
+ - FCKEditor updated to version 1.5
+ - Bugfix: dots not being allowed on email addresses
+
+05/06/2004
+ - Serbian UI translation added. Thanks to Zoran Subic
+ - Generalized the creation of satellite assemblies. Now it creates one
+   for every resource file found on res folder
+ - Project files updated to current version of SharpDevelop
+
+05/04/2004
+ - Version number set to 0.2
+ - When writing attachments to disk, use new method implemented
+   in SharpMimeTools
+ - Added docs (readme and todo) to project
+
+05/03/2004 - version 0.1b
+ - Better handling of config settings
+ - Minor cleanups
+ - Added some documentation in readme.txt
+ - Released as version 0.1b (142)
+
+05/01/2004
+ - Now ussing SharpDevelop
+ - Added neutral culture resources (en) to SharpWebMail assembly. Removed
+   SharpWebMailResources project, now satellite assemblies are built with a
+   script
+ - Basic interface implemented as a templated user control
+
+04/27/2004
+ - Bugfix: Small bug attaching files
+ - Fixed some typos
+
+04/26/2004
+ - Project branded as SharpWebMail
+ - Namespace branded as anmar.SharpWebMail
+ - Huge file reorganization
+ - Added license information to source files
+ - Fixed some typos
+
+04/25/2004
+  - Readmessage conforms RFC 2183:
+     - Disposition type is followed
+     - File attributes are set if present in Content-Disposition
+     - Inline disposition images, are rendered inline
+     - The sole exception is section 2.9, in multiparts disposition is ignored
+
+04/24/2004
+ - Search by From and Subject fields implemented. It searches for any of the words
+   except for quoted strings. Of course this forces filling the cache of all uncached
+   messages in the inbox
+ - Messages marked for deletion are not shown in the inbox
+
+04/23/2004
+ - Bugfix: Replay addresses were inserted into the from name field
+ - Search page initial definition
+ - Added todo.txt
+ 
+04/21/2004
+ - Added DEBUG define
+ - Compilers warning level set to level 4 and cleaned up the warnings
+ - Temporary folder clean up code moved to logout point
+ - Application_Error removes error information when it is not a debug compilation
+ - Added some debug logging here and there
+ - Check if the attachment is where it is supposed to be before attaching it
+ - Code compiled with mono 0.31
+
+04/20/2004
+ - FCKEditor updated to version 1.5
+ - Revert prior change due to a problem with localization on that version
+
+04/18/2004
+ - Bugfix: Text attachments were added to message body
+ - Now we can send attachments. All files dumped to disk from other
+   messages are presented as attachable files. It is also possible to
+   send other files.
+
+04/17/2004
+ - Added log4net configuration and objects
+ - Simplified initialization code of the inbox object
+ - ToCollection and Reply columns stored as IEnumerable objects
+ - When replying to a message the name dispalyed in the from field
+   is obtained from the original message if present
+ - Display only the html body when reading html messages
+
+04/14/2004
+- If we have problems saving an attachment to disk, clean up temp file
+  and add only the name of the file to the attachments list
+- All pages derived from a general interface page
+- Removed old logout page
+- Some cleanups of old code
+- Minor UI improvements
+- Redefined the accessibility level of some classes, methods, etc.
+- Use System.String.Empty instead of ""
+
+04/13/2004
+- X-Mailer header field added to messages
+- References and In-Reply-To header fields are added to replies
+- Minor UI fixes
+
+04/12/2004
+- Minor fixes
+
+04/10/2004
+ - Attachment list now show size in bytes
+
+04/09/2004
+ - Only known mime top level media types, no default action
+ - Added Date and cc to the read message page
+ - Added indexer property to inbox object
+ - Minor UI changes
+ - Other minor code fixes and cleanups
+
+04/08/2004
+ - Only text parts are decoded, the rest of the mime structure is parsed as
+   attachments
+ - When reading messages attachments are listed as links
+ - Altenative multipart decoded as such
+ - Attachments are written to disk when the message is viewed
+ - Download page implemented
+ - Temporary folder is cleaned up when session ends
+
+04/06/2004
+ - Message parts are now added to a PlaceHolder
+ 
+04/06/2004
+ - Minor fixes
+ - Global.cs implemented
+ - Recursive decoder improved
+ 
+04/05/2004
+ - Minor fixes
+
+04/04/2004
+ - Read Message page now parses nested mime structures
+ - Added Assembly info
+
+04/03/2004
+ - Fixed a bug on the conditional caching code
+
+04/01/2004
+ - Fixed bug on sorting code
+ - Sorting now caches the headers of the whole inbox when a sort is requested on a
+   column whose data is not on initial cached data (the UIDL or LIST responses)
+ - Changed default UI language to en-US
+ - Unhandled Exception in global.asax incase default language was improperly set
+
+03/30/2004
+ - Messages without subject or sender are better treated
+ - Read Message page now reads messages :)
+
+03/29/2004
+ - Forked Mime code into a stand-alone project
+
+03/26/2004
+ - Updated FCKeditor to version 1.4
+
+12/27/2003
+ - Now using FCKeditor instead of YAHENetEditor
+
+10/12/2003
+ - More work on RFC2045 decoding
+ - When replying messages the "References" header is updated (or set)
+
+10/11/2003
+ - Fixed some bugs in the interface
+ - Support for RFC 2045 (MIME) decoding started
+
+08/10/2003
+ - Fixed inbox sort capabilities
+ - Worked out the inbox L&F
+
+08/09/2003
+ - Small problem with RFC 2047 decode fixed.
+ - All toolbar buttons do something now.
+ - If we reply a message, the subject and the destination email are
+   now preselected.
+ - Started the Read Message page definition.
+
+07/30/2003
+ - RFC 2047 decoding is now supported on headers (read docs for details).
+
+07/26/2003
+ - Inbox object and datagrid elements are now sortable (ascending
+   and descending).
+ - The refresh button tries to find changes on the mailbox for the
+   messages of that page.
+ - The paged navigation will ask the server only if it knows there are
+   messages not indexed, it assumes the mailbox has not changed. If we
+   have to ask for at least 1 message, the reindexing code will find
+   other potential changes.
+
+03/20/2003
+ - Improved new message look & feel.
+ - The inbox is initialized with all listing properties once we have them.
+ - The reindexing code is much more intelligent now.
+     - It tries to determine if a message already cached has been deleted.
+     - It reorders the rest of the messages when one of them is missing.
+     - It only gets full message properties of the page we are viewing.
+
+03/05/2003
+ - Removed code for some YAHENetEditor features.
+ - Now mail is sent through SMTPServer.
+
+02/23/2003
+ - Created NewMessage page with YAHENetEditor.
+
+02/21/2003
+ - Now all c# code for webpages is included in the Assembly.
+ - Default screen defined.
+
+02/20/2003
+ - RETR, LIST, UIDL command working.
+ - Implemented CTNMimeHeader class.
+ - Implemented CTNInbox class.
+ - Now we can get indexed and parsed the inbox content into an object
+   so then we can bind it as a DataView on the webpage.
+
+02/19/2003
+ - The simple TCP client can now write server response into
+   a Stream.
+ - TOP command working.
+ - Stated CTNMimeTools Assembly.
+
+02/16/2003
+ - Stated the general purpose POP3 client.
+ - Implemented basic POP3 commands (user, pass, stat, quit).
+ - Now login screen validates a login against a POP3 server
+   and initializes the inbox object.
+
+02/15/2003
+ - Started CTNWebMail.NET Assembly for general purpose classes.
+ - Started CTNWebMailResources Assembly for internationalized
+   resources.
+ - Stated the general purpose TCP client.
+
+02/14/2003
+ - Project started.
+ - Windows XP style defined.
+ - Login screen defined.
