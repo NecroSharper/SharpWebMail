@@ -1,3 +1,0 @@
-
- - Detect UUENCODE in text parts and decode it
- - Write documentation
