@@ -126,7 +126,7 @@ namespace anmar.SharpWebMail
 				// As we already have an index, we try to put it in sync
 				// with the mail server
 				for ( int i=0 ; i<uidlist.Length; i++ ) {
-					this.inbox_view.RowFilter = System.String.Concat("uidl = '", uidlist[i], "'");
+					this.inbox_view.RowFilter = System.String.Concat("uidl = '", EscapeExpression(uidlist[i]), "'");
 					// Message not found, so we add it
 					if (this.inbox_view.Count == 0 ){
 						this.newMessage (i+1, list[i], uidlist[i]);
@@ -140,7 +140,7 @@ namespace anmar.SharpWebMail
 					}
 				}
 				// now we try to find deleted messages
-				this.inbox_view.RowFilter = System.String.Concat("folder='", this.current_folder, "'");
+				this.inbox_view.RowFilter = System.String.Concat("folder='", EscapeExpression(this.current_folder), "'");
 
 				for ( int i=0 ; i<this.inbox.Rows.Count; i++ ) {
 					System.Data.DataRow item = this.inbox.Rows[i];
@@ -178,7 +178,7 @@ namespace anmar.SharpWebMail
 				start = 0;
 				end = this.Count;
 			}
-			this.inbox_view.RowFilter = System.String.Concat("delete=false AND folder='", this.current_folder, "'");
+			this.inbox_view.RowFilter = System.String.Concat("delete=false AND folder='", EscapeExpression(this.current_folder), "'");
 			this.inbox_view.Sort = sort;
 			// Clean up message list before
 			if ( msgs!=null && msgs.Count>0 )
@@ -318,7 +318,7 @@ namespace anmar.SharpWebMail
 		/// <returns></returns>
 		public bool newMessage (System.String uidl, anmar.SharpMimeTools.SharpMimeHeader header ) {
 			bool error = false;
-			this.inbox_view.RowFilter = System.String.Concat("uidl='", uidl, "'");
+			this.inbox_view.RowFilter = System.String.Concat("uidl='", EscapeExpression(uidl), "'");
 			if (this.inbox_view.Count == 1 ) {
 				System.Data.DataRowView msg = this.inbox_view[0];
 				msg[4] = header.From;
@@ -384,6 +384,11 @@ namespace anmar.SharpWebMail
 		public void readMessage ( System.String uid ) {
 			this.markMessage( uid, 16, true );
 			return;
+		}
+		public System.String EscapeExpression (System.String input) {
+			if ( input.IndexOf('\'')!=-1 )
+				return input.Replace("'", "''");
+			return input;
 		}
 		/// <summary>
 		/// 

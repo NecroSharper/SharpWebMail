@@ -1,3 +1,9 @@
+11/19/2005
+ - Version number set to 0.14
+ - [Inbox] Escape some data before using it for expressions.
+ - [New Message] The stream used to get the replied/forwarded message was not being
+   closed.
+
 11/01/2005
  - Released as version 0.13b [602]
 

@@ -246,7 +246,9 @@ namespace anmar.SharpWebMail.UI
 							if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.forward) )
 								attachments = (bool)Application["sharpwebmail/send/message/forwardattachments"];
 							message = new anmar.SharpMimeTools.SharpMessage(ms, attachments, html_content, path);
+							ms.Close();
 						}
+						ms = null;
 						if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.reply) ) {
 							// From name if present on original message's To header
 							// and we don't have it already
