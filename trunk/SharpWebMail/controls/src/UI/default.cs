@@ -151,7 +151,7 @@ namespace anmar.SharpWebMail.UI
 			if ( mode.Equals("trash") )
 				pattern = "delete=true";
 			else
-				pattern = System.String.Concat("delete=false AND folder='", mode + "'");
+				pattern = System.String.Concat("delete=false AND folder='", this.SharpUI.Inbox.EscapeExpression(mode) + "'");
 			this.SharpUI.Inbox.CurrentFolder = mode;
 
 			if ( this.resetsearch == false ) {
@@ -208,7 +208,7 @@ namespace anmar.SharpWebMail.UI
 			}
 			if ( format.Length>0 && Value.Length>0 ) {
 				Value = Value.Trim();
-				System.String[] items = Value.Replace("\'", "\'\'").Split (' ');
+				System.String[] items = this.SharpUI.Inbox.EscapeExpression(Value).Split (' ');
 				patternitem += " AND (";
 				for ( int i=0; i<items.Length; i++ ) {
 					if ( items[i].StartsWith("\"") && !items[i].EndsWith("\"")) {
