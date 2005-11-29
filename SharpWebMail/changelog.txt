@@ -1,3 +1,6 @@
+11/29/2005
+ - [Config] Fix the last addressbook example.
+
 11/19/2005
  - Version number set to 0.14
  - [Inbox] Escape some data before using it for expressions.
