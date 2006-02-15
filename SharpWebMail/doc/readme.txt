@@ -90,7 +90,7 @@ Dependencies:
  - SharpMimeTools - For now distributed only with SharpWebMail
 
 Project files provided for:
- - SharpDevelop - http://www.icsharpcode.net/
+ - SharpDevelop 2.x - http://www.icsharpcode.net/
 
 Authors
 --------------------------------
