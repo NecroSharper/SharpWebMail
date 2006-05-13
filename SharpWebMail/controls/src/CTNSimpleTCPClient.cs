@@ -229,7 +229,7 @@ namespace anmar.SharpWebMail
 						if ( log.IsErrorEnabled ) log.Error ( lastErrorMessage, e );
 					}
 				}
-				if ( log.IsDebugEnabled ) log.Debug ( "String sent");
+				if ( log.IsDebugEnabled ) log.Debug (System.String.Concat ("String sent. error: ", error));
 			}
 			return !error;
 		}

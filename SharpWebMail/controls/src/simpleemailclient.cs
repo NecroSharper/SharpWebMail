@@ -217,6 +217,7 @@ namespace anmar.SharpWebMail
 					System.IO.MemoryStream stream = this.getStreamDataPortion(item.Value as System.IO.MemoryStream);
 					anmar.SharpMimeTools.SharpMimeHeader header = new anmar.SharpMimeTools.SharpMimeHeader( stream, stream.Position );
 					header.Close();
+					if ( log.IsDebugEnabled ) log.Debug(System.String.Concat("Parsed message header uidl[", item.Key, "] msgid[", header.MessageID, "], now adding to inbox."));
 					inbox.newMessage ( item.Key.ToString(), header );
 				}
 			}
