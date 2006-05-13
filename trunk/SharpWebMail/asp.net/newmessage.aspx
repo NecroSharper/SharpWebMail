@@ -13,6 +13,8 @@
 	window.onload = function () {
 		var oFrame = window.frames[ 'SharpUI:FCKEditor___Frame' ];
 		if ( typeof (oFrame)=='undefined' )
+			oFrame = window.frames[ 'SharpUI$FCKEditor___Frame' ];
+		if ( typeof (oFrame)=='undefined' )
 			oFrame = window.frames[0];
 		if ( typeof (oFrame)=='object' ) {
 			for ( var i=0; i<window.document.forms[0].format.length; i++ ) {

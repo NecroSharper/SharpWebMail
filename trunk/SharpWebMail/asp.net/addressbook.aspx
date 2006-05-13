@@ -10,6 +10,8 @@
 <script type="text/javascript"><!--
 function add_rcpt (email) {
 	var dest = window.opener.document.sharpwebmailform.elements['SharpUI:toemail'];
+	if ( typeof (dest)=='undefined' )
+		dest = window.opener.document.sharpwebmailform.elements['SharpUI$toemail'];
 	if ( dest!=null ) {
 		dest.value = dest.value.replace(/(?:^\s+|\s+$|;$)/, '');
 		var current = dest.value.split(',');

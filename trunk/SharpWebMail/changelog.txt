@@ -1,6 +1,8 @@
 05/13/2006
  - Added MonoDevelop project files.
  - [SimpleEmailClient, CTNSimpleTCPClient, CTNInbox] Added more debug info.
+ - js scripts did not work with .net 2.0 as it has changed the name generation for form items inside user controls.
+ - [Inbox] Same as above but with search queries.
 
 02/15/2006
  - Replaced #Develop 1.x project files with 2.x ones.
