@@ -4,6 +4,8 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 
 REM Build Satellite assemblies
 
+cd ..\..\controls\res\
+
 for /F "tokens=2 delims=." %%i IN ('dir /B SharpWebMail.*.resources') DO call :resource %%i .%%i
 call :resource en
 goto :end
