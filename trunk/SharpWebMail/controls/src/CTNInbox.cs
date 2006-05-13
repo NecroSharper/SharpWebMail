@@ -321,6 +321,8 @@ namespace anmar.SharpWebMail
 			this.inbox_view.RowFilter = System.String.Concat("uidl='", EscapeExpression(uidl), "'");
 			if (this.inbox_view.Count == 1 ) {
 				System.Data.DataRowView msg = this.inbox_view[0];
+				if ( log.IsDebugEnabled )
+					log.Debug(System.String.Concat("Message [", uidl, "] found in inbox index"));
 				msg[4] = header.From;
 				msg[5] = "";
 				msg[6] = anmar.SharpMimeTools.SharpMimeTools.parseFrom ( header.From );
@@ -349,8 +351,12 @@ namespace anmar.SharpWebMail
 							msg[5] = item["address"];
 					}
 				}
+				if ( log.IsDebugEnabled )
+					log.Debug(System.String.Concat("Message details added to inbox index for [", uidl, "]"));
 			} else {
 				error = true;
+				if ( log.IsErrorEnabled )
+					log.Error(System.String.Concat("Message [", uidl, "] not found in inbox index [", this.inbox_view.Count,"]."));
 			}
 			return !error;
 		}
