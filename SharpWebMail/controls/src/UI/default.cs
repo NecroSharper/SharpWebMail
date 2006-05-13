@@ -191,14 +191,22 @@ namespace anmar.SharpWebMail.UI
 							forcecache = true;
 					}
 					break;
+#ifdef API_1_1
 				case "SharpUI:fromsearch":
+#elif API_2_0
+				case "SharpUI$fromsearch":
+#endif
 					Value = Request.Form[key];
 					key = key.Remove(0, 8);
 					format = "From like '%{0}%'";
 					if ( Value.Length>0 )
 						forcecache = true;
 					break;
+#ifdef API_1_1
 				case "SharpUI:subjectsearch":
+#elif API_2_0
+				case "SharpUI$subjectsearch":
+#endif
 					Value = Request.Form[key];
 					key = key.Remove(0, 8);
 					format = "Subject like '%{0}%'";

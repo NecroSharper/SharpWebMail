@@ -13,7 +13,7 @@
 	function select_all_messages (checked, form) {
 		for ( var i=0; i<form.elements.length; i++ ) {
 			var item = form.elements[i];
-			if ( item.type=='checkbox' && item.name.lastIndexOf(':delete')>0 ) {
+			if ( item.type=='checkbox' && (item.name.lastIndexOf(':delete')>0 || item.name.lastIndexOf('$delete')>0) ) {
 				if ( checked!=item.checked )
 					item.checked=checked;
 			}
