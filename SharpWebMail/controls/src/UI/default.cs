@@ -191,10 +191,10 @@ namespace anmar.SharpWebMail.UI
 							forcecache = true;
 					}
 					break;
-#ifdef API_1_1
-				case "SharpUI:fromsearch":
-#elif API_2_0
+#if API_2_0
 				case "SharpUI$fromsearch":
+#else
+				case "SharpUI:fromsearch":
 #endif
 					Value = Request.Form[key];
 					key = key.Remove(0, 8);
@@ -202,10 +202,10 @@ namespace anmar.SharpWebMail.UI
 					if ( Value.Length>0 )
 						forcecache = true;
 					break;
-#ifdef API_1_1
-				case "SharpUI:subjectsearch":
-#elif API_2_0
+#if API_2_0
 				case "SharpUI$subjectsearch":
+#else
+				case "SharpUI:subjectsearch":
 #endif
 					Value = Request.Form[key];
 					key = key.Remove(0, 8);
