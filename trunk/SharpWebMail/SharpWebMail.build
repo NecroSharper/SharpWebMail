@@ -10,6 +10,7 @@
 	<property name="build.ref.platform" value="" />
 	<property name="build.ref.platform.version" value="" />
 	<property name="build.res" value="" />
+	<property name="build.template" value="true" />
 	<fileset id="build.files.source">
 		<include name="${build.basedir}/controls/src/**/*.cs" />
 		<exclude name="**/tools/**" />
@@ -57,11 +58,20 @@
 	</target>
 	<target name="build-asp.net-satellite">
 		<mkdir dir="${build.aspdir}/bin/${current.resfile.culture}" unless="${directory::exists(build.aspdir + '/bin/' + current.resfile.culture)}" />
-		<al target="lib" culture="${current.resfile.culture}" output="${build.aspdir}/bin/${current.resfile.culture}/SharpWebMail.resources.dll" template="${build.dir}/${project.name}.dll">
-			<sources>
-				<include name="${filename}" />
-			</sources>
-		</al>
+		<if test="${build.template}">
+			<al target="lib" culture="${current.resfile.culture}" output="${build.aspdir}/bin/${current.resfile.culture}/SharpWebMail.resources.dll" template="${build.aspdir}/bin/${project.name}.dll">
+				<sources>
+					<include name="${filename}" />
+				</sources>
+			</al>
+		</if>
+		<if test="${not(build.template)}">
+			<al target="lib" culture="${current.resfile.culture}" output="${build.aspdir}/bin/${current.resfile.culture}/SharpWebMail.resources.dll" failonerror="false">
+				<sources>
+					<include name="${filename}" />
+				</sources>
+			</al>
+		</if>
 	</target>
 	<target name="build" depends="build-pre">
 		<mkdir dir="${build.dir}" unless="${directory::exists(build.dir)}" />
@@ -140,6 +150,7 @@
 	<!-- Set default Mono config values  -->
 	<target name="set-mono-config">
 		<property name="build.defines" value="${build.defines},MONO" />
+		<property name="build.template" value="false" />
 	</target>
 	<!-- Set default Mono 1.0 config values  -->
 	<target name="set-mono-1.0-config" depends="set-mono-config">
