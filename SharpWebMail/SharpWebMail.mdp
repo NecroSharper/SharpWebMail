@@ -111,11 +111,11 @@
     <File name="./controls/src/UI/addressbook_data.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
-    <ProjectReference type="Assembly" localcopy="True" refto="./bin/net/log4net.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="./bin/net/FredCK.FCKeditorV2.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="./bin/net/OpenSmtp.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="./bin/net/DotNetOpenMail.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="./bin/net/SharpMimeTools.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/log4net.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/FredCK.FCKeditorV2.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/OpenSmtp.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/DotNetOpenMail.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/SharpMimeTools.dll" />
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
