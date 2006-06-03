@@ -5,6 +5,7 @@
  - [Config] Update log4net configuration to match 1.2.10 syntax.
  - [TCPClient] readBytes: Rewrite IO code so now reads are done through asynchronous methods.
  - [nant] Fix case of reference.
+ - [nant] Only build satellite assemblies using the template property if there is support for it.
 
 05/13/2006
  - Added MonoDevelop project files.
