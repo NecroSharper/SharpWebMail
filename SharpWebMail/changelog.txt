@@ -1,3 +1,6 @@
+06/03/2006
+ - [New Message] Add better debug messages when sending a message.
+
 05/13/2006
  - Added MonoDevelop project files.
  - [SimpleEmailClient, CTNSimpleTCPClient, CTNInbox] Added more debug info.
