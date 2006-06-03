@@ -22,7 +22,7 @@
 
 using System;
 
-[assembly: log4net.Config.DOMConfigurator()]
+[assembly: log4net.Config.XmlConfigurator()]
 namespace anmar.SharpWebMail.UI
 {
 	public class Global : System.Web.HttpApplication {
