@@ -74,7 +74,7 @@
 				<include name="${build.ref.platform}/DotNetOpenMail.dll" />
 				<include name="${build.ref.platform}/SharpMimeTools.dll" />
 				<include name="System.Data.dll" />
-				<include name="System.Directoryservices.dll" />
+				<include name="System.DirectoryServices.dll" />
 				<include name="System.Web.dll" />
 			</references>
 			<resources>
