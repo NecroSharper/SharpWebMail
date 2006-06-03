@@ -417,15 +417,15 @@ namespace anmar.SharpWebMail.UI
 			mailMessage.Headers["X-Mailer"] = System.String.Format ("{0} {1}", Application["product"], Application["version"]);
 			this.ProcessMessageAttachments(mailMessage);
 			try {
-				if ( log.IsDebugEnabled) log.Error ( "Sending message" );
+				if ( log.IsDebugEnabled) log.Debug (System.String.Concat("Sending message. engine: internal , protocol: ", server.Protocol));
 				System.Web.Mail.SmtpMail.Send(mailMessage);
-				if ( log.IsDebugEnabled) log.Error ( "Message sent" );
+				if ( log.IsDebugEnabled) log.Debug ( "Message sent" );
 			} catch (System.Exception e) {
 				message = e.Message;
 #if DEBUG && !MONO
 				message += ". <br>InnerException: " + e.InnerException.Message;
 #endif
-				if ( log.IsErrorEnabled ) log.Error ( "Error sending message", e );
+				if ( log.IsErrorEnabled ) log.Error ( System.String.Concat("Error sending message. engine: internal , protocol: ", server.Protocol), e );
 				if ( log.IsErrorEnabled ) log.Error ( "Error sending message (InnerException)", e.InnerException );
 			}
 			mailMessage = null;
@@ -463,7 +463,7 @@ namespace anmar.SharpWebMail.UI
 			mailMessage.XMailer = System.String.Concat (Application["product"], " ", Application["version"]);
 			this.ProcessMessageAttachments(mailMessage);
 			try {
-				if ( log.IsDebugEnabled) log.Error ( "Sending message" );
+				if ( log.IsDebugEnabled) log.Debug (System.String.Concat("Sending message. engine: DotNetOpenMail , protocol: ", server.Protocol));
 				DotNetOpenMail.SmtpServer SmtpMail = new DotNetOpenMail.SmtpServer(server.Host, server.Port);
 				if ( server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.SmtpAuth) ) {
 					anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
@@ -471,10 +471,10 @@ namespace anmar.SharpWebMail.UI
 				}
 				mailMessage.Send(SmtpMail);
 				SmtpMail=null;
-				if ( log.IsDebugEnabled) log.Error ( "Message sent" );
+				if ( log.IsDebugEnabled) log.Debug ( "Message sent" );
 			} catch (System.Exception e) {
 				message = e.Message;
-				if ( log.IsErrorEnabled ) log.Error ( "Error sending message", e );
+				if ( log.IsErrorEnabled ) log.Error ( System.String.Concat("Error sending message. engine: DotNetOpenMail , protocol: ", server.Protocol), e );
 			}
 			mailMessage = null;
 			return message;
@@ -514,7 +514,7 @@ namespace anmar.SharpWebMail.UI
 			mailMessage.AddCustomHeader("X-Mailer", System.String.Concat (Application["product"], " ", Application["version"]));
 			this.ProcessMessageAttachments(mailMessage);
 			try {
-				if ( log.IsDebugEnabled) log.Error ( "Sending message" );
+				if ( log.IsDebugEnabled) log.Debug (System.String.Concat("Sending message. engine: opensmtp , protocol: ", server.Protocol));
 				OpenSmtp.Mail.Smtp SmtpMail = null;
 				if ( server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.SmtpAuth) ) {
 					anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
@@ -523,10 +523,10 @@ namespace anmar.SharpWebMail.UI
 					SmtpMail = new OpenSmtp.Mail.Smtp(server.Host, server.Port);
 				SmtpMail.SendMail(mailMessage);
 				SmtpMail=null;
-				if ( log.IsDebugEnabled) log.Error ( "Message sent" );
+				if ( log.IsDebugEnabled) log.Debug ( "Message sent" );
 			} catch (System.Exception e) {
 				message = e.Message;
-				if ( log.IsErrorEnabled ) log.Error ( "Error sending message", e );
+				if ( log.IsErrorEnabled ) log.Error ( System.String.Concat("Error sending message. engine: opensmtp , protocol: ", server.Protocol), e );
 			}
 			mailMessage = null;
 			return message;
