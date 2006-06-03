@@ -117,27 +117,25 @@ namespace anmar.SharpWebMail
 			byte[] readBytes = new byte[client.ReceiveBufferSize];
 			int nbytes = 0;
 			System.String lastBoundary = System.String.Empty;
-			WaitState state = new WaitState(true);
-			System.Threading.Timer aTimer = new System.Threading.Timer(new System.Threading.TimerCallback(this.StopWaiting), state, System.Threading.Timeout.Infinite,  System.Threading.Timeout.Infinite);
-
 			if ( log.IsDebugEnabled ) log.Debug ( "Reading response" );
-			// We wait until data is available but only if Stream is open
-			// We setup a timer that stops the loop after x seconds
-			for ( aTimer.Change(this.timeoutResponse,  System.Threading.Timeout.Infinite); !error && ns.CanRead && ns.CanWrite && !ns.DataAvailable && state.Status; ){System.Threading.Thread.Sleep(50);}
-			state.Status = true;
 
-			// If I can read from NetworkStream and there is
-			// some data, I get it
-			for ( aTimer.Change(this.timeoutResponse,  System.Threading.Timeout.Infinite); !error && ns.CanRead && state.Status && (ns.DataAvailable || !(lastBoundary.Equals(waitFor)) ) ; nbytes = 0) {
+			System.IAsyncResult result = ns.BeginRead(readBytes, 0, readBytes.Length, null, null);
+			for ( long waiting = 0; !error && ns.CanRead && result!=null; nbytes = 0) {
 				try {
-					if ( ns.DataAvailable ) {
-#if MONO
-						// Reinitialize buffer to make mono happy
-						readBytes = new byte[client.ReceiveBufferSize];
-#endif
-						nbytes = ns.Read( readBytes, 0, client.ReceiveBufferSize );
-					} else
+					if ( !result.IsCompleted ) {
 						System.Threading.Thread.Sleep(50);
+						waiting+=50;
+					}
+					if ( result.IsCompleted ) {
+						nbytes = ns.EndRead(result);
+						result = null;
+						waiting = 0;
+					} else if ( waiting>this.timeoutResponse ) {
+						lastErrorMessage = "Read timeout";
+						if ( log.IsErrorEnabled ) log.Error (lastErrorMessage);
+						result = null;
+						error = true;
+					}
 				} catch ( System.Exception e ) {
 					error = true;
 					nbytes = 0;
@@ -168,13 +166,14 @@ namespace anmar.SharpWebMail
 							response.Seek (0, System.IO.SeekOrigin.End);
 						}
 					}
-					// Reset timer
-					aTimer.Change(this.timeoutResponse,  System.Threading.Timeout.Infinite);
-					state.Status = true;
+					// We haven't finished, so start a new async read
+					if ( lastBoundary!=waitFor ) {
+						result = ns.BeginRead(readBytes, 0, readBytes.Length, null, null);
+					}
 				}
 			}
 			response.Flush();
-			if ( log.IsDebugEnabled ) log.Debug ( System.String.Concat("Reading response finished. Error: ", error) );
+			if ( log.IsDebugEnabled ) log.Debug ( System.String.Concat("Reading response finished. Error: ", error, ", lenght: ", response.Length) );
 			// Discard response if there has been a read error.
 			if ( error )
 				response.SetLength(0);
@@ -233,24 +232,10 @@ namespace anmar.SharpWebMail
 			}
 			return !error;
 		}
-		protected void StopWaiting (System.Object state) {
-			((WaitState)state).Status = false;
-			return;
-		}
 
 		public string errormessage {
 			get {
 				return this.lastErrorMessage;
-			}
-		}
-		private class WaitState {
-			private bool wait;
-			public WaitState (bool wait) {
-				this.wait = wait;
-			}
-			public bool Status {
-				get { return this.wait;}
-				set { this.wait=value;}
 			}
 		}
 	}
