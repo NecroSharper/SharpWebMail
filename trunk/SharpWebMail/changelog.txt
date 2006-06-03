@@ -1,5 +1,6 @@
 06/03/2006
  - [New Message] Add better debug messages when sending a message.
+ - [Project] Fix references path in MonoDevelop project file.
 
 05/13/2006
  - Added MonoDevelop project files.
