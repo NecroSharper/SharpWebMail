@@ -1,7 +1,9 @@
 06/03/2006
  - [New Message] Add better debug messages when sending a message.
  - [Project] Fix references path in MonoDevelop project file.
-
+ - [Global] Use the XmlConfigurator attribute as DOMConfigurator is deprecated in log4net 1.2.10.
+ - [Config] Update log4net configuration to match 1.2.10 syntax.
+  
 05/13/2006
  - Added MonoDevelop project files.
  - [SimpleEmailClient, CTNSimpleTCPClient, CTNInbox] Added more debug info.
