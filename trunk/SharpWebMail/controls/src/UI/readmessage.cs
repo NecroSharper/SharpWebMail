@@ -48,89 +48,53 @@ namespace anmar.SharpWebMail.UI
 		protected System.Web.UI.WebControls.PlaceHolder readMessageWindowAttachmentsHolder;
 		protected System.Web.UI.WebControls.PlaceHolder readMessageWindowBodyTextHolder;
 
-		private void decodeMessage ( anmar.SharpMimeTools.SharpMimeMessage mm, System.Web.UI.WebControls.PlaceHolder entity ) {
-			System.String inline = System.String.Empty;
-			switch ( mm.Header.TopLevelMediaType ) {
-				case anmar.SharpMimeTools.MimeTopLevelMediaType.multipart:
-				case anmar.SharpMimeTools.MimeTopLevelMediaType.message:
-					// TODO: allow other subtypes of "message"
-					// Only message/rfc822 allowed, other subtypes ignored
-					if ( mm.Header.TopLevelMediaType.Equals(anmar.SharpMimeTools.MimeTopLevelMediaType.message)
-						 && !mm.Header.SubType.Equals("rfc822") )
-						break;
-					if ( mm.Header.SubType.Equals ("alternative") ) {
-						if ( mm.PartsCount>0 ) {
-							this.decodeMessage ( mm.GetPart(mm.PartsCount-1),
-												 entity);
-						}
-					// TODO: Take into account each subtype of "multipart"
-					} else if ( mm.PartsCount>0 ) {
-						System.Web.UI.WebControls.PlaceHolder nestedentity = new System.Web.UI.WebControls.PlaceHolder ();
-						System.Collections.IEnumerator enu = mm.GetEnumerator();
-						while ( enu.MoveNext() ) {
-							this.decodeMessage ((anmar.SharpMimeTools.SharpMimeMessage) enu.Current, nestedentity);
-						}
-						entity.Controls.Add (nestedentity);
-					}
-					break;
-				case anmar.SharpMimeTools.MimeTopLevelMediaType.text:
-					if ( ( mm.Disposition==null || !mm.Disposition.Equals("attachment") )
-						&& ( mm.Header.SubType.Equals("plain") || mm.Header.SubType.Equals("html") ) ) {
-						System.Web.UI.WebControls.Label label = new System.Web.UI.WebControls.Label ();
-						label.Text = mm.BodyDecoded;
-						if ( mm.IsTextBrowserDisplay ) {
-							label.Text = System.Web.HttpUtility.HtmlEncode (label.Text);
-							label.Text = label.Text.Insert (0, "<pre id=\"message\">");
-							label.Text = label.Text.Insert (label.Text.Length, "</pre>");
-						} else {
-							label.CssClass = "XPFormText";
-							if ( (int)Application["sharpwebmail/read/message/sanitizer_mode"]==1 ) {
-								label.Text = anmar.SharpWebMail.BasicSanitizer.SanitizeHTML(label.Text, anmar.SharpWebMail.SanitizerMode.CommentBlocks|anmar.SharpWebMail.SanitizerMode.RemoveEvents);
+		private void decodeMessage ( anmar.SharpMimeTools.SharpMessage message, System.Web.UI.WebControls.PlaceHolder entity ) {
+			System.Web.UI.HtmlControls.HtmlGenericControl body = new System.Web.UI.HtmlControls.HtmlGenericControl("span");
+			// RFC 2392
+			message.SetUrlBase(System.String.Concat("download.aspx?msgid=", Server.UrlEncode(msgid),"&name=[Name]&i=1"));
+			// Html body
+			if ( message.HasHtmlBody ) {
+				body.Attributes["class"] = "XPFormText";
+				if ( (int)Application["sharpwebmail/read/message/sanitizer_mode"]==1 ) {
+					body.InnerHtml = anmar.SharpWebMail.BasicSanitizer.SanitizeHTML(message.Body, anmar.SharpWebMail.SanitizerMode.CommentBlocks|anmar.SharpWebMail.SanitizerMode.RemoveEvents);
+				} else {
+					body.InnerHtml = message.Body;
+				}
+			// Text body
+			} else {
+				body.TagName = "pre";
+				body.InnerText = message.Body;
+			}
+			entity.Controls.Add (body);
+			// Attachments
+			if ( message.Attachments!=null ) {
+				bool inline_added = false;
+				foreach ( anmar.SharpMimeTools.SharpAttachment item in message.Attachments ) {
+					if ( item.SavedFile==null )
+						continue;
+					System.Web.UI.HtmlControls.HtmlAnchor attachment = new System.Web.UI.HtmlControls.HtmlAnchor();
+					attachment.Attributes["class"] = "XPDownload";
+					attachment.Title = System.String.Concat(item.SavedFile.Name, " (", item.Size, " bytes)");
+					attachment.InnerText = attachment.Title; 
+					System.String urlstring = System.String.Concat("download.aspx?msgid=", Server.UrlEncode(msgid),
+												"&name=", Server.UrlEncode(item.SavedFile.Name), "&i=");
+					attachment.HRef = urlstring;
+					this.readMessageWindowAttachmentsHolder.Controls.Add(attachment);
+					// Inline attachment
+					if ( item.Inline ) {
+						if ( item.MimeTopLevelMediaType==anmar.SharpMimeTools.MimeTopLevelMediaType.image
+								&& (item.MimeMediaSubType=="gif" || item.MimeMediaSubType=="jpg" || item.MimeMediaSubType=="png") ) {
+							System.Web.UI.HtmlControls.HtmlImage image = new System.Web.UI.HtmlControls.HtmlImage();
+							image.Src = System.String.Concat(urlstring, "1");
+							image.Alt = attachment.Name;
+							if ( !inline_added ) {
+								entity.Controls.Add(new System.Web.UI.HtmlControls.HtmlGenericControl("hr"));
+								inline_added = true;
 							}
-						}
-						entity.Controls.Add (label);
-						break;
-					} else {
-						goto case anmar.SharpMimeTools.MimeTopLevelMediaType.application;
-					}
-				case anmar.SharpMimeTools.MimeTopLevelMediaType.application:
-				case anmar.SharpMimeTools.MimeTopLevelMediaType.audio:
-				case anmar.SharpMimeTools.MimeTopLevelMediaType.image:
-				case anmar.SharpMimeTools.MimeTopLevelMediaType.video:
-					System.Web.UI.WebControls.HyperLink attachment = new System.Web.UI.WebControls.HyperLink ();
-					System.Web.UI.WebControls.Image image = null;
-					attachment.CssClass = "XPDownload";
-					if ( mm.Name!=null )
-						attachment.Text = System.String.Format ("{0} ({1} bytes)", System.IO.Path.GetFileName(mm.Name), mm.Size);
-					if ( Session["sharpwebmail/read/message/temppath"]!=null ) {
-						System.String path = Session["sharpwebmail/read/message/temppath"].ToString();
-						path = System.IO.Path.Combine (path, msgid);
-						// Dump file contents
-						System.IO.FileInfo file = mm.DumpBody ( path, true );
-						if ( file!=null && file.Exists ) {
-							System.String urlstring = System.String.Format("download.aspx?msgid={0}&name={1}&i={2}",
-																Server.UrlEncode(msgid), Server.UrlEncode(file.Name),
-																inline);
-							if ( mm.Disposition!=null && mm.Disposition.Equals("inline") ) {
-								inline = "1";
-								if ( mm.Header.TopLevelMediaType.Equals(anmar.SharpMimeTools.MimeTopLevelMediaType.image)
-										&& ( mm.Header.SubType.Equals("gif") || mm.Header.SubType.Equals("jpg") || mm.Header.SubType.Equals("png")) ) {
-									image = new System.Web.UI.WebControls.Image ();
-									image.ImageUrl = urlstring;
-								}
-							}
-							attachment.NavigateUrl = urlstring;
-							attachment.Text = System.String.Format ("{0} ({1} bytes)", file.Name, file.Length);
+							entity.Controls.Add(image);
 						}
 					}
-					this.readMessageWindowAttachmentsHolder.Controls.Add (attachment);
-					// Display inline image
-					if ( image!=null ) {
-						entity.Controls.Add (image);
-					}
-					break;
-				default:
-					break;
+				}
 			}
 		}
 		/// <summary>
@@ -191,6 +155,15 @@ namespace anmar.SharpWebMail.UI
 					if ( deleted )
 						this.SharpUI.setVariableLabels();
 				}
+				// Setup some options for later use
+				System.String tmppath = null;
+				anmar.SharpMimeTools.MimeTopLevelMediaType types = anmar.SharpMimeTools.MimeTopLevelMediaType.text|anmar.SharpMimeTools.MimeTopLevelMediaType.multipart|anmar.SharpMimeTools.MimeTopLevelMediaType.message;
+				anmar.SharpMimeTools.SharpDecodeOptions options = anmar.SharpMimeTools.SharpDecodeOptions.AllowHtml;
+				if ( Session["sharpwebmail/read/message/temppath"]!=null ) {
+					tmppath = System.IO.Path.Combine (Session["sharpwebmail/read/message/temppath"].ToString(), msgid);
+					options |= anmar.SharpMimeTools.SharpDecodeOptions.AllowAttachments | anmar.SharpMimeTools.SharpDecodeOptions.DecodeTnef | anmar.SharpMimeTools.SharpDecodeOptions.CreateFolder;
+					types |= anmar.SharpMimeTools.MimeTopLevelMediaType.application|anmar.SharpMimeTools.MimeTopLevelMediaType.audio|anmar.SharpMimeTools.MimeTopLevelMediaType.image|anmar.SharpMimeTools.MimeTopLevelMediaType.video;
+				}
 				// Delete messaged, we have to commit changes
 				if ( deleted && (bool)Application["sharpwebmail/read/inbox/commit_ondelete"] ) {
 					this.SharpUI.Inbox.Client.PurgeInbox( this.SharpUI.Inbox, false );
@@ -213,8 +186,8 @@ namespace anmar.SharpWebMail.UI
 					if ( this.newMessageWindowTitle.Text.Equals (System.String.Empty) )
 						this.newMessageWindowTitle.Text = this.SharpUI.LocalizedRS.GetString("noSubject");
 					if ( ms!=null && ms.CanRead ) {
-						anmar.SharpMimeTools.SharpMimeMessage mm = new anmar.SharpMimeTools.SharpMimeMessage ( ms );
-						this.readMessageWindowCcTextLabel.Text = System.Web.HttpUtility.HtmlEncode (anmar.SharpMimeTools.SharpMimeTools.parseFrom (mm.Header.Cc).ToString());
+						anmar.SharpMimeTools.SharpMessage mm = new anmar.SharpMimeTools.SharpMessage(ms, types, options, tmppath, null);
+						this.readMessageWindowCcTextLabel.Text = System.Web.HttpUtility.HtmlEncode (mm.Cc.ToString());
 						this.decodeMessage ( mm, this.readMessageWindowBodyTextHolder );
 						mm = null;
 						this.SharpUI.Inbox.readMessage ( msgid );
