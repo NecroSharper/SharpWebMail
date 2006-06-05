@@ -1,3 +1,8 @@
+06/05/2006
+ - [ReadMessage] Decode messages using SharpMessage so it takes care of all the hard work.
+ - [ReadMessage] Enable SharpMessage's RFC 2392 support.
+ - [ReadMessage] Enable SharpMessage's ms-tnef support.
+
 06/03/2006
  - [New Message] Add better debug messages when sending a message.
  - [Project] Fix references path in MonoDevelop project file.
