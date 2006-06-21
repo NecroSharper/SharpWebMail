@@ -1,3 +1,7 @@
+06/21/2006
+ - [nant] Move satellite assembly build to 'build-asp.net-satellites' target.
+ - [nant] Add 'debug-resources' and 'release-resources' targets so the satellite assemblies are built for each targeted platform. They are intended to be used only in the packaging process to simplify installation process.
+
 06/19/2006
  - [New Message] Updated FCKeditor config to 2.3.
 
