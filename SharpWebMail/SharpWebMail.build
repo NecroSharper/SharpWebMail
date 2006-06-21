@@ -4,7 +4,7 @@
 	<property name="project.name" value="SharpWebMail" />
 	<property name="build.defines" value="" />
 	<property name="build.debug" value="false" />
-	<property name="build.basedir" value="${nant.project.basedir}" />
+	<property name="build.basedir" value="${project::get-base-directory()}" />
 	<property name="build.dir" value="" />
 	<property name="build.config" value="release" />
 	<property name="build.ref.platform" value="" />
@@ -32,7 +32,7 @@
 	<target name="build-asp.net-debug" depends="debug, build-asp.net" />
 	<target name="build-asp.net" depends="build-pre">
 		<mkdir dir="${build.aspdir}" unless="${directory::exists(build.aspdir)}" />
-		<copy todir="${build.aspdir}/bin" flatten="true">
+		<copy todir="${build.aspdir}/" flatten="true">
 			<fileset basedir="${build.dir}">
 				<include name="${build.dir}/*.dll" />
 				<include name="${build.dir}/*.pdb" />
@@ -41,6 +41,9 @@
 				<include name="${build.ref.platform.version}/*.dll" />
 			</fileset>
 		</copy>
+		<call target="build-asp.net-satellites" />
+	</target>
+	<target name="build-asp.net-satellites">
 		<copy file="${build.res}/${project.name}.resources" tofile="${build.res}/${project.name}.en.resources" />
 		<foreach item="File" property="filename">
 			<in>
@@ -57,16 +60,16 @@
 		<delete file="${build.res}/${project.name}.en.resources" />
 	</target>
 	<target name="build-asp.net-satellite">
-		<mkdir dir="${build.aspdir}/bin/${current.resfile.culture}" unless="${directory::exists(build.aspdir + '/bin/' + current.resfile.culture)}" />
+		<mkdir dir="${build.aspdir}/${current.resfile.culture}" unless="${directory::exists(build.aspdir + current.resfile.culture)}" />
 		<if test="${build.template}">
-			<al target="lib" culture="${current.resfile.culture}" output="${build.aspdir}/bin/${current.resfile.culture}/SharpWebMail.resources.dll" template="${build.aspdir}/bin/${project.name}.dll">
+			<al target="lib" culture="${current.resfile.culture}" output="${build.aspdir}/${current.resfile.culture}/SharpWebMail.resources.dll" template="${build.aspdir}/${project.name}.dll">
 				<sources>
 					<include name="${filename}" />
 				</sources>
 			</al>
 		</if>
 		<if test="${not(build.template)}">
-			<al target="lib" culture="${current.resfile.culture}" output="${build.aspdir}/bin/${current.resfile.culture}/SharpWebMail.resources.dll" failonerror="false">
+			<al target="lib" culture="${current.resfile.culture}" output="${build.aspdir}/${current.resfile.culture}/SharpWebMail.resources.dll" failonerror="false">
 				<sources>
 					<include name="${filename}" />
 				</sources>
@@ -112,18 +115,28 @@
 		<property name="build.defines" value="DEBUG" />
 		<call target="build" />
 	</target>
+	<!-- Debug target intended for release packages -->
+	<target name="debug-resources" description="Debug build + satellite assemblies" depends="debug">
+		<property name="build.aspdir" value="${build.dir}" />
+		<call target="build-asp.net-satellites" />
+	</target>
 	<target name="release" description="Release build">
 		<property name="build.debug" value="false" />
 		<property name="build.config" value="release" />
 		<property name="build.defines" value="RELEASE" />
 		<call target="build" />
 	</target>
+	<!-- Release target intended for release packages -->
+	<target name="release-resources" description="Release build + satellite assemblies" depends="release">
+		<property name="build.aspdir" value="${build.dir}" />
+		<call target="build-asp.net-satellites" />
+	</target>
 	<target name="build-pre">
 		<call target="set-folders" />
 		<call target="set-framework-config" />
 	</target>
 	<target name="set-folders">
-		<property name="build.aspdir" value="${build.basedir}/asp.net" />
+		<property name="build.aspdir" value="${build.basedir}/asp.net/bin" />
 		<property name="build.res" value="${build.basedir}/controls/res" />
 		<property name="build.ref.platform" value="${build.basedir}/bin/${framework::get-family(framework::get-target-framework())}" />
 		<property name="build.ref.platform.version" value="${build.ref.platform}/${framework::get-version(framework::get-target-framework())}" />
