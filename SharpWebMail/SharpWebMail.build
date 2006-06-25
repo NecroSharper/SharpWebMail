@@ -12,15 +12,14 @@
 	<property name="build.res" value="" />
 	<property name="build.template" value="true" />
 	<fileset id="build.files.source">
-		<include name="${build.basedir}/controls/src/**/*.cs" />
-		<exclude name="**/tools/**" />
-		<exclude name="**debug**" />
+		<include name="${build.basedir}/src/**/*.cs" />
 	</fileset>
 	<fileset id="build.files.general">
-		<include name="${build.basedir}/Makefile" />
-		<include name="${build.basedir}/SharpWebMail.cmbx" />
 		<include name="${build.basedir}/SharpWebMail.build" />
-		<include name="${build.basedir}/controls/SharpWebMail.prjx" />
+		<include name="${build.basedir}/SharpWebMail.sln" />
+		<include name="${build.basedir}/SharpWebMail.csproj" />
+		<include name="${build.basedir}/SharpWebMail.mds" />
+		<include name="${build.basedir}/SharpWebMail.mdp" />
 	</fileset>
 	<fileset id="build.files.docs">
 		<include name="${build.basedir}/changelog.txt" />
@@ -102,7 +101,7 @@
 		<mkdir dir="${build.ref.platform.version}" unless="${directory::exists(build.ref.platform.version)}" />
 		<csc target="exe" warnaserror="false" debug="${build.debug}" output="${build.ref.platform.version}/CustomCultures.exe">
 			<sources>
-				<include name="${build.basedir}/controls/src/tools/customcultures.cs" />
+				<include name="${build.basedir}/tools/customcultures.cs" />
 			</sources>
 			<references>
 				<include name="sysglobl.dll" />
@@ -137,7 +136,7 @@
 	</target>
 	<target name="set-folders">
 		<property name="build.aspdir" value="${build.basedir}/asp.net/bin" />
-		<property name="build.res" value="${build.basedir}/controls/res" />
+		<property name="build.res" value="${build.basedir}/resources" />
 		<property name="build.ref.platform" value="${build.basedir}/bin/${framework::get-family(framework::get-target-framework())}" />
 		<property name="build.ref.platform.version" value="${build.ref.platform}/${framework::get-version(framework::get-target-framework())}" />
 		<property name="build.dir" value="${build.ref.platform.version}/${build.config}" />

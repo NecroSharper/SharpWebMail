@@ -41,21 +41,21 @@
     <excludeFiles />
   </DeploymentInformation>
   <Contents>
-    <File name="./controls/src/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/CTNInbox.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/CTNSimplePOP3Client.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/CTNSimpleTCPClient.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/UI/default.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/UI/download.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/UI/global.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/UI/login.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/UI/newmessage.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/UI/globalUI.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/UI/readmessage.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/UI/search.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/res/resources.cmd" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.es.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.sr-SP-Latn.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./src/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/CTNInbox.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/CTNSimplePOP3Client.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/CTNSimpleTCPClient.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/default.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/download.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/global.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/login.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/newmessage.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/globalUI.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/readmessage.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/search.cs" subtype="Code" buildaction="Compile" />
+    <File name="./resources/resources.cmd" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.es.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.sr-SP-Latn.resources" subtype="Code" buildaction="Nothing" />
     <File name="./changelog.txt" subtype="Code" buildaction="Nothing" />
     <File name="./license.txt" subtype="Code" buildaction="Nothing" />
     <File name="./doc/readme.txt" subtype="Code" buildaction="Nothing" />
@@ -73,42 +73,42 @@
     <File name="./asp.net/sharpwebmail.css" subtype="Code" buildaction="Nothing" />
     <File name="./asp.net/web.config" subtype="Code" buildaction="Nothing" />
     <File name="./asp.net/fcke/fckconfig.js" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.resources" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="./controls/src/UI/readmessageheaders.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/basicsanitizer.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/res/SharpWebMail.da.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/src/serverselector.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/emailserver.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/iemailclient.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/emailclientfactory.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/simpleimapclient.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/simpleemailclient.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/res/SharpWebMail.ru.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.el.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.fr.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.ro.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.vi.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.it.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/src/UI/addressbook.cs" subtype="Code" buildaction="Compile" />
+    <File name="./resources/SharpWebMail.resources" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="./src/UI/readmessageheaders.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/basicsanitizer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./resources/SharpWebMail.da.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./src/serverselector.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/emailserver.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/iemailclient.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/emailclientfactory.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/simpleimapclient.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/simpleemailclient.cs" subtype="Code" buildaction="Compile" />
+    <File name="./resources/SharpWebMail.ru.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.el.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.fr.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.ro.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.vi.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.it.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./src/UI/addressbook.cs" subtype="Code" buildaction="Compile" />
     <File name="./asp.net/addressbook.aspx" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/src/sharpwebmailconfighandler.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/res/SharpWebMail.pt-BR.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./src/sharpwebmailconfighandler.cs" subtype="Code" buildaction="Compile" />
+    <File name="./resources/SharpWebMail.pt-BR.resources" subtype="Code" buildaction="Nothing" />
     <File name="./SharpWebMail.build" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.en.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.zh-CHT.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.nl.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.pl.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.sv.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.ar.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.de.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.hu.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.id.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/res/SharpWebMail.tr.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.en.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.zh-CHT.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.nl.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.pl.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.sv.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.ar.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.de.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.hu.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.id.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.tr.resources" subtype="Code" buildaction="Nothing" />
     <File name="./asp.net/addressbookfull.aspx" subtype="Code" buildaction="Nothing" />
     <File name="./asp.net/addressbook_edit.aspx" subtype="Code" buildaction="Nothing" />
     <File name="./asp.net/addressbook_data.aspx" subtype="Code" buildaction="Nothing" />
-    <File name="./controls/src/UI/addressbook_edit.cs" subtype="Code" buildaction="Compile" />
-    <File name="./controls/src/UI/addressbook_data.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/addressbook_edit.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/addressbook_data.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/log4net.dll" />
