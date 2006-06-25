@@ -11,7 +11,7 @@
     <NoStdLib>False</NoStdLib>
     <NoConfig>False</NoConfig>
     <RunPostBuildEvent>OnSuccessfulBuild</RunPostBuildEvent>
-    <PostBuildEvent>C:\Temp\SharpWebMail-0.14-nightly-2006-02-14\controls\res\resources.cmd</PostBuildEvent>
+    <PostBuildEvent>resources\resources.cmd</PostBuildEvent>
     <DebugType>None</DebugType>
     <RegisterForComInterop>False</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
@@ -62,31 +62,31 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>..\asp.net\bin\</OutputPath>
+    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v1.1</TargetFrameworkVersion>
     <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>..\asp.net\bin\</OutputPath>
+    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v1.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug-1.1' ">
-    <OutputPath>..\asp.net\bin\</OutputPath>
+    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v1.1</TargetFrameworkVersion>
     <DefineConstants>DEBUG;NET_1_1;API_1_1</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release-1.1' ">
-    <OutputPath>..\asp.net\bin\</OutputPath>
+    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v1.1</TargetFrameworkVersion>
     <DefineConstants>NET_1_1;API_1_1</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug-2.0' ">
-    <OutputPath>..\asp.net\bin\</OutputPath>
+    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <DefineConstants>DEBUG;NET_2_0;API_2_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release-2.0' ">
-    <OutputPath>..\asp.net\bin\</OutputPath>
+    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <DefineConstants>NET_2_0;API_2_0</DefineConstants>
   </PropertyGroup>
@@ -97,23 +97,23 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="log4net">
-      <HintPath>..\bin\net\log4net.dll</HintPath>
+      <HintPath>bin\net\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FredCK.FCKeditorV2">
-      <HintPath>..\bin\net\FredCK.FCKeditorV2.dll</HintPath>
+      <HintPath>bin\net\FredCK.FCKeditorV2.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenSmtp">
-      <HintPath>..\bin\net\OpenSmtp.dll</HintPath>
+      <HintPath>bin\net\OpenSmtp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetOpenMail">
-      <HintPath>..\bin\net\DotNetOpenMail.dll</HintPath>
+      <HintPath>bin\net\DotNetOpenMail.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharpMimeTools">
-      <HintPath>..\bin\net\SharpMimeTools.dll</HintPath>
+      <HintPath>bin\net\SharpMimeTools.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -142,50 +142,50 @@
     <Compile Include="src\sharpwebmailconfighandler.cs" />
     <Compile Include="src\UI\addressbook_edit.cs" />
     <Compile Include="src\UI\addressbook_data.cs" />
-    <EmbeddedResource Include="res\SharpWebMail.resources" />
-    <None Include="res\resources.cmd" />
-    <None Include="res\SharpWebMail.es.resources" />
-    <None Include="res\SharpWebMail.sr-SP-Latn.resources" />
-    <None Include="..\changelog.txt" />
-    <None Include="..\license.txt" />
-    <None Include="..\doc\readme.txt" />
-    <None Include="..\doc\TODO.txt" />
-    <None Include="..\doc\cultures_neutral.txt" />
-    <None Include="..\doc\cultures_specific.txt" />
-    <None Include="..\asp.net\default.aspx" />
-    <None Include="..\asp.net\download.aspx" />
-    <None Include="..\asp.net\Global.asax" />
-    <None Include="..\asp.net\globalUI.ascx" />
-    <None Include="..\asp.net\login.aspx" />
-    <None Include="..\asp.net\newmessage.aspx" />
-    <None Include="..\asp.net\readmessage.aspx" />
-    <None Include="..\asp.net\search.aspx" />
-    <None Include="..\asp.net\sharpwebmail.css" />
-    <None Include="..\asp.net\web.config" />
-    <None Include="..\asp.net\fcke\fckconfig.js" />
-    <None Include="res\SharpWebMail.da.resources" />
-    <None Include="res\SharpWebMail.ru.resources" />
-    <None Include="res\SharpWebMail.el.resources" />
-    <None Include="res\SharpWebMail.fr.resources" />
-    <None Include="res\SharpWebMail.ro.resources" />
-    <None Include="res\SharpWebMail.vi.resources" />
-    <None Include="res\SharpWebMail.it.resources" />
-    <None Include="..\asp.net\addressbook.aspx" />
-    <None Include="res\SharpWebMail.pt-BR.resources" />
-    <None Include="..\SharpWebMail.build" />
-    <None Include="res\SharpWebMail.en.resources" />
-    <None Include="res\SharpWebMail.zh-CHT.resources" />
-    <None Include="res\SharpWebMail.nl.resources" />
-    <None Include="res\SharpWebMail.pl.resources" />
-    <None Include="res\SharpWebMail.sv.resources" />
-    <None Include="res\SharpWebMail.ar.resources" />
-    <None Include="res\SharpWebMail.de.resources" />
-    <None Include="res\SharpWebMail.hu.resources" />
-    <None Include="res\SharpWebMail.id.resources" />
-    <None Include="res\SharpWebMail.tr.resources" />
-    <None Include="..\asp.net\addressbookfull.aspx" />
-    <None Include="..\asp.net\addressbook_edit.aspx" />
-    <None Include="..\asp.net\addressbook_data.aspx" />
+    <EmbeddedResource Include="resources\SharpWebMail.resources" />
+    <None Include="resources\resources.cmd" />
+    <None Include="resources\SharpWebMail.es.resources" />
+    <None Include="resources\SharpWebMail.sr-SP-Latn.resources" />
+    <None Include="changelog.txt" />
+    <None Include="license.txt" />
+    <None Include="doc\readme.txt" />
+    <None Include="doc\TODO.txt" />
+    <None Include="doc\cultures_neutral.txt" />
+    <None Include="doc\cultures_specific.txt" />
+    <None Include="asp.net\default.aspx" />
+    <None Include="asp.net\download.aspx" />
+    <None Include="asp.net\Global.asax" />
+    <None Include="asp.net\globalUI.ascx" />
+    <None Include="asp.net\login.aspx" />
+    <None Include="asp.net\newmessage.aspx" />
+    <None Include="asp.net\readmessage.aspx" />
+    <None Include="asp.net\search.aspx" />
+    <None Include="asp.net\sharpwebmail.css" />
+    <None Include="asp.net\web.config" />
+    <None Include="asp.net\fcke\fckconfig.js" />
+    <None Include="resources\SharpWebMail.da.resources" />
+    <None Include="resources\SharpWebMail.ru.resources" />
+    <None Include="resources\SharpWebMail.el.resources" />
+    <None Include="resources\SharpWebMail.fr.resources" />
+    <None Include="resources\SharpWebMail.ro.resources" />
+    <None Include="resources\SharpWebMail.vi.resources" />
+    <None Include="resources\SharpWebMail.it.resources" />
+    <None Include="asp.net\addressbook.aspx" />
+    <None Include="resources\SharpWebMail.pt-BR.resources" />
+    <None Include="SharpWebMail.build" />
+    <None Include="resources\SharpWebMail.en.resources" />
+    <None Include="resources\SharpWebMail.zh-CHT.resources" />
+    <None Include="resources\SharpWebMail.nl.resources" />
+    <None Include="resources\SharpWebMail.pl.resources" />
+    <None Include="resources\SharpWebMail.sv.resources" />
+    <None Include="resources\SharpWebMail.ar.resources" />
+    <None Include="resources\SharpWebMail.de.resources" />
+    <None Include="resources\SharpWebMail.hu.resources" />
+    <None Include="resources\SharpWebMail.id.resources" />
+    <None Include="resources\SharpWebMail.tr.resources" />
+    <None Include="asp.net\addressbookfull.aspx" />
+    <None Include="asp.net\addressbook_edit.aspx" />
+    <None Include="asp.net\addressbook_data.aspx" />
   </ItemGroup>
   <Import Project="$(SharpDevelopBinPath)\SharpDevelop.Build.CSharp.targets" />
 </Project>
