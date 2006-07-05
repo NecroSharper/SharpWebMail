@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<!-- SharpWebMail build file -->
+<project name="anmar.SharpWebMail" default="debug">
+	<property name="project.name" value="SharpWebMail" />
+	<property name="build.defines" value="" />
+	<property name="build.debug" value="false" />
+	<property name="build.basedir" value="${project::get-base-directory()}" />
+	<property name="build.dir" value="" />
+	<property name="build.config" value="release" />
+	<property name="build.ref.platform" value="" />
+	<property name="build.ref.platform.version" value="" />
+	<property name="build.res" value="" />
+	<property name="build.template" value="true" />
+	<fileset id="build.files.source">
+		<include name="${build.basedir}/src/**/*.cs" />
+	</fileset>
+	<fileset id="build.files.general">
+		<include name="${build.basedir}/SharpWebMail.build" />
+		<include name="${build.basedir}/SharpWebMail.sln" />
+		<include name="${build.basedir}/SharpWebMail.csproj" />
+		<include name="${build.basedir}/SharpWebMail.mds" />
+		<include name="${build.basedir}/SharpWebMail.mdp" />
+	</fileset>
+	<fileset id="build.files.docs">
+		<include name="${build.basedir}/changelog.txt" />
+		<include name="${build.basedir}/license.txt" />
+		<include name="${build.basedir}/doc/readme.txt" />
+		<include name="${build.basedir}/doc/TODO.txt" />
+	</fileset>
+	<target name="build-asp.net-release" depends="release, build-asp.net" />
+	<target name="build-asp.net-debug" depends="debug, build-asp.net" />
+	<target name="build-asp.net" depends="build-pre">
+		<mkdir dir="${build.aspdir}" unless="${directory::exists(build.aspdir)}" />
+		<copy todir="${build.aspdir}/" flatten="true">
+			<fileset basedir="${build.dir}">
+				<include name="${build.dir}/*.dll" />
+				<include name="${build.dir}/*.pdb" />
+				<include name="${build.dir}/*.mdb" />
+				<include name="${build.ref.platform}/*.dll" />
+				<include name="${build.ref.platform.version}/*.dll" />
+			</fileset>
+		</copy>
+		<call target="build-asp.net-satellites" />
+	</target>
+	<target name="build-asp.net-satellites">
+		<copy file="${build.res}/${project.name}.resources" tofile="${build.res}/${project.name}.en.resources" />
+		<foreach item="File" property="filename">
+			<in>
+				<items basedir="${build.res}">
+					<include name="*.*.resources" />
+				</items>
+			</in>
+			<do>
+				<property name="current.resfile" value="${string::substring(filename, string::last-index-of(filename, '\')+1, string::get-length(filename)-(string::last-index-of(filename, '\')+1))}" />
+				<property name="current.resfile.culture" value="${string::substring(current.resfile, string::index-of(current.resfile, '.')+1, string::last-index-of(current.resfile, '.')-(string::index-of(current.resfile, '.')+1))}" />
+				<call target="build-asp.net-satellite" />
+			</do>
+		</foreach>
+		<delete file="${build.res}/${project.name}.en.resources" />
+	</target>
+	<target name="build-asp.net-satellite">
+		<mkdir dir="${build.aspdir}/${current.resfile.culture}" unless="${directory::exists(build.aspdir + current.resfile.culture)}" />
+		<if test="${build.template}">
+			<al target="lib" culture="${current.resfile.culture}" output="${build.aspdir}/${current.resfile.culture}/SharpWebMail.resources.dll" template="${build.aspdir}/${project.name}.dll">
+				<sources>
+					<include name="${filename}" />
+				</sources>
+			</al>
+		</if>
+		<if test="${not(build.template)}">
+			<al target="lib" culture="${current.resfile.culture}" output="${build.aspdir}/${current.resfile.culture}/SharpWebMail.resources.dll" failonerror="false">
+				<sources>
+					<include name="${filename}" />
+				</sources>
+			</al>
+		</if>
+	</target>
+	<target name="build" depends="build-pre">
+		<mkdir dir="${build.dir}" unless="${directory::exists(build.dir)}" />
+		<csc target="library" define="${build.defines}" warnaserror="false" debug="${build.debug}" output="${build.dir}/${project.name}.dll">
+			<sources failonempty="true" refid="build.files.source" />
+			<references>
+				<include name="${build.ref.platform}/FredCK.FCKeditorV2.dll" />
+				<include name="${build.ref.platform}/log4net.dll" />
+				<include name="${build.ref.platform}/OpenSmtp.dll" />
+				<include name="${build.ref.platform}/DotNetOpenMail.dll" />
+				<include name="${build.ref.platform}/SharpMimeTools.dll" />
+				<include name="System.Data.dll" />
+				<include name="System.DirectoryServices.dll" />
+				<include name="System.Web.dll" />
+			</references>
+			<resources>
+				<include name="${build.res}/SharpWebMail.resources" />
+			</resources>
+		</csc>
+	</target>
+	<target name="build-customcultures" depends="build-pre">
+		<if test="${not(version::to-string(framework::get-version(framework::get-target-framework()))=='2.0')}">
+			<fail message="CustomCultures does not support the '${framework::get-target-framework()}' framework" />
+		</if>
+		<mkdir dir="${build.ref.platform.version}" unless="${directory::exists(build.ref.platform.version)}" />
+		<csc target="exe" warnaserror="false" debug="${build.debug}" output="${build.ref.platform.version}/CustomCultures.exe">
+			<sources>
+				<include name="${build.basedir}/tools/customcultures.cs" />
+			</sources>
+			<references>
+				<include name="sysglobl.dll" />
+			</references>
+		</csc>
+	</target>
+	<target name="debug" description="Debug build">
+		<property name="build.debug" value="true" />
+		<property name="build.config" value="debug" />
+		<property name="build.defines" value="DEBUG" />
+		<call target="build" />
+	</target>
+	<!-- Debug target intended for release packages -->
+	<target name="debug-resources" description="Debug build + satellite assemblies" depends="debug">
+		<property name="build.aspdir" value="${build.dir}" />
+		<call target="build-asp.net-satellites" />
+	</target>
+	<target name="release" description="Release build">
+		<property name="build.debug" value="false" />
+		<property name="build.config" value="release" />
+		<property name="build.defines" value="RELEASE" />
+		<call target="build" />
+	</target>
+	<!-- Release target intended for release packages -->
+	<target name="release-resources" description="Release build + satellite assemblies" depends="release">
+		<property name="build.aspdir" value="${build.dir}" />
+		<call target="build-asp.net-satellites" />
+	</target>
+	<target name="build-pre">
+		<call target="set-folders" />
+		<call target="set-framework-config" />
+	</target>
+	<target name="set-folders">
+		<property name="build.aspdir" value="${build.basedir}/asp.net/bin" />
+		<property name="build.res" value="${build.basedir}/resources" />
+		<property name="build.ref.platform" value="${build.basedir}/bin/${framework::get-family(framework::get-target-framework())}" />
+		<property name="build.ref.platform.version" value="${build.ref.platform}/${framework::get-version(framework::get-target-framework())}" />
+		<property name="build.dir" value="${build.ref.platform.version}/${build.config}" />
+	</target>
+
+	<!-- Framework targets -->
+	<target name="set-framework-config">
+		<if test="${not(target::exists('set-'+framework::get-target-framework()+'-config'))}">
+			<fail message="The '${framework::get-target-framework()}' framework is not supported" />
+		</if>
+        <call target="set-${framework::get-target-framework()}-config" />
+	</target>
+	<!-- Set default .NET config values -->
+	<target name="set-net-config" />
+	<!-- Set default .NET 1.1 config values  -->
+	<target name="set-net-1.1-config" depends="set-net-config">
+		<property name="build.defines" value="${build.defines},NET_1_1,API_1_1" />
+	</target>
+	<!-- Set default .NET 2.0 config values  -->
+	<target name="set-net-2.0-config" depends="set-net-config">
+		<property name="build.defines" value="${build.defines},NET_2_0,API_2_0" />
+	</target>
+	<!-- Set default Mono config values  -->
+	<target name="set-mono-config">
+		<property name="build.defines" value="${build.defines},MONO" />
+		<property name="build.template" value="false" />
+	</target>
+	<!-- Set default Mono 1.0 config values  -->
+	<target name="set-mono-1.0-config" depends="set-mono-config">
+		<property name="build.defines" value="${build.defines},MONO,MONO_1_0,API_1_1" />
+	</target>
+	<!-- Set default Mono 2.0 config values  -->
+	<target name="set-mono-2.0-config" depends="set-mono-config">
+		<property name="build.defines" value="${build.defines},MONO,MONO_2_0,API_2_0" />
+	</target>
+</project>
