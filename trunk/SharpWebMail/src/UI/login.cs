@@ -92,7 +92,7 @@ namespace anmar.SharpWebMail.UI
 					anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
 					inbox.Client = client;
 					System.String folder = Page.Request.QueryString["mode"];
-					if ( folder==null )
+					if ( folder==null || folder.Length==0 )
 						folder = "inbox";
 					inbox.CurrentFolder = folder;
 					if ( client!=null && client.GetFolderIndex ( inbox, 0, (int)Application["sharpwebmail/read/inbox/pagesize"], true ) ) {

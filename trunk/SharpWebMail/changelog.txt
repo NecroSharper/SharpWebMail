@@ -1,3 +1,8 @@
+07/06/2006
+ - [Login] Make sure folder parameter has content.
+ - [Inbox] Make sure folder parameter has content.
+ - [Inbox] If CurrentFolder property value doesn't have content default to inbox.
+
 06/25/2006
  - Reorganize folder structure.
  - Update project files, makefile and nant script to reflect the above.

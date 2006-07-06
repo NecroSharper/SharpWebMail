@@ -146,7 +146,7 @@ namespace anmar.SharpWebMail.UI
 		protected bool searchPattern ( out System.String pattern ) {
 			bool forcecache = false;
 			System.String mode = Page.Request.QueryString["mode"];
-			if ( mode==null )
+			if ( mode==null || mode.Length==0 )
 				mode = "inbox";
 			if ( mode.Equals("trash") )
 				pattern = "delete=true";
