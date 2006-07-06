@@ -3,6 +3,7 @@
  - [Inbox] Make sure folder parameter has content.
  - [Inbox] If CurrentFolder property value doesn't have content default to inbox.
  - [Inbox] EscapeExpression: If there is no input, return ''.
+ - [Inbox] buildMessageTable: There are cases where no all uid elements are available (after deletion the array is bigger than the real list).
 
 06/25/2006
  - Reorganize folder structure.
