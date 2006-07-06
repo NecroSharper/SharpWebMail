@@ -433,7 +433,10 @@ namespace anmar.SharpWebMail
 				return this.current_folder;
 			}
 			set {
-				this.current_folder = value;
+				if ( value!=null && value.Length>0 )
+					this.current_folder = value;
+				else
+					this.current_folder = "inbox";
 			}
 		}
 		/// <summary>
