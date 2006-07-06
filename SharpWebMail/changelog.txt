@@ -2,6 +2,7 @@
  - [Login] Make sure folder parameter has content.
  - [Inbox] Make sure folder parameter has content.
  - [Inbox] If CurrentFolder property value doesn't have content default to inbox.
+ - [Inbox] EscapeExpression: If there is no input, return ''.
 
 06/25/2006
  - Reorganize folder structure.

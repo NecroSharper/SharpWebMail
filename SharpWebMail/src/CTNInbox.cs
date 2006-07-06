@@ -392,6 +392,8 @@ namespace anmar.SharpWebMail
 			return;
 		}
 		public System.String EscapeExpression (System.String input) {
+			if ( input==null || input.Length==0 )
+				return "''";
 			if ( input.IndexOf('\'')!=-1 )
 				return input.Replace("'", "''");
 			return input;
