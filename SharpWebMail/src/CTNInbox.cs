@@ -126,6 +126,8 @@ namespace anmar.SharpWebMail
 				// As we already have an index, we try to put it in sync
 				// with the mail server
 				for ( int i=0 ; i<uidlist.Length; i++ ) {
+					if ( uidlist[i]==null )
+						continue;
 					this.inbox_view.RowFilter = System.String.Concat("uidl = '", EscapeExpression(uidlist[i]), "'");
 					// Message not found, so we add it
 					if (this.inbox_view.Count == 0 ){
