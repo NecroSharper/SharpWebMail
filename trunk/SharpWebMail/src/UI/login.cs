@@ -98,6 +98,9 @@ namespace anmar.SharpWebMail.UI
 					if ( client!=null && client.GetFolderIndex ( inbox, 0, (int)Application["sharpwebmail/read/inbox/pagesize"], true ) ) {
 						Session["client"] = client;
 						Session["inbox"] = inbox;
+						if ( login_mode==2 ) {
+							Session["DisplayEmail"] = client.UserName;
+						}
 						if ( Application["sharpwebmail/send/addressbook"]!=null ) {
 							System.Collections.SortedList addressbooks = (System.Collections.SortedList)Application["sharpwebmail/send/addressbook"];
 							foreach ( System.Collections.Specialized.ListDictionary addressbook in addressbooks.Values ) {
@@ -107,6 +110,9 @@ namespace anmar.SharpWebMail.UI
 										continue;
 									if ( result.Rows.Count==1 ) {
 										Session["DisplayName"] = result.Rows[0][addressbook["namecolumn"].ToString()];
+										if ( login_mode==2 ) {
+											Session["DisplayEmail"] = result.Rows[0][addressbook["emailcolumn"].ToString()];
+										}
 										break;
 									}
 								}
