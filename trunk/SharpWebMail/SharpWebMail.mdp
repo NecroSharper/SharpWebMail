@@ -73,7 +73,7 @@
     <File name="./asp.net/sharpwebmail.css" subtype="Code" buildaction="Nothing" />
     <File name="./asp.net/web.config" subtype="Code" buildaction="Nothing" />
     <File name="./asp.net/fcke/fckconfig.js" subtype="Code" buildaction="Nothing" />
-    <File name="./resources/SharpWebMail.resources" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="./resources/SharpWebMail.en.resources" subtype="Code" buildaction="EmbedAsResource" />
     <File name="./src/UI/readmessageheaders.cs" subtype="Code" buildaction="Compile" />
     <File name="./src/basicsanitizer.cs" subtype="Code" buildaction="Compile" />
     <File name="./resources/SharpWebMail.da.resources" subtype="Code" buildaction="Nothing" />

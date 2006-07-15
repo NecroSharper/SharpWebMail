@@ -1,3 +1,7 @@
+07/15/2006
+ - [resources] Rename the english resource file to match the other cultures.
+ - [nant] Stop embedding the english resource file in the main assembly.
+
 07/11/2006
  - [Login] For login_mode 2, default the email address to the username.
  - [Login] For login_mode 2, if we get the real name from an address book, get also the email address.

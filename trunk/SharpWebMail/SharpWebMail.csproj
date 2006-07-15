@@ -142,7 +142,10 @@
     <Compile Include="src\sharpwebmailconfighandler.cs" />
     <Compile Include="src\UI\addressbook_edit.cs" />
     <Compile Include="src\UI\addressbook_data.cs" />
-    <EmbeddedResource Include="resources\SharpWebMail.resources" />
+    <EmbeddedResource Include="resources\SharpWebMail.en.resources">
+    	<LogicalName>SharpWebMail.en.resources</LogicalName>
+    	<Culture>en</Culture>
+    </EmbeddedResource>
     <None Include="resources\resources.cmd" />
     <None Include="resources\SharpWebMail.es.resources" />
     <None Include="resources\SharpWebMail.sr-SP-Latn.resources" />
