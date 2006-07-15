@@ -43,7 +43,6 @@
 		<call target="build-asp.net-satellites" />
 	</target>
 	<target name="build-asp.net-satellites">
-		<copy file="${build.res}/${project.name}.resources" tofile="${build.res}/${project.name}.en.resources" />
 		<foreach item="File" property="filename">
 			<in>
 				<items basedir="${build.res}">
@@ -56,7 +55,6 @@
 				<call target="build-asp.net-satellite" />
 			</do>
 		</foreach>
-		<delete file="${build.res}/${project.name}.en.resources" />
 	</target>
 	<target name="build-asp.net-satellite">
 		<mkdir dir="${build.aspdir}/${current.resfile.culture}" unless="${directory::exists(build.aspdir + current.resfile.culture)}" />
@@ -89,9 +87,6 @@
 				<include name="System.DirectoryServices.dll" />
 				<include name="System.Web.dll" />
 			</references>
-			<resources>
-				<include name="${build.res}/SharpWebMail.resources" />
-			</resources>
 		</csc>
 	</target>
 	<target name="build-customcultures" depends="build-pre">
