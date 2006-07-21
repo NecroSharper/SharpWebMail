@@ -1,3 +1,7 @@
+07/21/2006
+ - [Config] Added Charset config setting which defaults to iso-8859-1.
+ - [New Message] Use the above setting to encode text (header an body) in messages.
+
 07/15/2006
  - [resources] Rename the english resource file to match the other cultures.
  - [nant] Stop embedding the english resource file in the main assembly.

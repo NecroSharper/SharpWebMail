@@ -100,6 +100,7 @@ namespace anmar.SharpWebMail
 			config.Add ( "sharpwebmail/read/message/sanitizer_mode", 0 );
 			config.Add ( "sharpwebmail/read/message/temppath", System.String.Empty );
 			config.Add ( "sharpwebmail/send/message/attach_ui", "normal" );
+			config.Add ( "sharpwebmail/send/message/charset", System.Text.Encoding.GetEncoding("iso-8859-1") );
 			config.Add ( "sharpwebmail/send/message/forwardattachments", true );
 			config.Add ( "sharpwebmail/send/message/replyquotechar", "> " );
 			config.Add ( "sharpwebmail/send/message/replyquotestyle", "padding-left: 5px; margin-left: 5px; border-left: #0000ff 2px solid; margin-left: 0px" );
@@ -122,6 +123,8 @@ namespace anmar.SharpWebMail
 					return System.Int32.Parse(value);
 				else if ( defaultvalue.GetType().Equals(typeof(bool)) )
 					return System.Boolean.Parse(value);
+				else if ( typeof(System.Text.Encoding).IsAssignableFrom(defaultvalue.GetType()) )
+					return System.Text.Encoding.GetEncoding(value);
 				else
 					return value;
 			} catch ( System.Exception e ) {

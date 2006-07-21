@@ -433,7 +433,9 @@ namespace anmar.SharpWebMail.UI
 		}
 		private System.String SendMailDotNetOpenMail ( anmar.SharpWebMail.EmailServerInfo server ) {
 			System.String message = null;
+			System.Text.Encoding encoding = (System.Text.Encoding)Application["sharpwebmail/send/message/charset"];
 			DotNetOpenMail.EmailMessage mailMessage = new DotNetOpenMail.EmailMessage();
+			mailMessage.HeaderCharSet = encoding;
 			mailMessage.FromAddress = new DotNetOpenMail.EmailAddress(this.GetFromAddress(), this.fromname.Value);
 			System.String[] tokens = anmar.SharpMimeTools.ABNF.address_regex.Split(this.toemail.Value);
 			foreach ( System.String token in tokens ) {
@@ -444,8 +446,10 @@ namespace anmar.SharpWebMail.UI
 			System.String format = Request.Form["format"];
 			if ( format!=null && format.Equals("html") ) {
 				mailMessage.HtmlPart = new DotNetOpenMail.HtmlAttachment(bodyStart + FCKEditor.Value + bodyEnd);
+				mailMessage.HtmlPart.CharSet = encoding;
 			} else {
 				mailMessage.TextPart = new DotNetOpenMail.TextAttachment(FCKEditor.Value);
+				mailMessage.TextPart.CharSet = encoding;
 			}
 
 			if ( this._headers != null ) {
@@ -481,7 +485,9 @@ namespace anmar.SharpWebMail.UI
 		}
 		private System.String SendMailOpenSmtp ( anmar.SharpWebMail.EmailServerInfo server ) {
 			System.String message = null;
+			System.Text.Encoding encoding = (System.Text.Encoding)Application["sharpwebmail/send/message/charset"];
 			OpenSmtp.Mail.MailMessage mailMessage = new OpenSmtp.Mail.MailMessage();
+			mailMessage.Charset = encoding.HeaderName;
 			mailMessage.From = new OpenSmtp.Mail.EmailAddress(this.GetFromAddress(), this.fromname.Value);
 			System.String[] tokens = anmar.SharpMimeTools.ABNF.address_regex.Split(this.toemail.Value);
 			foreach ( System.String token in tokens ) {
