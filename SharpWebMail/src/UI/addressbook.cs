@@ -76,8 +76,8 @@ namespace anmar.SharpWebMail.UI
 			System.String namecolumn = addressbook["namecolumn"].ToString();
 			System.String mailcolumn = addressbook["emailcolumn"].ToString();
 			System.String ownercolumn = "owner";
-			if ( addressbook.Contains("usernamecolumn") )
-				ownercolumn = addressbook["usernamecolumn"].ToString();
+			if ( addressbook.Contains("ownercolumn") )
+				ownercolumn = addressbook["ownercolumn"].ToString();
 			if ( addressbook["type"].Equals("ldap") )
 				return GetDataSourceLDAP(addressbook["name"].ToString(), connectstring, connectusername, connectpassword, searchfilter, namecolumn, mailcolumn, ownercolumn);
 			else if ( addressbook["type"].Equals("odbc") )
