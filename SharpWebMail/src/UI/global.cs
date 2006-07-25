@@ -48,6 +48,8 @@ namespace anmar.SharpWebMail.UI
 			if ( this.Context.Session!=null && this.Session["effectiveculture"]!=null )
 				lang[1] = this.Session["effectiveculture"].ToString();
 			System.Globalization.CultureInfo culture = this.ParseCultures ( lang, Request.UserLanguages );
+			if ( culture==null )
+				culture = invariant;
 			if ( culture!=null && lang[1]!=culture.Name ) {
 				if ( !culture.IsNeutralCulture )
 					System.Threading.Thread.CurrentThread.CurrentCulture = culture;
@@ -130,8 +132,16 @@ namespace anmar.SharpWebMail.UI
 				ParseInvariant(Application["sharpwebmail/general/default_lang"].ToString());
 			if ( invariant==null )
 				ParseInvariant("en");
-			if ( invariant==null )
+			if ( invariant==null ) {
 				invariant = System.Globalization.CultureInfo.InvariantCulture;
+				// Set the first available culture as the default one
+				if ( availablecultures.Count>0 ) {
+					System.Collections.IDictionaryEnumerator enumerator = availablecultures.GetEnumerator();
+					if ( enumerator.MoveNext() )
+						invariant = ParseCultureSpecific((string)enumerator.Key);
+					enumerator = null;
+				}
+			}
 		}
 		private System.Globalization.CultureInfo ParseCulture ( System.String culturename ) {
 			System.Globalization.CultureInfo culture = null;
@@ -167,21 +177,19 @@ namespace anmar.SharpWebMail.UI
 						culture = ParseCultures(item as System.Object[]);
 					else if ( item is System.String )
 						culture = this.ParseCultureSpecific(item.ToString());
-					if ( culture!=null && !getEffectiveCulture(culture).Equals(System.String.Empty) )
+					if ( culture!=null && getEffectiveCulture(culture).Length>0 )
 						break;
 					else
 						culture = null;
 				}
 			}
-			if ( culture==null )
-				culture = invariant;
-			
 			return culture;
 		}
 		private void ParseInvariant ( System.String culture ) {
 			invariant = ParseCulture(culture);
 			if ( invariant!=null ) {
-				if ( availablecultures.Contains(invariant.LCID) )
+				culture = getEffectiveCulture(invariant);
+				if ( culture.Length>0 )
 					invariant = ParseCultureSpecific(culture);
 				else
 					invariant = null;

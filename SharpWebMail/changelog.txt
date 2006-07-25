@@ -1,3 +1,7 @@
+07/25/2006
+ - [Global] Language selection wasn't using browser languages.
+ - [Global] Invariant culture wasn't selected considering the available ones.
+
 07/21/2006
  - [Config] Added Charset config setting which defaults to iso-8859-1.
  - [New Message] Use the above setting to encode text (header an body) in messages.
