@@ -1,0 +1,125 @@
+<Project name="SharpWebMail" fileversion="2.0" language="C#" clr-version="Net_1_1" ctype="DotNetProject">
+  <Configurations active="Release">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="./asp.net/bin" assembly="SharpWebMail" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="False" consolepause="True" runtime="MsNet" clr-version="Net_1_1" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="./asp.net/bin" assembly="SharpWebMail" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="False" consolepause="True" runtime="MsNet" clr-version="Net_1_1" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Debug-1.1" ctype="DotNetProjectConfiguration">
+      <Output directory="./asp.net/bin" assembly="SharpWebMail" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="False" consolepause="True" runtime="MsNet" clr-version="Net_1_1" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" definesymbols="DEBUG;NET_1_1;API_1_1" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release-1.1" ctype="DotNetProjectConfiguration">
+      <Output directory="./asp.net/bin" assembly="SharpWebMail" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="False" consolepause="True" runtime="MsNet" clr-version="Net_1_1" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" definesymbols="NET_1_1;API_1_1" generatexmldocumentation="True" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Debug-2.0" ctype="DotNetProjectConfiguration">
+      <Output directory="./asp.net/bin" assembly="SharpWebMail" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="False" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" definesymbols="DEBUG;NET_2_0;API_2_0" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release-2.0" ctype="DotNetProjectConfiguration">
+      <Output directory="./asp.net/bin" assembly="SharpWebMail" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="False" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" definesymbols="NET_2_0;API_2_0" generatexmldocumentation="True" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <DeploymentInformation strategy="Assembly">
+    <excludeFiles />
+  </DeploymentInformation>
+  <Contents>
+    <File name="./src/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/CTNInbox.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/CTNSimplePOP3Client.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/CTNSimpleTCPClient.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/default.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/download.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/global.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/login.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/newmessage.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/globalUI.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/readmessage.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/search.cs" subtype="Code" buildaction="Compile" />
+    <File name="./resources/resources.cmd" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.es.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.sr-SP-Latn.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./changelog.txt" subtype="Code" buildaction="Nothing" />
+    <File name="./license.txt" subtype="Code" buildaction="Nothing" />
+    <File name="./doc/readme.txt" subtype="Code" buildaction="Nothing" />
+    <File name="./doc/TODO.txt" subtype="Code" buildaction="Nothing" />
+    <File name="./doc/cultures_neutral.txt" subtype="Code" buildaction="Nothing" />
+    <File name="./doc/cultures_specific.txt" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/default.aspx" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/download.aspx" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/Global.asax" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/globalUI.ascx" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/login.aspx" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/newmessage.aspx" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/readmessage.aspx" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/search.aspx" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/sharpwebmail.css" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/web.config" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/fcke/fckconfig.js" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.en.resources" subtype="Code" buildaction="EmbedAsResource" />
+    <File name="./src/UI/readmessageheaders.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/basicsanitizer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./resources/SharpWebMail.da.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./src/serverselector.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/emailserver.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/iemailclient.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/emailclientfactory.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/simpleimapclient.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/simpleemailclient.cs" subtype="Code" buildaction="Compile" />
+    <File name="./resources/SharpWebMail.ru.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.el.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.fr.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.ro.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.vi.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.it.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./src/UI/addressbook.cs" subtype="Code" buildaction="Compile" />
+    <File name="./asp.net/addressbook.aspx" subtype="Code" buildaction="Nothing" />
+    <File name="./src/sharpwebmailconfighandler.cs" subtype="Code" buildaction="Compile" />
+    <File name="./resources/SharpWebMail.pt-BR.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./SharpWebMail.build" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.en.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.zh-CHT.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.nl.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.pl.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.sv.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.ar.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.de.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.hu.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.id.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/SharpWebMail.tr.resources" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/addressbookfull.aspx" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/addressbook_edit.aspx" subtype="Code" buildaction="Nothing" />
+    <File name="./asp.net/addressbook_data.aspx" subtype="Code" buildaction="Nothing" />
+    <File name="./src/UI/addressbook_edit.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/UI/addressbook_data.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <References>
+    <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/log4net.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/FredCK.FCKeditorV2.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/OpenSmtp.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/DotNetOpenMail.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/SharpMimeTools.dll" />
+    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.DirectoryServices, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  </References>
+</Project>
