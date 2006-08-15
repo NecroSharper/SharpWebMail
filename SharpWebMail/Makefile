@@ -30,7 +30,8 @@ RESOURCES = $(BASE_SWM)/resources
 
 BIN_SWM = $(BASE_SWM)/bin/mono/$(MONO_VERION)/$(TARGET_BUILD)
 
-SOURCES_SWM = $(BASE_SWM)/src/*.cs
+SOURCES_SWM = $(BASE_SWM)/src/*.cs \
+              $(BASE_SWM)/src/UI/*.cs
 
 REFERENCES_SWM= System.Web System.Data System.DirectoryServices $(BASE_REF)/log4net  $(BASE_REF)/FredCK.FCKeditorV2 $(BASE_REF)/SharpMimeTools $(BASE_REF)/OpenSmtp $(BASE_REF)/DotNetOpenMail
 REFS_SWM= $(addsuffix .dll, $(addprefix /r:, $(REFERENCES_SWM)))  
@@ -45,7 +46,7 @@ swmdir:
         fi; \
 
 $(BIN_SWM)/SharpWebMail.dll: $(SOURCES_SWM)
-	$(CSC) $(CSCFLAGS) $(REFS_SWM) /resource:$(RESOURCES)/SharpWebMail.resources,SharpWebMail.resources /out:$@ $^
+	$(CSC) $(CSCFLAGS) $(REFS_SWM) /out:$@ $^
 
 asp.net: all copy-asp.net-bin lang
 
@@ -53,8 +54,8 @@ copy-asp.net-bin:
 	if [ ! -d $(ASP_NET)/bin/ ]; then \
 		mkdir $(ASP_NET)/bin/; \
 	fi; \
-	cp -f $(BIN_SWM)/SharpWebMail.dll $(ASP_NET)/bin/SharpWebMail.dll
-	cp -f $(BASE_REF)/*.dll $(ASP_NET)/bin/
+	cp -pf $(BIN_SWM)/SharpWebMail.dll $(ASP_NET)/bin/SharpWebMail.dll
+	cp -pf $(BASE_REF)/*.dll $(ASP_NET)/bin/
 
 clean-asp.net: clean
 	rm -R $(ASP_NET)/bin/
@@ -71,10 +72,6 @@ lang:
 			al /nologo /target:library /embed:$(RESOURCES)/SharpWebMail.$$lang.resources,SharpWebMail.$$lang.resources /culture:$$lang /out:$(ASP_NET)/bin/$$lang/SharpWebMail.resources.dll; \
 		fi; \
 	done; \
-	if [ ! -d $(ASP_NET)/bin/$$lang/ ]; then \
-		mkdir $(ASP_NET)/bin/en/; \
-	fi; \
-	al /nologo /target:library /embed:$(RESOURCES)/SharpWebMail.resources,SharpWebMail.en.resources /culture:en /out:$(ASP_NET)/bin/en/SharpWebMail.resources.dll; \
 
 clean:
 	rm -f $(BIN_SWM)/SharpWebMail.dll
