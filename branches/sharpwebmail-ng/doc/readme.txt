@@ -100,7 +100,7 @@ Authors
 License
 --------------------------------
 
- - SharpWebMail code is under GPL v2 or later, read license.txt
+ - SharpWebMail code is under LGPL v2.1 or later, read license.txt
 
 History
 --------------------------------
@@ -121,4 +121,4 @@ History
 
 
 --------------------------------
-Angel Marin 2003-2005 - http://anmar.eu.org/
+Angel Marin 2003-2006 - http://anmar.eu.org/
