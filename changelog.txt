@@ -1,3 +1,6 @@
+08/27/2006
+ - Changed license from GPL v2 to LGPL v2.1
+
 08/15/2006
  - Fix Makefile.
 
