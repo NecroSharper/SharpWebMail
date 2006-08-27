@@ -1,3 +1,6 @@
+08/15/2006
+ - Fix Makefile.
+
 07/25/2006
  - [Global] Language selection wasn't using browser languages.
  - [Global] Invariant culture wasn't selected considering the available ones.
