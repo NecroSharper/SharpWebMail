@@ -22,10 +22,39 @@
 
 using System;
 
-namespace anmar.SharpWebMail.UI
+namespace anmar.SharpWebMail.UI.Pages
 {
-	public class readmessageheaders : System.Web.UI.Page {
-		protected System.Web.UI.WebControls.Literal headers;
+	public class Search : System.Web.UI.Page {
+		// General variables
+		protected anmar.SharpWebMail.UI.Pages.GlobalUI SharpUI;
+
+		/*
+		 * General functions
+		*/
+		protected void mainInterface ( ) {
+			// Disable some things
+			this.SharpUI.nextPageImageButton.Enabled = false;
+			this.SharpUI.prevPageImageButton.Enabled = false;
+		}
+		public System.String From {
+			get {
+				return ((System.Web.UI.HtmlControls.HtmlInputControl)this.SharpUI.FindControl("fromsearch")).Value;
+			}
+		}
+		public System.String Subject {
+			get {
+				return ((System.Web.UI.HtmlControls.HtmlInputControl)this.SharpUI.FindControl("subjectsearch")).Value;
+			}
+		}
+		/*
+		 * Events
+		*/
+		/// <summary>
+		/// 
+		/// </summary>
+		protected void Search_Click ( System.Object sender, System.EventArgs args ) {
+			Server.Transfer ("default.aspx", false);
+		}
 		/*
 		 * Page Events
 		*/
@@ -36,17 +65,7 @@ namespace anmar.SharpWebMail.UI
 			// Prevent caching, so can't be viewed offline
 			Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
 
-			System.String msgid = Page.Request.QueryString["msgid"];
-			if ( msgid != null ) {
-				//Our Inbox
-				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
-				System.Object[] details = inbox[ msgid ];
-				if ( details != null && details.Length>0 ) {
-					this.headers.Text = Server.HtmlEncode(((anmar.SharpMimeTools.SharpMimeHeader)details[13]).RawHeaders);
-					this.headers.Text = System.String.Format ("<pre>{0}</pre>", this.headers.Text);
-				}
-				inbox = null;
-			}
+			this.mainInterface ();
 		}
 	}
 }

@@ -22,7 +22,7 @@
 
 using System;
 
-namespace anmar.SharpWebMail
+namespace anmar.SharpWebMail.Tools
 {
 	/// <summary>
 	/// 
@@ -52,14 +52,14 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
-		public static System.String SanitizeHTML ( System.String htmlstring, anmar.SharpWebMail.SanitizerMode mode ) {
-			if ( (mode&anmar.SharpWebMail.SanitizerMode.CommentBlocks)==anmar.SharpWebMail.SanitizerMode.CommentBlocks ) {
-				foreach ( System.Text.RegularExpressions.Regex item in  anmar.SharpWebMail.BasicSanitizer.comment ) {
+		public static System.String SanitizeHTML ( System.String htmlstring, anmar.SharpWebMail.Tools.SanitizerMode mode ) {
+			if ( (mode&anmar.SharpWebMail.Tools.SanitizerMode.CommentBlocks)==anmar.SharpWebMail.Tools.SanitizerMode.CommentBlocks ) {
+				foreach ( System.Text.RegularExpressions.Regex item in  anmar.SharpWebMail.Tools.BasicSanitizer.comment ) {
 					htmlstring = item.Replace(htmlstring, "<!-- Commented by SharpWebMail \r\n$1\r\n -->");
 				}
 			}
-			if ( (mode&anmar.SharpWebMail.SanitizerMode.RemoveEvents)==anmar.SharpWebMail.SanitizerMode.RemoveEvents ) {
-				htmlstring = anmar.SharpWebMail.BasicSanitizer.events.Replace(htmlstring, "$1_$2$3");
+			if ( (mode&anmar.SharpWebMail.Tools.SanitizerMode.RemoveEvents)==anmar.SharpWebMail.Tools.SanitizerMode.RemoveEvents ) {
+				htmlstring = anmar.SharpWebMail.Tools.BasicSanitizer.events.Replace(htmlstring, "$1_$2$3");
 			}
 			return htmlstring;
 		}

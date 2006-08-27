@@ -1,4 +1,4 @@
-<%@ Page Language="C#"  Inherits="anmar.SharpWebMail.UI.AddressBookEdit" trace="false" validateRequest="true" %>
+<%@ Page Language="C#"  Inherits="anmar.SharpWebMail.UI.Pages.AddressBookEdit" trace="false" validateRequest="true" %>
 <%@ Register TagPrefix="SharpUI" TagName="globalUI" Src="globalUI.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>

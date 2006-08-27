@@ -22,7 +22,7 @@
 
 using System;
 
-namespace anmar.SharpWebMail
+namespace anmar.SharpWebMail.Config
 {
 	/// <summary>
 	/// 
@@ -133,15 +133,15 @@ namespace anmar.SharpWebMail
 				return defaultvalue;
 			}
 		}
-		private anmar.SharpWebMail.ServerSelector ParseConfigServers ( System.Xml.XmlNodeList list ) {
-			anmar.SharpWebMail.ServerSelector selector = new anmar.SharpWebMail.ServerSelector();
+		private anmar.SharpWebMail.Config.ServerSelector ParseConfigServers ( System.Xml.XmlNodeList list ) {
+			anmar.SharpWebMail.Config.ServerSelector selector = new anmar.SharpWebMail.Config.ServerSelector();
 			foreach ( System.Xml.XmlNode item in list ) {
 				if ( item.NodeType.Equals(System.Xml.XmlNodeType.Element) && (item.LocalName.Equals("server") || item.LocalName.Equals("add")) ) {
 					System.Xml.XmlElement element = (System.Xml.XmlElement)item;
 					if ( element.HasAttribute("key") && element.HasAttribute("value") ) // Old format
 						selector.Add(element.GetAttribute("key"), element.GetAttribute("value"));
 					else if ( element.HasAttribute("protocol") && element.HasAttribute("host") && element.HasAttribute("port") ) { // New format
-						anmar.SharpWebMail.EmailServerInfo server = new anmar.SharpWebMail.EmailServerInfo(element.GetAttribute("protocol"), element.GetAttribute("host"), element.GetAttribute("port"));
+						anmar.SharpWebMail.Config.EmailServerInfo server = new anmar.SharpWebMail.Config.EmailServerInfo(element.GetAttribute("protocol"), element.GetAttribute("host"), element.GetAttribute("port"));
 						if ( element.HasAttribute("regexp") )
 							server.SetCondition (element.GetAttribute("regexp"));
 						if ( element.HasAttribute("name") )

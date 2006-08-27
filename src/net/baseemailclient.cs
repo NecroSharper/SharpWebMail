@@ -22,11 +22,11 @@
 
 using System;
 
-namespace anmar.SharpWebMail
+namespace anmar.SharpWebMail.Net
 {
-	internal abstract class SimpleEmailClient : anmar.SharpWebMail.IEmailClient {
+	internal abstract class BaseEmailClient : anmar.SharpWebMail.Net.IEmailClient {
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		private anmar.SharpWebMail.CTNSimpleTCPClient client;
+		private anmar.SharpWebMail.Net.TcpTextClient client;
 		/// <summary>
 		/// 
 		/// </summary>
@@ -75,8 +75,8 @@ namespace anmar.SharpWebMail
 		/// <param name="port"></param>
 		/// <param name="user"></param>
 		/// <param name="pass"></param>
-		public SimpleEmailClient( System.String host, System.Int32 port, System.String user, System.String pass ) {
-			client = new anmar.SharpWebMail.CTNSimpleTCPClient();
+		public BaseEmailClient( System.String host, System.Int32 port, System.String user, System.String pass ) {
+			client = new anmar.SharpWebMail.Net.TcpTextClient();
 			this.hostname = host;
 			this.password = pass;
 			this.portnumber = port;
@@ -90,8 +90,8 @@ namespace anmar.SharpWebMail
 		/// <param name="user"></param>
 		/// <param name="pass"></param>
 		/// <param name="timeout"></param>
-		public SimpleEmailClient( System.String host, System.Int32 port, System.String user, System.String pass, long timeout ) {
-			client = new anmar.SharpWebMail.CTNSimpleTCPClient(timeout);
+		public BaseEmailClient( System.String host, System.Int32 port, System.String user, System.String pass, long timeout ) {
+			client = new anmar.SharpWebMail.Net.TcpTextClient(timeout);
 			this.hostname = host;
 			this.password = pass;
 			this.portnumber = port;
@@ -103,14 +103,14 @@ namespace anmar.SharpWebMail
 		/// <param name="cmd"></param>
 		/// <param name="args"></param>
 		/// <returns></returns>
-		protected abstract System.String buildcommand ( anmar.SharpWebMail.EmailClientCommand cmd, params System.Object[] args );
+		protected abstract System.String buildcommand ( anmar.SharpWebMail.Net.EmailClientCommand cmd, params System.Object[] args );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="cmd"></param>
 		/// <param name="args"></param>
 		/// <returns></returns>
-		protected abstract bool commandResponseTypeIsSL ( anmar.SharpWebMail.EmailClientCommand cmd, params System.Object[] args );
+		protected abstract bool commandResponseTypeIsSL ( anmar.SharpWebMail.Net.EmailClientCommand cmd, params System.Object[] args );
 		/// <summary>
 		/// 
 		/// </summary>
@@ -141,8 +141,8 @@ namespace anmar.SharpWebMail
 			bool error = false;
 
 			// Send delete command for mindex message
-			System.String cmd = this.buildcommand(anmar.SharpWebMail.EmailClientCommand.Delete, mindex);
-			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.Delete, cmd );
+			System.String cmd = this.buildcommand(anmar.SharpWebMail.Net.EmailClientCommand.Delete, mindex);
+			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.Net.EmailClientCommand.Delete, cmd );
 
 			return !error;
 		}
@@ -186,7 +186,7 @@ namespace anmar.SharpWebMail
 		/// <param name="npagesize"></param>
 		/// <param name="askserver"></param>
 		/// <returns></returns>
-		public virtual bool GetFolderIndex ( anmar.SharpWebMail.CTNInbox inbox, int npage, int npagesize, bool askserver ) {
+		public virtual bool GetFolderIndex ( anmar.SharpWebMail.SharpInbox inbox, int npage, int npagesize, bool askserver ) {
 			bool error = false;
 			int total = 0;
 			int totalbytes = 0;
@@ -223,7 +223,7 @@ namespace anmar.SharpWebMail
 			}
 			return !error;
 		}
-		private bool getListToIndex ( System.Collections.Hashtable msgs, int total, anmar.SharpWebMail.CTNInbox inbox, int npage, int npagesize ) {
+		private bool getListToIndex ( System.Collections.Hashtable msgs, int total, anmar.SharpWebMail.SharpInbox inbox, int npage, int npagesize ) {
 			bool error = false;
 
 			System.Int32[] list = new System.Int32[total];
@@ -302,9 +302,9 @@ namespace anmar.SharpWebMail
 		protected virtual bool header ( int mindex, ulong nlines, System.IO.MemoryStream response ) {
 			bool error = false;
 
-			System.String cmd = this.buildcommand(anmar.SharpWebMail.EmailClientCommand.Header, mindex, nlines);
-			bool SLResponse = this.commandResponseTypeIsSL(anmar.SharpWebMail.EmailClientCommand.Header, mindex, nlines);
-			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.Header, cmd, response, SLResponse );
+			System.String cmd = this.buildcommand(anmar.SharpWebMail.Net.EmailClientCommand.Header, mindex, nlines);
+			bool SLResponse = this.commandResponseTypeIsSL(anmar.SharpWebMail.Net.EmailClientCommand.Header, mindex, nlines);
+			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.Net.EmailClientCommand.Header, cmd, response, SLResponse );
 
 			return !error;
 		}
@@ -317,8 +317,8 @@ namespace anmar.SharpWebMail
 		protected virtual bool login ( System.String user, System.String pass ) {
 			bool error = false;
 
-			System.String cmd = this.buildcommand(anmar.SharpWebMail.EmailClientCommand.Login, user, pass);
-			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.Login, cmd );
+			System.String cmd = this.buildcommand(anmar.SharpWebMail.Net.EmailClientCommand.Login, user, pass);
+			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.Net.EmailClientCommand.Login, cmd );
 
 			return !error;
 		}
@@ -332,10 +332,10 @@ namespace anmar.SharpWebMail
 			System.IO.MemoryStream response = new System.IO.MemoryStream();
 
 			// Send LIST and parse response
-			System.String cmd = this.buildcommand(anmar.SharpWebMail.EmailClientCommand.ListSize);
-			bool SLResponse = this.commandResponseTypeIsSL(anmar.SharpWebMail.EmailClientCommand.ListSize);
+			System.String cmd = this.buildcommand(anmar.SharpWebMail.Net.EmailClientCommand.ListSize);
+			bool SLResponse = this.commandResponseTypeIsSL(anmar.SharpWebMail.Net.EmailClientCommand.ListSize);
 
-			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.ListSize, cmd, response, SLResponse );
+			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.Net.EmailClientCommand.ListSize, cmd, response, SLResponse );
 
 			//Parse the result
 			error = (error)?true:!this.parseListSize(list, response);
@@ -382,7 +382,7 @@ namespace anmar.SharpWebMail
 		/// <param name="inbox"></param>
 		/// <param name="all"></param>
 		/// <returns></returns>
-		public bool PurgeInbox ( anmar.SharpWebMail.CTNInbox inbox, bool all ) {
+		public bool PurgeInbox ( anmar.SharpWebMail.SharpInbox inbox, bool all ) {
 			bool error = false;
 			System.String filter;
 			if ( all )
@@ -414,9 +414,9 @@ namespace anmar.SharpWebMail
 		protected virtual bool retrieve ( int mindex, System.IO.MemoryStream response ) {
 			bool error = false;
 
-			System.String cmd = this.buildcommand(anmar.SharpWebMail.EmailClientCommand.Message, mindex);
-			bool SLResponse = this.commandResponseTypeIsSL(anmar.SharpWebMail.EmailClientCommand.Message, mindex);
-			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.Message, cmd, response, SLResponse );
+			System.String cmd = this.buildcommand(anmar.SharpWebMail.Net.EmailClientCommand.Message, mindex);
+			bool SLResponse = this.commandResponseTypeIsSL(anmar.SharpWebMail.Net.EmailClientCommand.Message, mindex);
+			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.Net.EmailClientCommand.Message, cmd, response, SLResponse );
 
 			return !error;
 		}
@@ -425,7 +425,7 @@ namespace anmar.SharpWebMail
 		/// </summary>
 		/// <param name="cmd"></param>
 		/// <returns></returns>
-		protected virtual bool sendCommand ( anmar.SharpWebMail.EmailClientCommand command, System.String cmd ) {
+		protected virtual bool sendCommand ( anmar.SharpWebMail.Net.EmailClientCommand command, System.String cmd ) {
 			bool error = false;
 			System.String response = null;
 
@@ -437,7 +437,7 @@ namespace anmar.SharpWebMail
 				error = (error)?true:!client.readResponse(ref response, responseEndSL, true);
 				// Evaluate the result
 				error = (error)?true:!this.evaluateresponse(response);
-				if ( error || !command.Equals(anmar.SharpWebMail.EmailClientCommand.Logout) ) {
+				if ( error || !command.Equals(anmar.SharpWebMail.Net.EmailClientCommand.Logout) ) {
 					this.lastResponse = response;
 				}
 			} else {
@@ -453,7 +453,7 @@ namespace anmar.SharpWebMail
 		/// <param name="response"></param>
 		/// <param name="SLReponse"></param>
 		/// <returns></returns>
-		protected virtual bool sendCommand ( anmar.SharpWebMail.EmailClientCommand command, System.String cmd, System.IO.MemoryStream response, bool SLReponse ) {
+		protected virtual bool sendCommand ( anmar.SharpWebMail.Net.EmailClientCommand command, System.String cmd, System.IO.MemoryStream response, bool SLReponse ) {
 			bool error = false;
 
 			//Send cmd and evaluate response
@@ -483,9 +483,9 @@ namespace anmar.SharpWebMail
 			bool error = false;
 			System.IO.MemoryStream response = new System.IO.MemoryStream();
 			// Get status command
-			System.String cmd = this.buildcommand(anmar.SharpWebMail.EmailClientCommand.Status);
-			bool SLResponse = this.commandResponseTypeIsSL(anmar.SharpWebMail.EmailClientCommand.Status);
-			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.Status, cmd, response, SLResponse );
+			System.String cmd = this.buildcommand(anmar.SharpWebMail.Net.EmailClientCommand.Status);
+			bool SLResponse = this.commandResponseTypeIsSL(anmar.SharpWebMail.Net.EmailClientCommand.Status);
+			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.Net.EmailClientCommand.Status, cmd, response, SLResponse );
 
 			//Parse the result
 			error = (error)?true:!this.parseStatus(ref num, ref numbytes, response);
@@ -503,9 +503,9 @@ namespace anmar.SharpWebMail
 			System.IO.MemoryStream response = new System.IO.MemoryStream();
 
 			// Send ListUID command
-			System.String cmd = this.buildcommand(anmar.SharpWebMail.EmailClientCommand.ListUID, ((mindex>0)?mindex.ToString():System.String.Empty));
-			bool SLResponse = this.commandResponseTypeIsSL(anmar.SharpWebMail.EmailClientCommand.ListUID, ((mindex>0)?mindex.ToString():System.String.Empty));
-			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.ListUID, cmd, response, SLResponse );
+			System.String cmd = this.buildcommand(anmar.SharpWebMail.Net.EmailClientCommand.ListUID, ((mindex>0)?mindex.ToString():System.String.Empty));
+			bool SLResponse = this.commandResponseTypeIsSL(anmar.SharpWebMail.Net.EmailClientCommand.ListUID, ((mindex>0)?mindex.ToString():System.String.Empty));
+			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.Net.EmailClientCommand.ListUID, cmd, response, SLResponse );
 
 			//Parse the result
 			error = (error)?true:!this.parseListUID(list, response, mindex);
@@ -520,8 +520,8 @@ namespace anmar.SharpWebMail
 			bool error = false;
 
 			// Send Quit and disconnect
-			System.String cmd = this.buildcommand(anmar.SharpWebMail.EmailClientCommand.Logout);
-			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.Logout, cmd );
+			System.String cmd = this.buildcommand(anmar.SharpWebMail.Net.EmailClientCommand.Logout);
+			error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.Net.EmailClientCommand.Logout, cmd );
 
 			this.disconnect();
 

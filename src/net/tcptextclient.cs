@@ -22,20 +22,20 @@
 
 using System;
 
-namespace anmar.SharpWebMail
+namespace anmar.SharpWebMail.Net
 {
 
-	internal class CTNSimpleTCPClient {
+	internal class TcpTextClient {
 		// Create a logger for use in this class
 		private static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		protected System.String lastErrorMessage;
 		protected System.Net.Sockets.TcpClient client;
 		protected long timeoutResponse = 20000;
 
-		public CTNSimpleTCPClient() {
+		public TcpTextClient() {
 		}
 		
-		public CTNSimpleTCPClient( long timeout ) {
+		public TcpTextClient( long timeout ) {
 			this.timeoutResponse = timeout;
 		}
 

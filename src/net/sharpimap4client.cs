@@ -22,12 +22,12 @@
 
 using System;
 
-namespace anmar.SharpWebMail
+namespace anmar.SharpWebMail.Net
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	internal class SimpleIMAPClient : anmar.SharpWebMail.SimpleEmailClient {
+	internal class SharpImap4Client : anmar.SharpWebMail.Net.BaseEmailClient {
 		/// <summary>
 		/// 
 		/// </summary>
@@ -50,7 +50,7 @@ namespace anmar.SharpWebMail
 		/// <param name="port"></param>
 		/// <param name="user"></param>
 		/// <param name="pass"></param>
-		public SimpleIMAPClient( System.String host, System.Int32 port, System.String user, System.String pass ) : base(host, port, user, pass) {
+		public SharpImap4Client( System.String host, System.Int32 port, System.String user, System.String pass ) : base(host, port, user, pass) {
 			this.folder = "INBOX";
 			this.server_delimiter = "/";
 			this.taggen = new System.Random();
@@ -66,7 +66,7 @@ namespace anmar.SharpWebMail
 		/// <param name="user"></param>
 		/// <param name="pass"></param>
 		/// <param name="timeout"></param>
-		public SimpleIMAPClient( System.String host, System.Int32 port, System.String user, System.String pass, long timeout ) : base(host, port, user, pass, timeout) {
+		public SharpImap4Client( System.String host, System.Int32 port, System.String user, System.String pass, long timeout ) : base(host, port, user, pass, timeout) {
 			this.folder = "INBOX";
 			this.server_delimiter = "/";
 			this.taggen = new System.Random();
@@ -80,22 +80,22 @@ namespace anmar.SharpWebMail
 		/// <param name="cmd"></param>
 		/// <param name="args"></param>
 		/// <returns></returns>
-		protected override System.String buildcommand ( anmar.SharpWebMail.EmailClientCommand cmd, params System.Object[] args ) {
+		protected override System.String buildcommand ( anmar.SharpWebMail.Net.EmailClientCommand cmd, params System.Object[] args ) {
 			System.String command = System.String.Empty;
 			this.randomTag();
 			switch ( cmd ) {
-				case anmar.SharpWebMail.EmailClientCommand.Delete:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Delete:
 					if ( args.Length==1 )
 						command = System.String.Format("{0} STORE {1}:{1} +FLAGS.SILENT (\\Deleted)", this.tag, args[0]);
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.Header:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Header:
 					if ( args.Length==2 )
 						command = System.String.Format("{0} FETCH {1}:{1} (RFC822.HEADER)", this.tag, args[0], args[1]);
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.ListSize:
+				case anmar.SharpWebMail.Net.EmailClientCommand.ListSize:
 					command = System.String.Format("{0} FETCH 1:* (RFC822.SIZE)", this.tag);
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.ListUID:
+				case anmar.SharpWebMail.Net.EmailClientCommand.ListUID:
 					if ( args.Length==1 ) {
 						if ( args[0].ToString().Equals(System.String.Empty) )
 							command = System.String.Format("{0} FETCH 1:* (UID)", this.tag);
@@ -103,18 +103,18 @@ namespace anmar.SharpWebMail
 							command = System.String.Format("{0} FETCH {1}:{1} (UID)", this.tag, args[0]);
 					}
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.Login:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Login:
 					if ( args.Length==2 )
 						command = System.String.Format("{0} LOGIN {1} {2}", this.tag, args[0], args[1]);
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.Logout:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Logout:
 					command = System.String.Concat(this.tag, " LOGOUT");
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.Message:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Message:
 					if ( args.Length==1 )
 						command = System.String.Format("{0} FETCH {1}:{1} (BODY.PEEK[])", this.tag, args[0]);
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.Status:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Status:
 					command = System.String.Format("{0} EXAMINE {1}", this.tag, this.folder);
 					break;
 				
@@ -127,29 +127,29 @@ namespace anmar.SharpWebMail
 		/// <param name="cmd"></param>
 		/// <param name="args"></param>
 		/// <returns></returns>
-		protected override bool commandResponseTypeIsSL ( anmar.SharpWebMail.EmailClientCommand cmd, params System.Object[] args ) {
+		protected override bool commandResponseTypeIsSL ( anmar.SharpWebMail.Net.EmailClientCommand cmd, params System.Object[] args ) {
 			bool responseSL = true;
 			switch ( cmd ) {
-				case anmar.SharpWebMail.EmailClientCommand.Delete:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Delete:
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.Header:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Header:
 					responseSL = false;
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.ListSize:
+				case anmar.SharpWebMail.Net.EmailClientCommand.ListSize:
 					responseSL = false;
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.ListUID:
+				case anmar.SharpWebMail.Net.EmailClientCommand.ListUID:
 					responseSL = false;
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.Login:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Login:
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.Logout:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Logout:
 					responseSL = false;
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.Message:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Message:
 					responseSL = false;
 					break;
-				case anmar.SharpWebMail.EmailClientCommand.Status:
+				case anmar.SharpWebMail.Net.EmailClientCommand.Status:
 					responseSL = false;
 					break;
 			}
@@ -177,7 +177,7 @@ namespace anmar.SharpWebMail
 				this.randomTag();
 				System.IO.MemoryStream response = new System.IO.MemoryStream();
 				System.String cmd = System.String.Format("{0} EXPUNGE ", this.tag);
-				error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.Other, cmd, response, false );
+				error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.Net.EmailClientCommand.Other, cmd, response, false );
 			}
 			return !error;
 		}
@@ -269,7 +269,7 @@ namespace anmar.SharpWebMail
 		/// <returns></returns>
 		protected override bool parseListSize ( System.Int32[] list, System.IO.MemoryStream response ) {
 			System.Object[] tmplist = new System.Object[list.Length];
-			bool error = !this.parseUntaggedResponse(response, tmplist, "RFC822.SIZE", anmar.SharpWebMail.EmailClientCommand.ListSize);
+			bool error = !this.parseUntaggedResponse(response, tmplist, "RFC822.SIZE", anmar.SharpWebMail.Net.EmailClientCommand.ListSize);
 			if ( !error )
 				tmplist.CopyTo(list, 0);
 			return !error;
@@ -282,7 +282,7 @@ namespace anmar.SharpWebMail
 		/// <param name="mindex"></param>
 		/// <returns></returns>
 		protected override bool parseListUID ( System.String[] list, System.IO.MemoryStream response, int mindex ) {
-			return this.parseUntaggedResponse(response, list, "UID", anmar.SharpWebMail.EmailClientCommand.ListUID);
+			return this.parseUntaggedResponse(response, list, "UID", anmar.SharpWebMail.Net.EmailClientCommand.ListUID);
 		}
 		/// <summary>
 		/// 
@@ -294,14 +294,14 @@ namespace anmar.SharpWebMail
 		protected override bool parseStatus ( ref int num, ref int numbytes, System.IO.MemoryStream response ) {
 			bool error = false;
 			System.Object[] tmplist = new System.Object[1];
-			error = !this.parseUntaggedResponse(response, tmplist, " EXISTS", anmar.SharpWebMail.EmailClientCommand.Status);
+			error = !this.parseUntaggedResponse(response, tmplist, " EXISTS", anmar.SharpWebMail.Net.EmailClientCommand.Status);
 			if ( !error ) {
 				numbytes = 0;
 				num = (int)tmplist[0];
 			}
 			return !error;
 		}
-		private bool parseUntaggedResponse ( System.IO.MemoryStream response, System.Object[] list, System.String token, anmar.SharpWebMail.EmailClientCommand cmd ) {
+		private bool parseUntaggedResponse ( System.IO.MemoryStream response, System.Object[] list, System.String token, anmar.SharpWebMail.Net.EmailClientCommand cmd ) {
 			bool error = false;
 			int msgnum=-1;
 			System.Object value=-1;
@@ -313,16 +313,16 @@ namespace anmar.SharpWebMail
 						if ( values[i].Equals("*") ) {
 							msgnum = this.parseInteger(values[++i]);
 						} else if ( values[i].Equals(token) ) {
-							if  ( cmd.Equals(anmar.SharpWebMail.EmailClientCommand.ListSize) )
+							if  ( cmd.Equals(anmar.SharpWebMail.Net.EmailClientCommand.ListSize) )
 								value = this.parseInteger(values[++i]);
 							else
 								value = values[++i];
 						}
 					}
-					if ( ( cmd.Equals(anmar.SharpWebMail.EmailClientCommand.ListUID) || cmd.Equals(anmar.SharpWebMail.EmailClientCommand.ListSize) )
+					if ( ( cmd.Equals(anmar.SharpWebMail.Net.EmailClientCommand.ListUID) || cmd.Equals(anmar.SharpWebMail.Net.EmailClientCommand.ListSize) )
 						&& msgnum>0 && list.Length>=msgnum ) {
 						list[msgnum-1]=value;
-					} else if ( cmd.Equals(anmar.SharpWebMail.EmailClientCommand.Status) && msgnum>=0 ) {
+					} else if ( cmd.Equals(anmar.SharpWebMail.Net.EmailClientCommand.Status) && msgnum>=0 ) {
 						list[0] = msgnum;
 					} else if ( log.IsErrorEnabled ) {
 						log.Error ( "Error while parsing response line:" + line);
@@ -354,7 +354,7 @@ namespace anmar.SharpWebMail
 				this.randomTag();
 				System.IO.MemoryStream response = new System.IO.MemoryStream();
 				System.String cmd = System.String.Format("{0} SELECT {1}", this.tag, this.folder);
-				error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.EmailClientCommand.Other, cmd, response, false );
+				error = ( cmd.Equals(System.String.Empty) )?true:!this.sendCommand( anmar.SharpWebMail.Net.EmailClientCommand.Other, cmd, response, false );
 				if ( !error )
 					this.selected = true;
 			}

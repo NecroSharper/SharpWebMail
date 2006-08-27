@@ -22,7 +22,7 @@
 
 using System;
 
-namespace anmar.SharpWebMail.UI
+namespace anmar.SharpWebMail.UI.Pages
 {
 	/// <summary>
 	/// 
@@ -34,7 +34,7 @@ namespace anmar.SharpWebMail.UI
 		protected bool resetsearch = false;
 		protected bool refresh = false;
 		protected System.String sort;
-		protected anmar.SharpWebMail.UI.globalUI SharpUI;
+		protected anmar.SharpWebMail.UI.Pages.GlobalUI SharpUI;
 		protected System.Collections.Specialized.StringCollection delete = null;
 
 		//Form
@@ -53,7 +53,7 @@ namespace anmar.SharpWebMail.UI
 		/// 
 		/// </summary>
 		protected void bindInbox () {
-			anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
+			anmar.SharpWebMail.Net.IEmailClient client = (anmar.SharpWebMail.Net.IEmailClient)Session["client"];
 
 			if ( !this.refresh && ((int)Application["sharpwebmail/read/inbox/stat"])==1 )
 				this.refresh = true;
@@ -174,8 +174,8 @@ namespace anmar.SharpWebMail.UI
 			searchtype = "OR";
 			switch ( key ) {
 				case "fromsearch":
-					if ( !this.IsPostBack && Context.Handler is anmar.SharpWebMail.UI.Search ) {
-						anmar.SharpWebMail.UI.Search search = (anmar.SharpWebMail.UI.Search)Context.Handler;
+					if ( !this.IsPostBack && Context.Handler is anmar.SharpWebMail.UI.Pages.Search ) {
+						anmar.SharpWebMail.UI.Pages.Search search = (anmar.SharpWebMail.UI.Pages.Search)Context.Handler;
 						Value = search.From;
 						format = "From like '%{0}%'";
 						if ( Value.Length>0 )
@@ -183,8 +183,8 @@ namespace anmar.SharpWebMail.UI
 					}
 					break;
 				case "subjectsearch":
-					if ( !this.IsPostBack && Context.Handler is anmar.SharpWebMail.UI.Search ) {
-						anmar.SharpWebMail.UI.Search search = (anmar.SharpWebMail.UI.Search)Context.Handler;
+					if ( !this.IsPostBack && Context.Handler is anmar.SharpWebMail.UI.Pages.Search ) {
+						anmar.SharpWebMail.UI.Pages.Search search = (anmar.SharpWebMail.UI.Pages.Search)Context.Handler;
 						Value = search.Subject;
 						format = "Subject like '%{0}%'";
 						if ( Value.Length>0 )
@@ -264,7 +264,7 @@ namespace anmar.SharpWebMail.UI
 		}
 		protected void InboxDataGrid_Delete ( System.Object sender, System.Web.UI.WebControls.DataGridCommandEventArgs args ) {
 			if ( this.delete!=null && this.delete.Count>0 ) {
-				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+				anmar.SharpWebMail.SharpInbox inbox = (anmar.SharpWebMail.SharpInbox)Session["inbox"];
 				foreach ( System.String item in this.delete ) {
 					if ( item!=null )
 						inbox.DeleteMessage ( item );
@@ -280,7 +280,7 @@ namespace anmar.SharpWebMail.UI
 		/// </summary>
 		protected void InboxDataGrid_Sort ( System.Object sender, System.Web.UI.WebControls.DataGridSortCommandEventArgs args ) {
 			this.sort = args.SortExpression.ToString();
-			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+			anmar.SharpWebMail.SharpInbox inbox = (anmar.SharpWebMail.SharpInbox)Session["inbox"];
 			if ( !inbox.SortExpression.Equals(this.sort) ) {
 				inbox.SortExpression = this.sort;
 				this.InboxDataGrid.CurrentPageIndex = 0;

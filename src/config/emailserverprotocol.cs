@@ -22,13 +22,31 @@
 
 using System;
 
-namespace anmar.SharpWebMail
+namespace anmar.SharpWebMail.Config
 {
-	public interface IEmailClient {
-		bool GetFolderIndex ( anmar.SharpWebMail.CTNInbox inbox, int npage, int npagesize, bool askserver );
-		bool PurgeInbox ( anmar.SharpWebMail.CTNInbox inbox, bool all );
-		bool GetMessage ( System.IO.MemoryStream Message, int mindex, System.String uidl );
-		System.String UserName { get;}
-		System.String Password { get;}
+	/// <summary>
+	/// 
+	/// </summary>	
+	public enum EmailServerProtocol {
+		/// <summary>
+		/// IMAP. Read RFC 3501
+		/// </summary>
+		Imap,
+		/// <summary>
+		/// POP3. Read RFC 3461
+		/// </summary>
+		Pop3,
+		/// <summary>
+		/// SMTP. Read RFC 2821
+		/// </summary>
+		Smtp,
+		/// <summary>
+		/// SMTP combined with SMTP AUTH
+		/// </summary>
+		SmtpAuth,
+		/// <summary>
+		/// Unknown protocol
+		/// </summary>
+		Unknown
 	}
 }

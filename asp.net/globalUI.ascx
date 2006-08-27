@@ -1,4 +1,4 @@
-<%@ Control Language="C#"  Inherits="anmar.SharpWebMail.UI.globalUI" %>
+<%@ Control Language="C#"  Inherits="anmar.SharpWebMail.UI.Pages.GlobalUI" %>
 <table width="100%" cellpadding="0" cellspacing="0" align="center">
   <tr> 
     <td colspan="3"> 

@@ -26,6 +26,8 @@
 		<include name="${build.basedir}/license.txt" />
 		<include name="${build.basedir}/doc/readme.txt" />
 		<include name="${build.basedir}/doc/TODO.txt" />
+		<include name="${build.basedir}/doc/cultures_neutral.txt" />
+		<include name="${build.basedir}/doc/cultures_specific.txt" />
 	</fileset>
 	<target name="build-asp.net-release" depends="release, build-asp.net" />
 	<target name="build-asp.net-debug" depends="debug, build-asp.net" />

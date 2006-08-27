@@ -22,7 +22,7 @@
 
 using System;
 
-namespace anmar.SharpWebMail
+namespace anmar.SharpWebMail.Config
 {
 	/// <summary>
 	/// 
@@ -42,20 +42,20 @@ namespace anmar.SharpWebMail
 			if ( key==null || value ==null )
 				throw new System.ArgumentNullException();
 
-			anmar.SharpWebMail.EmailServerInfo server = anmar.SharpWebMail.EmailServerInfo.Parse(value.ToString());
+			anmar.SharpWebMail.Config.EmailServerInfo server = anmar.SharpWebMail.Config.EmailServerInfo.Parse(value.ToString());
 			if ( server!=null ) {
 				server.SetCondition(key.ToString());
 				if ( server.IsValid() )
 					this._servers.Add (server);
 			}
 		}
-		public void Add ( anmar.SharpWebMail.EmailServerInfo server ) {
+		public void Add ( anmar.SharpWebMail.Config.EmailServerInfo server ) {
 			if ( server==null || !server.IsValid() )
 				throw new System.ArgumentNullException();
 			this._servers.Add (server);
 		}
-		public anmar.SharpWebMail.EmailServerInfo Select ( System.String key, bool match ) {
-			foreach( anmar.SharpWebMail.EmailServerInfo item in this._servers ) {
+		public anmar.SharpWebMail.Config.EmailServerInfo Select ( System.String key, bool match ) {
+			foreach( anmar.SharpWebMail.Config.EmailServerInfo item in this._servers ) {
 				if ( item.Condition!=null && match ) {
 					if ( item.Condition.IsMatch(key) ) {
 						if ( log.IsDebugEnabled )
