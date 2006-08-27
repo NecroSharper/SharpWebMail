@@ -22,7 +22,7 @@
 
 using System;
 
-namespace anmar.SharpWebMail
+namespace anmar.SharpWebMail.Config
 {
 	/// <summary>
 	/// 
@@ -30,20 +30,20 @@ namespace anmar.SharpWebMail
 	public class EmailServerInfo {
 		private static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		private System.Text.RegularExpressions.Regex _condition = null;
-		private anmar.SharpWebMail.ServerProtocol _protocol;
+		private anmar.SharpWebMail.Config.EmailServerProtocol _protocol;
 		private System.String _host;
 		private System.String _name = null;
 		private int _port;
 
-		public EmailServerInfo ( anmar.SharpWebMail.ServerProtocol protocol, System.String host, int port ) {
+		public EmailServerInfo ( anmar.SharpWebMail.Config.EmailServerProtocol protocol, System.String host, int port ) {
 			this._protocol = protocol;
 			this._host = host;
 			this._port = port;
 		}
 		public EmailServerInfo ( System.String protocol, System.String host, System.String port ) {
-			this._protocol = anmar.SharpWebMail.EmailServerInfo.ParseProtocol(protocol);
-			this._host = anmar.SharpWebMail.EmailServerInfo.ParseHost(host);
-			this._port = anmar.SharpWebMail.EmailServerInfo.ParsePort(port, this._protocol);
+			this._protocol = anmar.SharpWebMail.Config.EmailServerInfo.ParseProtocol(protocol);
+			this._host = anmar.SharpWebMail.Config.EmailServerInfo.ParseHost(host);
+			this._port = anmar.SharpWebMail.Config.EmailServerInfo.ParsePort(port, this._protocol);
 		}
 		public System.Text.RegularExpressions.Regex Condition {
 			get {
@@ -68,34 +68,34 @@ namespace anmar.SharpWebMail
 				return this._port;
 			}
 		}
-		public anmar.SharpWebMail.ServerProtocol Protocol {
+		public anmar.SharpWebMail.Config.EmailServerProtocol Protocol {
 			get {
 				return this._protocol;
 			}
 		}
-		private static int GetDefaultPort ( anmar.SharpWebMail.ServerProtocol protocol ) {
+		private static int GetDefaultPort ( anmar.SharpWebMail.Config.EmailServerProtocol protocol ) {
 			switch ( protocol ) {
-				case anmar.SharpWebMail.ServerProtocol.Imap:
+				case anmar.SharpWebMail.Config.EmailServerProtocol.Imap:
 					return 143;
-				case anmar.SharpWebMail.ServerProtocol.Pop3:
+				case anmar.SharpWebMail.Config.EmailServerProtocol.Pop3:
 					return 110;
-				case anmar.SharpWebMail.ServerProtocol.Smtp:
+				case anmar.SharpWebMail.Config.EmailServerProtocol.Smtp:
 					return 25;
 			}
 			return 0;
 		}
 		public bool IsValid () {
-			return ( !this._protocol.Equals(anmar.SharpWebMail.ServerProtocol.Unknown) && this._port>0 && this._host!=null && (this._condition!=null || this._name!=null) );
+			return ( !this._protocol.Equals(anmar.SharpWebMail.Config.EmailServerProtocol.Unknown) && this._port>0 && this._host!=null && (this._condition!=null || this._name!=null) );
 		}
-		public static anmar.SharpWebMail.EmailServerInfo Parse ( System.String value ) {
-			anmar.SharpWebMail.EmailServerInfo server = null;
+		public static anmar.SharpWebMail.Config.EmailServerInfo Parse ( System.String value ) {
+			anmar.SharpWebMail.Config.EmailServerInfo server = null;
 			System.String[] values = value.ToString().Split(':');
 			if ( values.Length==3 ) {
-				anmar.SharpWebMail.ServerProtocol protocol = anmar.SharpWebMail.EmailServerInfo.ParseProtocol(values[0]);
-				System.String host = anmar.SharpWebMail.EmailServerInfo.ParseHost(values[1]);
-				int port = anmar.SharpWebMail.EmailServerInfo.ParsePort(values[2], protocol);
-				if ( !protocol.Equals(anmar.SharpWebMail.ServerProtocol.Unknown) && port>0 && host!=null ) {
-					server = new anmar.SharpWebMail.EmailServerInfo(protocol, host, port);
+				anmar.SharpWebMail.Config.EmailServerProtocol protocol = anmar.SharpWebMail.Config.EmailServerInfo.ParseProtocol(values[0]);
+				System.String host = anmar.SharpWebMail.Config.EmailServerInfo.ParseHost(values[1]);
+				int port = anmar.SharpWebMail.Config.EmailServerInfo.ParsePort(values[2], protocol);
+				if ( !protocol.Equals(anmar.SharpWebMail.Config.EmailServerProtocol.Unknown) && port>0 && host!=null ) {
+					server = new anmar.SharpWebMail.Config.EmailServerInfo(protocol, host, port);
 				}
 			}
 			return server;
@@ -111,25 +111,25 @@ namespace anmar.SharpWebMail
 			return value;
 
 		}
-		private static int ParsePort ( System.String value, anmar.SharpWebMail.ServerProtocol protocol ) {
+		private static int ParsePort ( System.String value, anmar.SharpWebMail.Config.EmailServerProtocol protocol ) {
 			int port;
 			try {
 				port = System.Int32.Parse(value);
 			} catch ( System.Exception e ) {
 				if ( log.IsErrorEnabled )
 					log.Error(System.String.Format("Error parsing port: {0}", value), e);
-				port = anmar.SharpWebMail.EmailServerInfo.GetDefaultPort(protocol);
+				port = anmar.SharpWebMail.Config.EmailServerInfo.GetDefaultPort(protocol);
 			}
 			return port;
 		}
-		private static anmar.SharpWebMail.ServerProtocol ParseProtocol ( System.String value ) {
-			anmar.SharpWebMail.ServerProtocol protocol;
+		private static anmar.SharpWebMail.Config.EmailServerProtocol ParseProtocol ( System.String value ) {
+			anmar.SharpWebMail.Config.EmailServerProtocol protocol;
 			try {
-				protocol = (anmar.SharpWebMail.ServerProtocol)System.Enum.Parse(typeof(anmar.SharpWebMail.ServerProtocol), value, true);
+				protocol = (anmar.SharpWebMail.Config.EmailServerProtocol)System.Enum.Parse(typeof(anmar.SharpWebMail.Config.EmailServerProtocol), value, true);
 			} catch ( System.Exception e ) {
 				if ( log.IsErrorEnabled )
 					log.Error(System.String.Format("Error parsing protocol: {0}", value), e);
-				protocol = anmar.SharpWebMail.ServerProtocol.Unknown;
+				protocol = anmar.SharpWebMail.Config.EmailServerProtocol.Unknown;
 			}
 			return protocol;
 		}
@@ -149,30 +149,5 @@ namespace anmar.SharpWebMail
 			else
 				return this._host;
 		}
-	}
-	/// <summary>
-	/// 
-	/// </summary>	
-	public enum ServerProtocol {
-		/// <summary>
-		/// IMAP. Read RFC 3501
-		/// </summary>
-		Imap,
-		/// <summary>
-		/// POP3. Read RFC 3461
-		/// </summary>
-		Pop3,
-		/// <summary>
-		/// SMTP. Read RFC 2821
-		/// </summary>
-		Smtp,
-		/// <summary>
-		/// SMTP combined with SMTP AUTH
-		/// </summary>
-		SmtpAuth,
-		/// <summary>
-		/// Unknown protocol
-		/// </summary>
-		Unknown
 	}
 }

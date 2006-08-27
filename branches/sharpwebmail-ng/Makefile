@@ -31,7 +31,10 @@ RESOURCES = $(BASE_SWM)/resources
 BIN_SWM = $(BASE_SWM)/bin/mono/$(MONO_VERION)/$(TARGET_BUILD)
 
 SOURCES_SWM = $(BASE_SWM)/src/*.cs \
-              $(BASE_SWM)/src/UI/*.cs
+              $(BASE_SWM)/src/config/*.cs \
+              $(BASE_SWM)/src/net/*.cs \
+              $(BASE_SWM)/src/tools/*.cs \
+              $(BASE_SWM)/src/ui.pages/*.cs
 
 REFERENCES_SWM= System.Web System.Data System.DirectoryServices $(BASE_REF)/log4net  $(BASE_REF)/FredCK.FCKeditorV2 $(BASE_REF)/SharpMimeTools $(BASE_REF)/OpenSmtp $(BASE_REF)/DotNetOpenMail
 REFS_SWM= $(addsuffix .dll, $(addprefix /r:, $(REFERENCES_SWM)))  

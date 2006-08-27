@@ -119,29 +119,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\AssemblyInfo.cs" />
-    <Compile Include="src\CTNInbox.cs" />
-    <Compile Include="src\CTNSimplePOP3Client.cs" />
-    <Compile Include="src\CTNSimpleTCPClient.cs" />
-    <Compile Include="src\UI\default.cs" />
-    <Compile Include="src\UI\download.cs" />
-    <Compile Include="src\UI\global.cs" />
-    <Compile Include="src\UI\login.cs" />
-    <Compile Include="src\UI\newmessage.cs" />
-    <Compile Include="src\UI\globalUI.cs" />
-    <Compile Include="src\UI\readmessage.cs" />
-    <Compile Include="src\UI\search.cs" />
-    <Compile Include="src\UI\readmessageheaders.cs" />
-    <Compile Include="src\basicsanitizer.cs" />
-    <Compile Include="src\serverselector.cs" />
-    <Compile Include="src\emailserver.cs" />
-    <Compile Include="src\iemailclient.cs" />
-    <Compile Include="src\emailclientfactory.cs" />
-    <Compile Include="src\simpleimapclient.cs" />
-    <Compile Include="src\simpleemailclient.cs" />
-    <Compile Include="src\UI\addressbook.cs" />
-    <Compile Include="src\sharpwebmailconfighandler.cs" />
-    <Compile Include="src\UI\addressbook_edit.cs" />
-    <Compile Include="src\UI\addressbook_data.cs" />
+    <Compile Include="src\sharpinbox.cs" />
+    <Compile Include="src\net\sharppop3client.cs" />
+    <Compile Include="src\net\tcptextclient.cs" />
+    <Compile Include="src\ui.pages\default.cs" />
+    <Compile Include="src\ui.pages\download.cs" />
+    <Compile Include="src\ui.pages\global.cs" />
+    <Compile Include="src\ui.pages\login.cs" />
+    <Compile Include="src\ui.pages\newmessage.cs" />
+    <Compile Include="src\ui.pages\globalUI.cs" />
+    <Compile Include="src\ui.pages\readmessage.cs" />
+    <Compile Include="src\ui.pages\search.cs" />
+    <Compile Include="src\ui.pages\readmessageheaders.cs" />
+    <Compile Include="src\tools\basicsanitizer.cs" />
+    <Compile Include="src\config\serverselector.cs" />
+    <Compile Include="src\config\emailserverinfo.cs" />
+    <Compile Include="src\config\emailserverprotocol.cs" />
+    <Compile Include="src\net\iemailclient.cs" />
+    <Compile Include="src\net\emailclientfactory.cs" />
+    <Compile Include="src\net\sharpimap4client.cs" />
+    <Compile Include="src\net\baseemailclient.cs" />
+    <Compile Include="src\ui.pages\addressbook.cs" />
+    <Compile Include="src\config\sharpwebmailconfighandler.cs" />
+    <Compile Include="src\ui.pages\addressbook_edit.cs" />
+    <Compile Include="src\ui.pages\addressbook_data.cs" />
     <EmbeddedResource Include="resources\SharpWebMail.en.resources">
     	<LogicalName>SharpWebMail.en.resources</LogicalName>
     	<Culture>en</Culture>

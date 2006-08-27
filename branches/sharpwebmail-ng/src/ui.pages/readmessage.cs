@@ -22,14 +22,14 @@
 
 using System;
 
-namespace anmar.SharpWebMail.UI
+namespace anmar.SharpWebMail.UI.Pages
 {
-	public class readmessage : System.Web.UI.Page {
+	public class ReadMessage : System.Web.UI.Page {
 		// General variables
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		protected System.String msgid;
 		protected bool delete=false;
-		protected anmar.SharpWebMail.UI.globalUI SharpUI;
+		protected anmar.SharpWebMail.UI.Pages.GlobalUI SharpUI;
 
 		//Form
 		protected System.Web.UI.HtmlControls.HtmlForm sharpwebmailform;
@@ -56,7 +56,7 @@ namespace anmar.SharpWebMail.UI
 			if ( message.HasHtmlBody ) {
 				body.Attributes["class"] = "XPFormText";
 				if ( (int)Application["sharpwebmail/read/message/sanitizer_mode"]==1 ) {
-					body.InnerHtml = anmar.SharpWebMail.BasicSanitizer.SanitizeHTML(message.Body, anmar.SharpWebMail.SanitizerMode.CommentBlocks|anmar.SharpWebMail.SanitizerMode.RemoveEvents);
+					body.InnerHtml = anmar.SharpWebMail.Tools.BasicSanitizer.SanitizeHTML(message.Body, anmar.SharpWebMail.Tools.SanitizerMode.CommentBlocks|anmar.SharpWebMail.Tools.SanitizerMode.RemoveEvents);
 				} else {
 					body.InnerHtml = message.Body;
 				}

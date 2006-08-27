@@ -23,7 +23,7 @@
 using System;
 
 [assembly: log4net.Config.XmlConfigurator()]
-namespace anmar.SharpWebMail.UI
+namespace anmar.SharpWebMail.UI.Pages
 {
 	public class Global : System.Web.HttpApplication {
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -63,7 +63,7 @@ namespace anmar.SharpWebMail.UI
 
 		public void Session_Start ( System.Object sender, System.EventArgs args ) {
 			// Inbox Object
-			anmar.SharpWebMail.CTNInbox inbox = new anmar.SharpWebMail.CTNInbox();
+			anmar.SharpWebMail.SharpInbox inbox = new anmar.SharpWebMail.SharpInbox();
 			if ( Application["sharpwebmail/read/inbox/sort"]!=null )
 				inbox.SortExpression = Application["sharpwebmail/read/inbox/sort"].ToString();
 			Session["inbox"] = inbox;

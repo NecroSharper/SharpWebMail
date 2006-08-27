@@ -1,4 +1,4 @@
-<%@ Page Language="C#" Inherits="anmar.SharpWebMail.UI.Login" trace="false"%>
+<%@ Page Language="C#" Inherits="anmar.SharpWebMail.UI.Pages.Login" trace="false"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
 <head>

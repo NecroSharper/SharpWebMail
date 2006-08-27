@@ -22,11 +22,11 @@
 
 using System;
 
-namespace anmar.SharpWebMail.UI
+namespace anmar.SharpWebMail.UI.Pages
 {
 	public class AddressBook : System.Web.UI.Page {
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		protected anmar.SharpWebMail.UI.globalUI SharpUI;
+		protected anmar.SharpWebMail.UI.Pages.GlobalUI SharpUI;
 		protected System.Web.UI.WebControls.DataGrid AddressBookDataGrid;
 		protected System.Web.UI.HtmlControls.HtmlSelect addressbookselect;
 		protected System.Web.UI.WebControls.Label addressbooklabel;
@@ -50,7 +50,7 @@ namespace anmar.SharpWebMail.UI
 			else
 				return null;
 		}
-		public static System.Data.DataTable GetDataSource (System.Collections.Specialized.ListDictionary addressbook, bool specific, anmar.SharpWebMail.IEmailClient client ) {
+		public static System.Data.DataTable GetDataSource (System.Collections.Specialized.ListDictionary addressbook, bool specific, anmar.SharpWebMail.Net.IEmailClient client ) {
 			if ( !addressbook.Contains("connectionstring") 
 			    || !addressbook.Contains("searchstring") )
 				return null;
@@ -150,7 +150,7 @@ namespace anmar.SharpWebMail.UI
 		private static System.Data.DataTable GetDataSourceOLEDB (System.String book, System.String connectstring, System.String connectusername, System.String connectpassword, System.String searchfilter, System.String namecolumn, System.String mailcolumn, System.String ownercolumn) {
 			return GetDataSourceData(GetDataAdapter("oledb", connectstring, connectusername, connectpassword, searchfilter), namecolumn, mailcolumn, ownercolumn, book);
 		}
-		public static bool UpdateDataSource (System.Data.DataTable data, System.Collections.Specialized.ListDictionary addressbook, anmar.SharpWebMail.IEmailClient client) {
+		public static bool UpdateDataSource (System.Data.DataTable data, System.Collections.Specialized.ListDictionary addressbook, anmar.SharpWebMail.Net.IEmailClient client) {
 			bool error = false;
 			if ( data==null || addressbook==null || !addressbook.Contains("connectionstring") 
 			    || !addressbook.Contains("searchstring") || !addressbook.Contains("allowupdate") || !((bool)addressbook["allowupdate"]) )
@@ -202,8 +202,8 @@ namespace anmar.SharpWebMail.UI
 		}
 		protected void AddressBookDataGrid_Delete ( System.Object sender, System.Web.UI.WebControls.DataGridCommandEventArgs args ) {
 			if ( this._delete_items!=null && this._delete_items.Count>0 ) {
-				System.Collections.Specialized.ListDictionary addressbook = anmar.SharpWebMail.UI.AddressBook.GetAddressbook(this.addressbookselect.Value, Application["sharpwebmail/send/addressbook"]);
-				System.Data.DataTable data = GetDataSource(addressbook, false, Session["client"] as anmar.SharpWebMail.IEmailClient);
+				System.Collections.Specialized.ListDictionary addressbook = anmar.SharpWebMail.UI.Pages.AddressBook.GetAddressbook(this.addressbookselect.Value, Application["sharpwebmail/send/addressbook"]);
+				System.Data.DataTable data = GetDataSource(addressbook, false, Session["client"] as anmar.SharpWebMail.Net.IEmailClient);
 				if ( data!=null ) {
 					bool delete = false;
 					System.Data.DataView view = data.DefaultView;
@@ -215,7 +215,7 @@ namespace anmar.SharpWebMail.UI
 						}
 					}
 					if ( delete ) {
-						anmar.SharpWebMail.UI.AddressBook.UpdateDataSource(data, addressbook, Session["client"] as anmar.SharpWebMail.IEmailClient);
+						anmar.SharpWebMail.UI.Pages.AddressBook.UpdateDataSource(data, addressbook, Session["client"] as anmar.SharpWebMail.Net.IEmailClient);
 					}
 				}
 			}
@@ -278,7 +278,7 @@ namespace anmar.SharpWebMail.UI
 			System.Collections.Specialized.ListDictionary addressbook = GetAddressbook(addressbookselect.Value, Application["sharpwebmail/send/addressbook"]);
 			if ( addressbook!=null && !addressbook["type"].Equals("none") ) {
 				this.AddressBookDataGrid.PageSize = (int)addressbook["pagesize"];
-				System.Data.DataTable data = GetDataSource(addressbook, false, Session["client"] as anmar.SharpWebMail.IEmailClient );
+				System.Data.DataTable data = GetDataSource(addressbook, false, Session["client"] as anmar.SharpWebMail.Net.IEmailClient );
 				if ( data!=null ) {
 					if ( this._sort_expression!=null && this._sort_expression.Length>0 ) {
 						if ( this._sort_expression.IndexOf("[NameColumn]")!=-1 ) {

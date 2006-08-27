@@ -22,7 +22,7 @@
 
 using System;
 
-namespace anmar.SharpWebMail.UI
+namespace anmar.SharpWebMail.UI.Pages
 {
 	public class Login : System.Web.UI.Page {
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -82,14 +82,14 @@ namespace anmar.SharpWebMail.UI
 				}
 				if ( this.IsValid ) {
 					this.username.Value=this.PrepareLogin(this.username.Value);
-					anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/read/servers"];
-					anmar.SharpWebMail.EmailServerInfo server = null;
+					anmar.SharpWebMail.Config.ServerSelector selector = (anmar.SharpWebMail.Config.ServerSelector)Application["sharpwebmail/read/servers"];
+					anmar.SharpWebMail.Config.EmailServerInfo server = null;
 					if ( selectserver!=null && selectserver.Visible )
 						server = selector.Select(this.selectserver.Value, false);
 					else
 						server = selector.Select(this.username.Value, true);
-					anmar.SharpWebMail.IEmailClient client = anmar.SharpWebMail.EmailClientFactory.CreateEmailClient(server, this.username.Value, password.Value );
-					anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+					anmar.SharpWebMail.Net.IEmailClient client = anmar.SharpWebMail.Net.EmailClientFactory.CreateEmailClient(server, this.username.Value, password.Value );
+					anmar.SharpWebMail.SharpInbox inbox = (anmar.SharpWebMail.SharpInbox)Session["inbox"];
 					inbox.Client = client;
 					System.String folder = Page.Request.QueryString["mode"];
 					if ( folder==null || folder.Length==0 )
@@ -105,7 +105,7 @@ namespace anmar.SharpWebMail.UI
 							System.Collections.SortedList addressbooks = (System.Collections.SortedList)Application["sharpwebmail/send/addressbook"];
 							foreach ( System.Collections.Specialized.ListDictionary addressbook in addressbooks.Values ) {
 								if ( addressbook.Contains("searchstringrealname") ) {
-									System.Data.DataTable result = anmar.SharpWebMail.UI.AddressBook.GetDataSource(addressbook, true, client);
+									System.Data.DataTable result = anmar.SharpWebMail.UI.Pages.AddressBook.GetDataSource(addressbook, true, client);
 									if ( result==null )
 										continue;
 									if ( result.Rows.Count==1 ) {
@@ -146,7 +146,7 @@ namespace anmar.SharpWebMail.UI
 						selectculture.Value = Session["effectiveculture"].ToString();
 				}
 				if ( selectserver!=null && Application["sharpwebmail/login/serverselection"]!=null && Application["sharpwebmail/login/serverselection"].Equals("manual") ) {
-					anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/read/servers"];
+					anmar.SharpWebMail.Config.ServerSelector selector = (anmar.SharpWebMail.Config.ServerSelector)Application["sharpwebmail/read/servers"];
 					selectserver.DataSource = selector.Servers;
 					selectserver.DataTextField = "Name";
 					selectserver.DataBind();

@@ -22,19 +22,19 @@
 
 using System;
 
-namespace anmar.SharpWebMail.UI
+namespace anmar.SharpWebMail.UI.Pages
 {
-	public class newmessage : System.Web.UI.Page {
+	public class NewMessage : System.Web.UI.Page {
 
 		#region General Fields
 		// General Fields
-		protected anmar.SharpWebMail.UI.globalUI SharpUI;
+		protected anmar.SharpWebMail.UI.Pages.GlobalUI SharpUI;
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		private static System.String bodyStart = "<html><head><title></title></head><body bgcolor=\"#FFFFFF\" text=\"#000000\" leftmargin=\"0\" topmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">";
 		private static System.String bodyEnd = "</body></html>";
 		private  anmar.SharpMimeTools.SharpMimeHeader _headers=null;
 		private int UI_case=0;
-		private anmar.SharpWebMail.UI.MessageMode _message_mode = anmar.SharpWebMail.UI.MessageMode.None;
+		private anmar.SharpWebMail.UI.Pages.MessageMode _message_mode = anmar.SharpWebMail.UI.Pages.MessageMode.None;
 		
 		#endregion General variables
 
@@ -173,7 +173,7 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		protected void mainInterface ( anmar.SharpWebMail.CTNInbox inbox ) {
+		protected void mainInterface ( anmar.SharpWebMail.SharpInbox inbox ) {
 			this.newattachmentPH=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("newattachmentPH");
 			this.attachmentsPH=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("attachmentsPH");
 			this.confirmationPH=(System.Web.UI.WebControls.PlaceHolder )this.SharpUI.FindControl("confirmationPH");
@@ -208,7 +208,7 @@ namespace anmar.SharpWebMail.UI
 			// Get mode
 			if ( Page.Request.QueryString["mode"]!=null ) {
 				try {
-					this._message_mode = (anmar.SharpWebMail.UI.MessageMode)System.Enum.Parse(typeof(anmar.SharpWebMail.UI.MessageMode), Page.Request.QueryString["mode"], true);
+					this._message_mode = (anmar.SharpWebMail.UI.Pages.MessageMode)System.Enum.Parse(typeof(anmar.SharpWebMail.UI.Pages.MessageMode), Page.Request.QueryString["mode"], true);
 				} catch ( System.Exception ){}
 			}
 			// Get message ID
@@ -219,8 +219,8 @@ namespace anmar.SharpWebMail.UI
 			if ( !this.IsPostBack && !guid.Equals( System.Guid.Empty) ) {
 				System.Object[] details = inbox[ guid ];
 				if ( details!=null ) {
-					if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.None) )
-						this._message_mode = anmar.SharpWebMail.UI.MessageMode.reply;
+					if ( this._message_mode.Equals(anmar.SharpWebMail.UI.Pages.MessageMode.None) )
+						this._message_mode = anmar.SharpWebMail.UI.Pages.MessageMode.reply;
 					this._headers = (anmar.SharpMimeTools.SharpMimeHeader) details[13];
 					if ( !this.IsPostBack ) {
 						bool html_content = this.FCKEditor.CheckBrowserCompatibility();
@@ -237,19 +237,19 @@ namespace anmar.SharpWebMail.UI
 						anmar.SharpMimeTools.SharpMessage message = null;
 						if ( ms!=null && ms.CanRead ) {
 							System.String path = null;
-							if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.forward) ) {
+							if ( this._message_mode.Equals(anmar.SharpWebMail.UI.Pages.MessageMode.forward) ) {
 								path = Session["sharpwebmail/read/message/temppath"].ToString();
 								path = System.IO.Path.Combine (path, msgid);
 								path = System.IO.Path.GetFullPath(path);
 							}
 							bool attachments = false;
-							if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.forward) )
+							if ( this._message_mode.Equals(anmar.SharpWebMail.UI.Pages.MessageMode.forward) )
 								attachments = (bool)Application["sharpwebmail/send/message/forwardattachments"];
 							message = new anmar.SharpMimeTools.SharpMessage(ms, attachments, html_content, path);
 							ms.Close();
 						}
 						ms = null;
-						if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.reply) ) {
+						if ( this._message_mode.Equals(anmar.SharpWebMail.UI.Pages.MessageMode.reply) ) {
 							// From name if present on original message's To header
 							// and we don't have it already
 							if ( Session["DisplayName"]==null ) {
@@ -269,7 +269,7 @@ namespace anmar.SharpWebMail.UI
 									this.toemail.Value += address["address"];
 								}
 							}
-						} else if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.forward) ) {
+						} else if ( this._message_mode.Equals(anmar.SharpWebMail.UI.Pages.MessageMode.forward) ) {
 							// If the original message has attachments, preserve them
 							if ( message!=null && message.Attachments!=null &&  message.Attachments.Count>0 ) {
 								this.bindAttachments();
@@ -319,7 +319,7 @@ namespace anmar.SharpWebMail.UI
 							sb_body.Append(message.Body);
 							if ( !message.HasHtmlBody &&  html_content )
 								sb_body.Append("</pre>");
-							if ( this._message_mode.Equals(anmar.SharpWebMail.UI.MessageMode.reply) ) {
+							if ( this._message_mode.Equals(anmar.SharpWebMail.UI.Pages.MessageMode.reply) ) {
 								if ( html_content ) {
 									sb_body.Insert(0, System.String.Concat("<blockquote style=\"", Application["sharpwebmail/send/message/replyquotestyle"] ,"\">"));
 									sb_body.Append("</blockquote>");
@@ -351,7 +351,7 @@ namespace anmar.SharpWebMail.UI
 		private void ProcessMessageAttachments (System.Object message) {
 			// Attachments
 			if ( this.newMessageWindowAttachmentsAddedList.Items.Count>0 ) {
-				anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+				anmar.SharpWebMail.SharpInbox inbox = (anmar.SharpWebMail.SharpInbox)Session["inbox"];
 				System.String Value="";
 				foreach ( System.Web.UI.WebControls.ListItem item in this.newMessageWindowAttachmentsList.Items ) {
 					if ( item.Selected ) {
@@ -385,7 +385,7 @@ namespace anmar.SharpWebMail.UI
 		/// <summary>
 		/// 
 		/// </summary>
-		private System.String SendMail ( anmar.SharpWebMail.EmailServerInfo server ) {
+		private System.String SendMail ( anmar.SharpWebMail.Config.EmailServerInfo server ) {
 			System.String message = null;
 			System.Web.Mail.SmtpMail.SmtpServer = server.Host;
 
@@ -431,7 +431,7 @@ namespace anmar.SharpWebMail.UI
 			mailMessage = null;
 			return message;
 		}
-		private System.String SendMailDotNetOpenMail ( anmar.SharpWebMail.EmailServerInfo server ) {
+		private System.String SendMailDotNetOpenMail ( anmar.SharpWebMail.Config.EmailServerInfo server ) {
 			System.String message = null;
 			System.Text.Encoding encoding = (System.Text.Encoding)Application["sharpwebmail/send/message/charset"];
 			DotNetOpenMail.EmailMessage mailMessage = new DotNetOpenMail.EmailMessage();
@@ -469,8 +469,8 @@ namespace anmar.SharpWebMail.UI
 			try {
 				if ( log.IsDebugEnabled) log.Debug (System.String.Concat("Sending message. engine: DotNetOpenMail , protocol: ", server.Protocol));
 				DotNetOpenMail.SmtpServer SmtpMail = new DotNetOpenMail.SmtpServer(server.Host, server.Port);
-				if ( server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.SmtpAuth) ) {
-					anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
+				if ( server.Protocol.Equals(anmar.SharpWebMail.Config.EmailServerProtocol.SmtpAuth) ) {
+					anmar.SharpWebMail.Net.IEmailClient client = (anmar.SharpWebMail.Net.IEmailClient)Session["client"];
 					SmtpMail.SmtpAuthToken = new DotNetOpenMail.SmtpAuth.SmtpAuthToken(client.UserName, client.Password);
 				}
 				mailMessage.Send(SmtpMail);
@@ -483,7 +483,7 @@ namespace anmar.SharpWebMail.UI
 			mailMessage = null;
 			return message;
 		}
-		private System.String SendMailOpenSmtp ( anmar.SharpWebMail.EmailServerInfo server ) {
+		private System.String SendMailOpenSmtp ( anmar.SharpWebMail.Config.EmailServerInfo server ) {
 			System.String message = null;
 			System.Text.Encoding encoding = (System.Text.Encoding)Application["sharpwebmail/send/message/charset"];
 			OpenSmtp.Mail.MailMessage mailMessage = new OpenSmtp.Mail.MailMessage();
@@ -522,8 +522,8 @@ namespace anmar.SharpWebMail.UI
 			try {
 				if ( log.IsDebugEnabled) log.Debug (System.String.Concat("Sending message. engine: opensmtp , protocol: ", server.Protocol));
 				OpenSmtp.Mail.Smtp SmtpMail = null;
-				if ( server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.SmtpAuth) ) {
-					anmar.SharpWebMail.IEmailClient client = (anmar.SharpWebMail.IEmailClient)Session["client"];
+				if ( server.Protocol.Equals(anmar.SharpWebMail.Config.EmailServerProtocol.SmtpAuth) ) {
+					anmar.SharpWebMail.Net.IEmailClient client = (anmar.SharpWebMail.Net.IEmailClient)Session["client"];
 					SmtpMail = new OpenSmtp.Mail.Smtp(server.Host, client.UserName, client.Password, server.Port);
 				} else
 					SmtpMail = new OpenSmtp.Mail.Smtp(server.Host, server.Port);
@@ -670,12 +670,12 @@ namespace anmar.SharpWebMail.UI
 			if ( this.IsValid ) {
 				this.UI_case = 1;
 				if ( (int)Application["sharpwebmail/send/message/sanitizer_mode"]==1 ) {
-					FCKEditor.Value = anmar.SharpWebMail.BasicSanitizer.SanitizeHTML(FCKEditor.Value, anmar.SharpWebMail.SanitizerMode.CommentBlocks|anmar.SharpWebMail.SanitizerMode.RemoveEvents);
+					FCKEditor.Value = anmar.SharpWebMail.Tools.BasicSanitizer.SanitizeHTML(FCKEditor.Value, anmar.SharpWebMail.Tools.SanitizerMode.CommentBlocks|anmar.SharpWebMail.Tools.SanitizerMode.RemoveEvents);
 				}
-				anmar.SharpWebMail.ServerSelector selector = (anmar.SharpWebMail.ServerSelector)Application["sharpwebmail/send/servers"];
-				anmar.SharpWebMail.EmailServerInfo server = selector.Select(User.Identity.Name, true);
-				if ( server!=null && ( server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.Smtp) 
-				                      || server.Protocol.Equals(anmar.SharpWebMail.ServerProtocol.SmtpAuth) ) ) {
+				anmar.SharpWebMail.Config.ServerSelector selector = (anmar.SharpWebMail.Config.ServerSelector)Application["sharpwebmail/send/servers"];
+				anmar.SharpWebMail.Config.EmailServerInfo server = selector.Select(User.Identity.Name, true);
+				if ( server!=null && ( server.Protocol.Equals(anmar.SharpWebMail.Config.EmailServerProtocol.Smtp) 
+				                      || server.Protocol.Equals(anmar.SharpWebMail.Config.EmailServerProtocol.SmtpAuth) ) ) {
 					if ( Application["sharpwebmail/send/message/smtp_engine"].Equals("opensmtp") )
 						message = this.SendMailOpenSmtp(server);
 					else if ( Application["sharpwebmail/send/message/smtp_engine"].Equals("dotnetopenmail") )

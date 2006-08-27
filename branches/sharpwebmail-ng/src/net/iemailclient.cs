@@ -22,19 +22,13 @@
 
 using System;
 
-namespace anmar.SharpWebMail
+namespace anmar.SharpWebMail.Net
 {
-	public sealed class EmailClientFactory {
-		public static anmar.SharpWebMail.IEmailClient CreateEmailClient ( anmar.SharpWebMail.EmailServerInfo server, System.String username, System.String password ) {
-			if ( server==null )
-				return null;
-			switch ( server.Protocol ) {
-				case anmar.SharpWebMail.ServerProtocol.Pop3:
-					return new anmar.SharpWebMail.CTNSimplePOP3Client ( server.Host, server.Port, username, password );
-				case anmar.SharpWebMail.ServerProtocol.Imap:
-					return new anmar.SharpWebMail.SimpleIMAPClient( server.Host, server.Port, username, password );
-			}
-			return null;
-		}
+	public interface IEmailClient {
+		bool GetFolderIndex ( anmar.SharpWebMail.SharpInbox inbox, int npage, int npagesize, bool askserver );
+		bool PurgeInbox ( anmar.SharpWebMail.SharpInbox inbox, bool all );
+		bool GetMessage ( System.IO.MemoryStream Message, int mindex, System.String uidl );
+		System.String UserName { get;}
+		System.String Password { get;}
 	}
 }

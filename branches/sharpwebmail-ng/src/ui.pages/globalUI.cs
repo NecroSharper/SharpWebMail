@@ -22,14 +22,14 @@
 
 using System;
 
-namespace anmar.SharpWebMail.UI
+namespace anmar.SharpWebMail.UI.Pages
 {
-	public class globalUI : System.Web.UI.UserControl {
+	public class GlobalUI : System.Web.UI.UserControl {
 		// General variables
 		protected System.Resources.ResourceSet resources;
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-		anmar.SharpWebMail.CTNInbox inbox = null;
+		anmar.SharpWebMail.SharpInbox inbox = null;
 		
 		// Holders
 		protected System.Web.UI.WebControls.PlaceHolder centralPanelHolder;
@@ -59,7 +59,7 @@ namespace anmar.SharpWebMail.UI
 		    get { return centralPanel; }
 		    set { centralPanel = value; }
 		}
-		public anmar.SharpWebMail.CTNInbox Inbox {
+		public anmar.SharpWebMail.SharpInbox Inbox {
 			get {
 				return this.inbox;
 			}
@@ -87,7 +87,7 @@ namespace anmar.SharpWebMail.UI
 					Session.Remove ("client");
 				}
 				// Flush inbox content
-				this.inbox = new anmar.SharpWebMail.CTNInbox();
+				this.inbox = new anmar.SharpWebMail.SharpInbox();
 				Session["inbox"] = this.inbox;
 				this.inbox = null;
 				// Clean up temp files
@@ -204,7 +204,7 @@ namespace anmar.SharpWebMail.UI
 	            this.centralPanel.InstantiateIn (this.centralPanelHolder);
 		    }
 		    if ( this.inbox==null) {
-			    this.inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+			    this.inbox = (anmar.SharpWebMail.SharpInbox)Session["inbox"];
 		    }
 			this.resources = (System.Resources.ResourceSet) Session["resources"];
 		}

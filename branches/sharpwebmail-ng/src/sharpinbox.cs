@@ -27,7 +27,7 @@ namespace anmar.SharpWebMail
 	/// <summary>
 	/// 
 	/// </summary>
-	public class CTNInbox {
+	public class SharpInbox {
 		private static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		/// <summary>
 		/// 
@@ -72,19 +72,19 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
-		protected anmar.SharpWebMail.IEmailClient _client = null;
+		protected anmar.SharpWebMail.Net.IEmailClient _client = null;
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public CTNInbox() {
+		public SharpInbox() {
 			this.init();
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="names"></param>
-		public CTNInbox( System.String[] names ) {
+		public SharpInbox( System.String[] names ) {
 			this.names = names;
 		}
 		public System.Object[] this [ System.String uid ] {
@@ -412,7 +412,7 @@ namespace anmar.SharpWebMail
 		/// <summary>
 		/// 
 		/// </summary>
-		public anmar.SharpWebMail.IEmailClient Client {
+		public anmar.SharpWebMail.Net.IEmailClient Client {
 			get { return this._client; }
 			set { this._client = value; }
 		}

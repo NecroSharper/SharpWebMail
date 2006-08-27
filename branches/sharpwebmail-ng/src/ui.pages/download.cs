@@ -22,13 +22,13 @@
 
 using System;
 
-namespace anmar.SharpWebMail.UI
+namespace anmar.SharpWebMail.UI.Pages
 {
-	public class download : System.Web.UI.Page {
+	public class Download : System.Web.UI.Page {
 
 		protected void Page_Load( System.Object sender, System.EventArgs args ) {
 			//Our Inbox
-			anmar.SharpWebMail.CTNInbox inbox = (anmar.SharpWebMail.CTNInbox)Session["inbox"];
+			anmar.SharpWebMail.SharpInbox inbox = (anmar.SharpWebMail.SharpInbox)Session["inbox"];
 
 			System.String msgid = System.Web.HttpUtility.HtmlEncode (Page.Request.QueryString["msgid"]);
 			System.String name = Page.Request.QueryString["name"];

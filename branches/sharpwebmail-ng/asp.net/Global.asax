@@ -1,2 +1,2 @@
-<%@ Application language="C#" Inherits="anmar.SharpWebMail.UI.Global"%>
+<%@ Application language="C#" Inherits="anmar.SharpWebMail.UI.Pages.Global"%>
 

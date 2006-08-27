@@ -42,17 +42,17 @@
   </DeploymentInformation>
   <Contents>
     <File name="./src/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/CTNInbox.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/CTNSimplePOP3Client.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/CTNSimpleTCPClient.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/UI/default.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/UI/download.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/UI/global.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/UI/login.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/UI/newmessage.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/UI/globalUI.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/UI/readmessage.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/UI/search.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/sharpinbox.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/net/sharppop3client.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/net/tcptextclient.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/default.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/download.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/global.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/login.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/newmessage.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/globalUI.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/readmessage.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/search.cs" subtype="Code" buildaction="Compile" />
     <File name="./resources/resources.cmd" subtype="Code" buildaction="Nothing" />
     <File name="./resources/SharpWebMail.es.resources" subtype="Code" buildaction="Nothing" />
     <File name="./resources/SharpWebMail.sr-SP-Latn.resources" subtype="Code" buildaction="Nothing" />
@@ -74,24 +74,24 @@
     <File name="./asp.net/web.config" subtype="Code" buildaction="Nothing" />
     <File name="./asp.net/fcke/fckconfig.js" subtype="Code" buildaction="Nothing" />
     <File name="./resources/SharpWebMail.en.resources" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="./src/UI/readmessageheaders.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/basicsanitizer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/readmessageheaders.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/tools/basicsanitizer.cs" subtype="Code" buildaction="Compile" />
     <File name="./resources/SharpWebMail.da.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./src/serverselector.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/emailserver.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/iemailclient.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/emailclientfactory.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/simpleimapclient.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/simpleemailclient.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/config/serverselector.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/config/emailserverinfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/net/iemailclient.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/net/emailclientfactory.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/net/sharpimap4client.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/net/baseemailclient.cs" subtype="Code" buildaction="Compile" />
     <File name="./resources/SharpWebMail.ru.resources" subtype="Code" buildaction="Nothing" />
     <File name="./resources/SharpWebMail.el.resources" subtype="Code" buildaction="Nothing" />
     <File name="./resources/SharpWebMail.fr.resources" subtype="Code" buildaction="Nothing" />
     <File name="./resources/SharpWebMail.ro.resources" subtype="Code" buildaction="Nothing" />
     <File name="./resources/SharpWebMail.vi.resources" subtype="Code" buildaction="Nothing" />
     <File name="./resources/SharpWebMail.it.resources" subtype="Code" buildaction="Nothing" />
-    <File name="./src/UI/addressbook.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/addressbook.cs" subtype="Code" buildaction="Compile" />
     <File name="./asp.net/addressbook.aspx" subtype="Code" buildaction="Nothing" />
-    <File name="./src/sharpwebmailconfighandler.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/config/sharpwebmailconfighandler.cs" subtype="Code" buildaction="Compile" />
     <File name="./resources/SharpWebMail.pt-BR.resources" subtype="Code" buildaction="Nothing" />
     <File name="./SharpWebMail.build" subtype="Code" buildaction="Nothing" />
     <File name="./resources/SharpWebMail.en.resources" subtype="Code" buildaction="Nothing" />
@@ -107,8 +107,10 @@
     <File name="./asp.net/addressbookfull.aspx" subtype="Code" buildaction="Nothing" />
     <File name="./asp.net/addressbook_edit.aspx" subtype="Code" buildaction="Nothing" />
     <File name="./asp.net/addressbook_data.aspx" subtype="Code" buildaction="Nothing" />
-    <File name="./src/UI/addressbook_edit.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/UI/addressbook_data.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/addressbook_edit.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/ui.pages/addressbook_data.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/config/emailserverprotocol.cs" subtype="Code" buildaction="Compile" />
+    <File name="./asp.net/headers.aspx" subtype="Code" buildaction="Nothing" />
   </Contents>
   <References>
     <ProjectReference type="Assembly" localcopy="True" refto="./bin/mono/log4net.dll" />

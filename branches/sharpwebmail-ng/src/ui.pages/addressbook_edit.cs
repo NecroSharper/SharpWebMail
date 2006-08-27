@@ -22,11 +22,11 @@
 
 using System;
 
-namespace anmar.SharpWebMail.UI
+namespace anmar.SharpWebMail.UI.Pages
 {
 	public class AddressBookEdit : System.Web.UI.Page {
 		protected static log4net.ILog log  = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		protected anmar.SharpWebMail.UI.globalUI SharpUI;
+		protected anmar.SharpWebMail.UI.Pages.GlobalUI SharpUI;
 		// Input boxes
 		private System.Web.UI.HtmlControls.HtmlInputText _email;
 		private System.Web.UI.HtmlControls.HtmlInputText _name;
@@ -37,9 +37,9 @@ namespace anmar.SharpWebMail.UI
 
 		private System.Data.DataTable GetData () {
 			if ( this._book_name!=null && this._book_name.Length>0 ) {
-				System.Collections.Specialized.ListDictionary addressbook = anmar.SharpWebMail.UI.AddressBook.GetAddressbook(this._book_name, Application["sharpwebmail/send/addressbook"]);
+				System.Collections.Specialized.ListDictionary addressbook = anmar.SharpWebMail.UI.Pages.AddressBook.GetAddressbook(this._book_name, Application["sharpwebmail/send/addressbook"]);
 				if ( addressbook!=null )
-					return anmar.SharpWebMail.UI.AddressBook.GetDataSource(addressbook, false, Session["client"] as anmar.SharpWebMail.IEmailClient );
+					return anmar.SharpWebMail.UI.Pages.AddressBook.GetDataSource(addressbook, false, Session["client"] as anmar.SharpWebMail.Net.IEmailClient );
 			}
 			return null;
 		}
@@ -65,8 +65,8 @@ namespace anmar.SharpWebMail.UI
 						log.Error(System.String.Concat("Error inserting record [", this._email.Value, "] in addressbook [", this._book_name, "] for user [", this.User.Identity.Name, "]"), e);
 					error = true;
 				}
-				System.Collections.Specialized.ListDictionary addressbook = anmar.SharpWebMail.UI.AddressBook.GetAddressbook(this._book_name, Application["sharpwebmail/send/addressbook"]);
-				if ( !error && anmar.SharpWebMail.UI.AddressBook.UpdateDataSource(data, addressbook, Session["client"] as anmar.SharpWebMail.IEmailClient ) ) {
+				System.Collections.Specialized.ListDictionary addressbook = anmar.SharpWebMail.UI.Pages.AddressBook.GetAddressbook(this._book_name, Application["sharpwebmail/send/addressbook"]);
+				if ( !error && anmar.SharpWebMail.UI.Pages.AddressBook.UpdateDataSource(data, addressbook, Session["client"] as anmar.SharpWebMail.Net.IEmailClient ) ) {
 					data = null;
 					this._email.Value = System.String.Empty;
 					this._name.Value = System.String.Empty;
@@ -89,8 +89,8 @@ namespace anmar.SharpWebMail.UI
 						view.RowFilter = System.String.Concat(data.Columns[1].ColumnName, "='", this._entry, "'");
 						 if ( view.Count==1 ) {
 							view[0].Delete();
-							System.Collections.Specialized.ListDictionary addressbook = anmar.SharpWebMail.UI.AddressBook.GetAddressbook(this._book_name, Application["sharpwebmail/send/addressbook"]);
-							if ( anmar.SharpWebMail.UI.AddressBook.UpdateDataSource(data, addressbook, Session["client"] as anmar.SharpWebMail.IEmailClient) ) {
+							System.Collections.Specialized.ListDictionary addressbook = anmar.SharpWebMail.UI.Pages.AddressBook.GetAddressbook(this._book_name, Application["sharpwebmail/send/addressbook"]);
+							if ( anmar.SharpWebMail.UI.Pages.AddressBook.UpdateDataSource(data, addressbook, Session["client"] as anmar.SharpWebMail.Net.IEmailClient) ) {
 								this._update = false;
 								data = null;
 								Response.Redirect(System.String.Concat("addressbookfull.aspx?book=", this._book_name));
@@ -135,8 +135,8 @@ namespace anmar.SharpWebMail.UI
 				} else
 					error = true;
 				if ( update ) {
-					System.Collections.Specialized.ListDictionary addressbook = anmar.SharpWebMail.UI.AddressBook.GetAddressbook(this._book_name, Application["sharpwebmail/send/addressbook"]);
-					error = !anmar.SharpWebMail.UI.AddressBook.UpdateDataSource(data, addressbook, Session["client"] as anmar.SharpWebMail.IEmailClient );
+					System.Collections.Specialized.ListDictionary addressbook = anmar.SharpWebMail.UI.Pages.AddressBook.GetAddressbook(this._book_name, Application["sharpwebmail/send/addressbook"]);
+					error = !anmar.SharpWebMail.UI.Pages.AddressBook.UpdateDataSource(data, addressbook, Session["client"] as anmar.SharpWebMail.Net.IEmailClient );
 				}
 			} else
 				error = true;
