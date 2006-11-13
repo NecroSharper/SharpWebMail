@@ -8,10 +8,11 @@
     <AssemblyName>SharpWebMail</AssemblyName>
     <OutputType>Library</OutputType>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <NoStdLib>False</NoStdLib>
     <NoConfig>False</NoConfig>
     <RunPostBuildEvent>OnSuccessfulBuild</RunPostBuildEvent>
-    <PostBuildEvent>resources\resources.cmd</PostBuildEvent>
+    <OutputPath>asp.net\bin\</OutputPath>
     <DebugType>None</DebugType>
     <RegisterForComInterop>False</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
@@ -24,70 +25,64 @@
     <Optimize>False</Optimize>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>False</DebugSymbols>
     <Optimize>True</Optimize>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-1.1|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
     <Optimize>False</Optimize>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-1.1|AnyCPU' ">
     <DebugSymbols>False</DebugSymbols>
     <Optimize>True</Optimize>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-2.0|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
     <Optimize>False</Optimize>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-2.0|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
     <Optimize>True</Optimize>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v1.1</TargetFrameworkVersion>
+    <BaseFX1_1OutputPath>bin\net\1.1\</BaseFX1_1OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v1.1</TargetFrameworkVersion>
+    <BaseFX1_1OutputPath>bin\net\1.1\</BaseFX1_1OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug-1.1' ">
-    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v1.1</TargetFrameworkVersion>
+    <BaseFX1_1OutputPath>bin\net\1.1\</BaseFX1_1OutputPath>
     <DefineConstants>DEBUG;NET_1_1;API_1_1</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release-1.1' ">
-    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v1.1</TargetFrameworkVersion>
+    <BaseFX1_1OutputPath>bin\net\1.1\</BaseFX1_1OutputPath>
     <DefineConstants>NET_1_1;API_1_1</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug-2.0' ">
-    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <BaseFX1_1OutputPath>bin\net\2.0\</BaseFX1_1OutputPath>
     <DefineConstants>DEBUG;NET_2_0;API_2_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release-2.0' ">
-    <OutputPath>asp.net\bin\</OutputPath>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <BaseFX1_1OutputPath>bin\net\2.0\</BaseFX1_1OutputPath>
     <DefineConstants>NET_2_0;API_2_0</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -122,15 +117,31 @@
     <Compile Include="src\CTNInbox.cs" />
     <Compile Include="src\CTNSimplePOP3Client.cs" />
     <Compile Include="src\CTNSimpleTCPClient.cs" />
-    <Compile Include="src\UI\default.cs" />
-    <Compile Include="src\UI\download.cs" />
+    <Compile Include="src\UI\default.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\UI\download.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="src\UI\global.cs" />
-    <Compile Include="src\UI\login.cs" />
-    <Compile Include="src\UI\newmessage.cs" />
-    <Compile Include="src\UI\globalUI.cs" />
-    <Compile Include="src\UI\readmessage.cs" />
-    <Compile Include="src\UI\search.cs" />
-    <Compile Include="src\UI\readmessageheaders.cs" />
+    <Compile Include="src\UI\login.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\UI\newmessage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\UI\globalUI.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\UI\readmessage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\UI\search.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\UI\readmessageheaders.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="src\basicsanitizer.cs" />
     <Compile Include="src\serverselector.cs" />
     <Compile Include="src\emailserver.cs" />
@@ -138,13 +149,19 @@
     <Compile Include="src\emailclientfactory.cs" />
     <Compile Include="src\simpleimapclient.cs" />
     <Compile Include="src\simpleemailclient.cs" />
-    <Compile Include="src\UI\addressbook.cs" />
+    <Compile Include="src\UI\addressbook.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="src\sharpwebmailconfighandler.cs" />
-    <Compile Include="src\UI\addressbook_edit.cs" />
-    <Compile Include="src\UI\addressbook_data.cs" />
+    <Compile Include="src\UI\addressbook_edit.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\UI\addressbook_data.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <EmbeddedResource Include="resources\SharpWebMail.en.resources">
-    	<LogicalName>SharpWebMail.en.resources</LogicalName>
-    	<Culture>en</Culture>
+      <LogicalName>SharpWebMail.en.resources</LogicalName>
+      <Culture>en</Culture>
     </EmbeddedResource>
     <None Include="resources\resources.cmd" />
     <None Include="resources\SharpWebMail.es.resources" />
@@ -190,5 +207,10 @@
     <None Include="asp.net\addressbook_edit.aspx" />
     <None Include="asp.net\addressbook_data.aspx" />
   </ItemGroup>
-  <Import Project="$(SharpDevelopBinPath)\SharpDevelop.Build.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="'$(SharpDevelopBinPath)'==''" />
+  <Import Project="$(MSBuildExtensionsPath)\MSBee\MSBuildExtras.FX1_1.CSharp.targets" Condition="'$(SharpDevelopBinPath)'=='' AND '$(TargetFrameworkVersion)'=='v1.1' and Exists('$(MSBuildExtensionsPath)\MSBee\MSBuildExtras.FX1_1.CSharp.targets')" />
+  <Import Project="$(SharpDevelopBinPath)\SharpDevelop.Build.CSharp.targets" Condition="'$(SharpDevelopBinPath)'!=''" />
+  <PropertyGroup>
+	<OutDir Condition="'$(SharpDevelopBinPath)'=='' and Exists('$(MSBuildExtensionsPath)\MSBee\MSBuildExtras.FX1_1.CSharp.targets')">asp.net\bin\</OutDir>
+  </PropertyGroup>
 </Project>

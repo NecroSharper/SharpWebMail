@@ -1,3 +1,7 @@
+11/13/2006
+ - Make project file compatible with vs 2005 + MSBee so it can target .NET 1.1 or .NET 2.0
+   In the abscense of MSBee it should compile properly too but targeting .NET 2.0.
+
 08/15/2006
  - Fix Makefile.
 
