@@ -1,3 +1,7 @@
+05/14/2010
+ - [SharpMessage] ParseMessage: When saving attachments to a stream, seek it back to the begining.
+ - [SharpTnefMessage] Parse: When saving attachments to a stream, seek it back to the begining.
+
 02/01/2009
 - [SharpMimeMessageStream] SaveTo: Skip trailing line break.
 

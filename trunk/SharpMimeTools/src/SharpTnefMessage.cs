@@ -233,6 +233,8 @@ namespace anmar.SharpMimeTools
 							} else {
 								attachment_cur.Stream.Write(buffer, 0, size);
 								attachment_cur.Stream.Flush();
+								if ( attachment_cur.Stream.CanSeek )
+									attachment_cur.Stream.Seek(0, System.IO.SeekOrigin.Begin);
 								attachment_cur.Size = attachment_cur.Stream.Length;
 							}
 							this._attachments.Add(attachment_cur);
@@ -389,5 +391,4 @@ namespace anmar.SharpMimeTools
 			Unknown    = System.UInt16.MaxValue
 		}
 	}
-	
 }
