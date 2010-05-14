@@ -474,6 +474,8 @@ namespace anmar.SharpMimeTools
 					} else {
 						System.IO.MemoryStream stream = new System.IO.MemoryStream();
 						if ( part.DumpBody(stream) ) {
+							if ( stream!=null && stream.CanSeek )
+								stream.Seek(0, System.IO.SeekOrigin.Begin);
 							attachment = new anmar.SharpMimeTools.SharpAttachment(stream);
 							if ( part.Name!=null )
 								attachment.Name = part.Name;
@@ -491,8 +493,6 @@ namespace anmar.SharpMimeTools
 						}
 #endif
 						System.IO.Stream stream = attachment.Stream;
-						if ( stream!=null && stream.CanSeek )
-							stream.Seek(0, System.IO.SeekOrigin.Begin);
 						anmar.SharpMimeTools.SharpTnefMessage tnef = new anmar.SharpMimeTools.SharpTnefMessage(stream);
 						if ( tnef.Parse(path) ) {
 							if ( tnef.Attachments!=null ) {
