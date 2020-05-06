@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -11,13 +11,26 @@
     <NoStdLib>False</NoStdLib>
     <NoConfig>False</NoConfig>
     <RunPostBuildEvent>OnSuccessfulBuild</RunPostBuildEvent>
-    <PostBuildEvent>resources\resources.cmd</PostBuildEvent>
+    <PostBuildEvent>$(SolutionDir)resources\resources.cmd</PostBuildEvent>
     <DebugType>None</DebugType>
     <RegisterForComInterop>False</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <BaseAddress>4194304</BaseAddress>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <FileAlignment>4096</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>Current</OldToolsVersion>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -91,17 +104,17 @@
     <DefineConstants>NET_2_0;API_2_0</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FredCK.FCKeditorV2, Version=2.6.3.22451, Culture=neutral, PublicKeyToken=4f86767c9b519a06, processorArchitecture=MSIL">
+      <HintPath>packages\FredCK.FCKeditorV2.2.6.3.22451\lib\FredCK.FCKeditorV2.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="log4net">
       <HintPath>bin\net\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FredCK.FCKeditorV2">
-      <HintPath>bin\net\FredCK.FCKeditorV2.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenSmtp">
@@ -122,15 +135,31 @@
     <Compile Include="src\sharpinbox.cs" />
     <Compile Include="src\net\sharppop3client.cs" />
     <Compile Include="src\net\tcptextclient.cs" />
-    <Compile Include="src\ui.pages\default.cs" />
-    <Compile Include="src\ui.pages\download.cs" />
+    <Compile Include="src\ui.pages\default.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\ui.pages\download.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="src\ui.pages\global.cs" />
-    <Compile Include="src\ui.pages\login.cs" />
-    <Compile Include="src\ui.pages\newmessage.cs" />
-    <Compile Include="src\ui.pages\globalUI.cs" />
-    <Compile Include="src\ui.pages\readmessage.cs" />
-    <Compile Include="src\ui.pages\search.cs" />
-    <Compile Include="src\ui.pages\readmessageheaders.cs" />
+    <Compile Include="src\ui.pages\login.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\ui.pages\newmessage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\ui.pages\globalUI.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\ui.pages\readmessage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\ui.pages\search.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\ui.pages\readmessageheaders.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="src\tools\basicsanitizer.cs" />
     <Compile Include="src\config\serverselector.cs" />
     <Compile Include="src\config\emailserverinfo.cs" />
@@ -139,14 +168,21 @@
     <Compile Include="src\net\emailclientfactory.cs" />
     <Compile Include="src\net\sharpimap4client.cs" />
     <Compile Include="src\net\baseemailclient.cs" />
-    <Compile Include="src\ui.pages\addressbook.cs" />
+    <Compile Include="src\ui.pages\addressbook.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="src\config\sharpwebmailconfighandler.cs" />
-    <Compile Include="src\ui.pages\addressbook_edit.cs" />
-    <Compile Include="src\ui.pages\addressbook_data.cs" />
+    <Compile Include="src\ui.pages\addressbook_edit.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="src\ui.pages\addressbook_data.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <EmbeddedResource Include="resources\SharpWebMail.en.resources">
-    	<LogicalName>SharpWebMail.en.resources</LogicalName>
-    	<Culture>en</Culture>
+      <LogicalName>SharpWebMail.en.resources</LogicalName>
+      <Culture>en</Culture>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="resources\resources.cmd" />
     <None Include="resources\SharpWebMail.es.resources" />
     <None Include="resources\SharpWebMail.sr-SP-Latn.resources" />
@@ -190,6 +226,44 @@
     <None Include="asp.net\addressbookfull.aspx" />
     <None Include="asp.net\addressbook_edit.aspx" />
     <None Include="asp.net\addressbook_data.aspx" />
+    <Content Include="web.config" />
+    <None Include="web.Debug-1.1.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Debug-2.0.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release-1.1.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release-2.0.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
-  <Import Project="$(SharpDevelopBinPath)\SharpDevelop.Build.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v16.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:30970/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

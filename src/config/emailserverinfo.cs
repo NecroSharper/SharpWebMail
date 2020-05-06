@@ -102,7 +102,7 @@ namespace anmar.SharpWebMail.Config
 		}
 		private static System.String ParseHost ( System.String value ) {
 			try {
-				System.Net.Dns.Resolve(value);
+				System.Net.Dns.GetHostEntry(value);
 			} catch ( System.Exception e ) {
 				if ( log.IsErrorEnabled )
 					log.Error(System.String.Format("Error parsing host: {0}", value), e);

@@ -41,7 +41,7 @@ namespace anmar.SharpWebMail.UI.Pages
 						path = System.IO.Path.Combine (path, msgid);
 					} catch ( System.ArgumentException ) {
 						// Remove invalid chars
-						foreach ( char ichar in System.IO.Path.InvalidPathChars ) {
+						foreach ( char ichar in System.IO.Path.GetInvalidPathChars() ) {
 							msgid = msgid.Replace ( ichar.ToString(), System.String.Empty );
 						}
 						path = System.IO.Path.Combine (path, msgid);
@@ -50,7 +50,7 @@ namespace anmar.SharpWebMail.UI.Pages
 						name = System.IO.Path.GetFileName(name);
 					} catch ( System.ArgumentException ) {
 						// Remove invalid chars
-						foreach ( char ichar in System.IO.Path.InvalidPathChars ) {
+						foreach ( char ichar in System.IO.Path.GetInvalidPathChars() ) {
 							name = name.Replace ( ichar.ToString(), System.String.Empty );
 						}
 						name = System.IO.Path.GetFileName(name);

@@ -135,7 +135,7 @@ namespace anmar.SharpWebMail.UI.Pages
 								log.Error("Filename has invalid chars", e);
 							// Remove invalid chars
 							System.String tmppart = part;
-							foreach ( char ichar in System.IO.Path.InvalidPathChars ) {
+							foreach ( char ichar in System.IO.Path.GetInvalidPathChars() ) {
 								tmppart = tmppart.Replace ( ichar.ToString(), System.String.Empty );
 							}
 							path = System.IO.Path.Combine (path, tmppart);
@@ -369,8 +369,8 @@ namespace anmar.SharpWebMail.UI.Pages
 							if ( attachment==null )
 								attachment = this.getfilename (Session["sharpwebmail/read/message/temppath"], Value, item.Text.Substring(0, item.Text.LastIndexOf(" (")));
 							if ( attachment!=null ) {
-								if ( message is System.Web.Mail.MailMessage )
-									((System.Web.Mail.MailMessage)message).Attachments.Add(new System.Web.Mail.MailAttachment(attachment));
+								if ( message is System.Net.Mail.MailMessage )
+									((System.Net.Mail.MailMessage)message).Attachments.Add(new System.Net.Mail.Attachment(attachment));
 								else if ( message is DotNetOpenMail.EmailMessage )
 									((DotNetOpenMail.EmailMessage)message).AddMixedAttachment(new DotNetOpenMail.FileAttachment(new System.IO.FileInfo(attachment)));
 								else if ( message is OpenSmtp.Mail.MailMessage )
@@ -387,18 +387,20 @@ namespace anmar.SharpWebMail.UI.Pages
 		/// </summary>
 		private System.String SendMail ( anmar.SharpWebMail.Config.EmailServerInfo server ) {
 			System.String message = null;
-			System.Web.Mail.SmtpMail.SmtpServer = server.Host;
+			var smtpClient = new System.Net.Mail.SmtpClient();
+			smtpClient.Host = server.Host;
 
-			System.Web.Mail.MailMessage mailMessage = new System.Web.Mail.MailMessage();
-			mailMessage.To = this.toemail.Value;
-			mailMessage.From = System.String.Format("{0} <{1}>", this.fromname.Value, this.GetFromAddress());
+			string to = this.toemail.Value;
+			string from = System.String.Format("{0} <{1}>", this.fromname.Value, this.GetFromAddress());
+			
+			System.Net.Mail.MailMessage mailMessage = new System.Net.Mail.MailMessage(from, to);
 			mailMessage.Subject = this.subject.Value.Trim();
 			System.String format = Request.Form["format"];
 			if ( format!=null && format.Equals("html") ) {
-				mailMessage.BodyFormat = System.Web.Mail.MailFormat.Html;
+				mailMessage.IsBodyHtml = true;
 				mailMessage.Body = bodyStart + FCKEditor.Value + bodyEnd;
 			} else {
-				mailMessage.BodyFormat = System.Web.Mail.MailFormat.Text;
+				mailMessage.IsBodyHtml = false;
 				mailMessage.Body = FCKEditor.Value;
 			}
 
@@ -418,7 +420,7 @@ namespace anmar.SharpWebMail.UI.Pages
 			this.ProcessMessageAttachments(mailMessage);
 			try {
 				if ( log.IsDebugEnabled) log.Debug (System.String.Concat("Sending message. engine: internal , protocol: ", server.Protocol));
-				System.Web.Mail.SmtpMail.Send(mailMessage);
+				smtpClient.Send(mailMessage);
 				if ( log.IsDebugEnabled) log.Debug ( "Message sent" );
 			} catch (System.Exception e) {
 				message = e.Message;

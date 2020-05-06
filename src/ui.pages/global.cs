@@ -105,7 +105,7 @@ namespace anmar.SharpWebMail.UI.Pages
 
 			resources = new System.Resources.ResourceManager("SharpWebMail", System.Reflection.Assembly.GetExecutingAssembly());
 			Application["resources"] = resources;
-			System.Collections.Hashtable config = (System.Collections.Hashtable)System.Configuration.ConfigurationSettings.GetConfig("sharpwebmail");
+			System.Collections.Hashtable config = (System.Collections.Hashtable)System.Configuration.ConfigurationManager.GetSection("sharpwebmail");
 			foreach ( System.Collections.DictionaryEntry item in config ) {
 				Application.Add(item.Key.ToString(), item.Value);
 			}
