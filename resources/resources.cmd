@@ -1,5 +1,7 @@
 @ECHO OFF
 
+PATH=%PATH%;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin;C:\Program Files\Microsoft SDKs\Windows\v7.0A\Bin
+
 SETLOCAL ENABLEDELAYEDEXPANSION
 
 REM Build Satellite assemblies
@@ -11,7 +13,7 @@ goto :end
 
 :resource
 SET TARGET=bin\%1
-SET FINALTARGET=..\asp.net\%TARGET%
+SET FINALTARGET=..\%TARGET%
 IF NOT EXIST %FINALTARGET% (
 	mkdir %FINALTARGET%
 )
