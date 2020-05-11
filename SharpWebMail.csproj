@@ -61,12 +61,15 @@
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-2.0|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <Optimize>False</Optimize>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>DEBUG;NET_2_0;API_2_0</DefineConstants>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-2.0|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -182,6 +185,7 @@
       <LogicalName>SharpWebMail.en.resources</LogicalName>
       <Culture>en</Culture>
     </EmbeddedResource>
+    <None Include="FolderProfile.pubxml" />
     <None Include="packages.config" />
     <None Include="resources\resources.cmd" />
     <None Include="resources\SharpWebMail.es.resources" />
@@ -192,16 +196,53 @@
     <None Include="doc\TODO.txt" />
     <None Include="doc\cultures_neutral.txt" />
     <None Include="doc\cultures_specific.txt" />
-    <None Include="default.aspx" />
-    <None Include="download.aspx" />
-    <None Include="Global.asax" />
-    <None Include="globalUI.ascx" />
-    <None Include="login.aspx" />
-    <None Include="newmessage.aspx" />
-    <None Include="readmessage.aspx" />
-    <None Include="search.aspx" />
-    <None Include="sharpwebmail.css" />
-    <None Include="web.config" />
+    <Content Include="default.aspx" />
+    <Content Include="download.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="globalUI.ascx" />
+    <Content Include="images\BorderLeft.gif" />
+    <Content Include="images\BorderRight.gif" />
+    <Content Include="images\Border_inner.gif" />
+    <Content Include="images\FooterBackground.gif" />
+    <Content Include="images\FooterBackground_inner.gif" />
+    <Content Include="images\FooterLeft.gif" />
+    <Content Include="images\FooterLeft_inner.gif" />
+    <Content Include="images\FooterRight.gif" />
+    <Content Include="images\FooterRight_inner.gif" />
+    <Content Include="images\msgtoolbar_book.gif" />
+    <Content Include="images\msgtoolbar_delete.gif" />
+    <Content Include="images\msgtoolbar_forward.gif" />
+    <Content Include="images\msgtoolbar_header.gif" />
+    <Content Include="images\msgtoolbar_reply.gif" />
+    <Content Include="images\navbar_button_back.gif" />
+    <Content Include="images\navbar_button_back_over.gif" />
+    <Content Include="images\navbar_button_forward.gif" />
+    <Content Include="images\navbar_button_forward_over.gif" />
+    <Content Include="images\navbar_button_logout.gif" />
+    <Content Include="images\navbar_button_logout_over.gif" />
+    <Content Include="images\navbar_button_refresh.gif" />
+    <Content Include="images\navbar_button_refresh_over.gif" />
+    <Content Include="images\PanelClose.gif" />
+    <Content Include="images\sep.gif" />
+    <Content Include="images\sort_down.gif" />
+    <Content Include="images\sort_up.gif" />
+    <Content Include="images\spacer.gif" />
+    <Content Include="images\TitleBarBackground.gif" />
+    <Content Include="images\TitleBarBackground_inner.gif" />
+    <Content Include="images\TitleBarClose.gif" />
+    <Content Include="images\TitleBarCloseOver.gif" />
+    <Content Include="images\TitleBarLeft.gif" />
+    <Content Include="images\TitleBarLeft_inner.gif" />
+    <Content Include="images\TitleBarRight.gif" />
+    <Content Include="images\TitleBarRight_inner.gif" />
+    <Content Include="images\TitleBorderLeft.gif" />
+    <Content Include="images\TitleBorderRight.gif" />
+    <Content Include="login.aspx" />
+    <Content Include="newmessage.aspx" />
+    <Content Include="readmessage.aspx" />
+    <Content Include="search.aspx" />
+    <Content Include="sharpwebmail.css" />
+    <Content Include="web.config" />
     <None Include="fcke\fckconfig.js" />
     <None Include="resources\SharpWebMail.da.resources" />
     <None Include="resources\SharpWebMail.ru.resources" />
@@ -210,7 +251,7 @@
     <None Include="resources\SharpWebMail.ro.resources" />
     <None Include="resources\SharpWebMail.vi.resources" />
     <None Include="resources\SharpWebMail.it.resources" />
-    <None Include="addressbook.aspx" />
+    <Content Include="addressbook.aspx" />
     <None Include="resources\SharpWebMail.pt-BR.resources" />
     <None Include="SharpWebMail.build" />
     <None Include="resources\SharpWebMail.en.resources" />
@@ -223,9 +264,9 @@
     <None Include="resources\SharpWebMail.hu.resources" />
     <None Include="resources\SharpWebMail.id.resources" />
     <None Include="resources\SharpWebMail.tr.resources" />
-    <None Include="addressbookfull.aspx" />
-    <None Include="addressbook_edit.aspx" />
-    <None Include="addressbook_data.aspx" />
+    <Content Include="addressbookfull.aspx" />
+    <Content Include="addressbook_edit.aspx" />
+    <Content Include="addressbook_data.aspx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

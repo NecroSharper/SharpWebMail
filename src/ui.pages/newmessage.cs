@@ -425,7 +425,7 @@ namespace anmar.SharpWebMail.UI.Pages
 			} catch (System.Exception e) {
 				message = e.Message;
 #if DEBUG && !MONO
-				message += ". <br>InnerException: " + e.InnerException.Message;
+				message += ". <br>InnerException: " + e.InnerException?.Message;
 #endif
 				if ( log.IsErrorEnabled ) log.Error ( System.String.Concat("Error sending message. engine: internal , protocol: ", server.Protocol), e );
 				if ( log.IsErrorEnabled ) log.Error ( "Error sending message (InnerException)", e.InnerException );
