@@ -181,15 +181,29 @@
     <Compile Include="src\ui.pages\addressbook_data.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <EmbeddedResource Include="resources\SharpWebMail.en.resources">
-      <LogicalName>SharpWebMail.en.resources</LogicalName>
-      <Culture>en</Culture>
-    </EmbeddedResource>
+    <None Include="resources\SharpWebMail.ar.resx" />
+    <None Include="resources\SharpWebMail.da.resx" />
+    <None Include="resources\SharpWebMail.de.resx" />
+    <None Include="resources\SharpWebMail.el.resx" />
+    <None Include="resources\SharpWebMail.en.resx" />
+    <None Include="resources\SharpWebMail.es.resx" />
+    <None Include="resources\SharpWebMail.fr.resx" />
+    <None Include="resources\SharpWebMail.hu.resx" />
+    <None Include="resources\SharpWebMail.id.resx" />
+    <None Include="resources\SharpWebMail.it.resx" />
+    <None Include="resources\SharpWebMail.my.resx" />
+    <None Include="resources\SharpWebMail.nl.resx" />
+    <None Include="resources\SharpWebMail.pl.resx" />
+    <None Include="resources\SharpWebMail.pt-BR.resx" />
+    <None Include="resources\SharpWebMail.ro.resx" />
+    <None Include="resources\SharpWebMail.ru.resx" />
+    <None Include="resources\SharpWebMail.sv.resx" />
+    <None Include="resources\SharpWebMail.tr.resx" />
+    <None Include="resources\SharpWebMail.vi.resx" />
+    <None Include="resources\SharpWebMail.zh-CHT.resx" />
     <None Include="FolderProfile.pubxml" />
     <None Include="packages.config" />
     <None Include="resources\resources.cmd" />
-    <None Include="resources\SharpWebMail.es.resources" />
-    <None Include="resources\SharpWebMail.sr-SP-Latn.resources" />
     <None Include="changelog.txt" />
     <None Include="license.txt" />
     <None Include="doc\readme.txt" />
@@ -244,26 +258,8 @@
     <Content Include="sharpwebmail.css" />
     <Content Include="web.config" />
     <None Include="fcke\fckconfig.js" />
-    <None Include="resources\SharpWebMail.da.resources" />
-    <None Include="resources\SharpWebMail.ru.resources" />
-    <None Include="resources\SharpWebMail.el.resources" />
-    <None Include="resources\SharpWebMail.fr.resources" />
-    <None Include="resources\SharpWebMail.ro.resources" />
-    <None Include="resources\SharpWebMail.vi.resources" />
-    <None Include="resources\SharpWebMail.it.resources" />
     <Content Include="addressbook.aspx" />
-    <None Include="resources\SharpWebMail.pt-BR.resources" />
     <None Include="SharpWebMail.build" />
-    <None Include="resources\SharpWebMail.en.resources" />
-    <None Include="resources\SharpWebMail.zh-CHT.resources" />
-    <None Include="resources\SharpWebMail.nl.resources" />
-    <None Include="resources\SharpWebMail.pl.resources" />
-    <None Include="resources\SharpWebMail.sv.resources" />
-    <None Include="resources\SharpWebMail.ar.resources" />
-    <None Include="resources\SharpWebMail.de.resources" />
-    <None Include="resources\SharpWebMail.hu.resources" />
-    <None Include="resources\SharpWebMail.id.resources" />
-    <None Include="resources\SharpWebMail.tr.resources" />
     <Content Include="addressbookfull.aspx" />
     <Content Include="addressbook_edit.aspx" />
     <Content Include="addressbook_data.aspx" />
