@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="addressbookImportSuccess" xml:space="preserve">
+    <value>Data importerades utan problem (## adresser)</value>
+  </data>
+  <data name="msgtoolbarReply" xml:space="preserve">
+    <value>svara</value>
+  </data>
+  <data name="addressbookImport" xml:space="preserve">
+    <value>importera adresser</value>
+  </data>
+  <data name="addressbookNameLabel" xml:space="preserve">
+    <value>namn:</value>
+  </data>
+  <data name="newMessageWindowTitle" xml:space="preserve">
+    <value>Nytt meddelande</value>
+  </data>
+  <data name="refreshPageImageButton" xml:space="preserve">
+    <value>Uppdatera</value>
+  </data>
+  <data name="logoutLinkButton" xml:space="preserve">
+    <value>Logga ut</value>
+  </data>
+  <data name="searchWindowSearchButton" xml:space="preserve">
+    <value>Sök</value>
+  </data>
+  <data name="loginWindowPassword" xml:space="preserve">
+    <value>lösenord:</value>
+  </data>
+  <data name="msgtoolbarDelete" xml:space="preserve">
+    <value>ta bort</value>
+  </data>
+  <data name="addressbookImportExportData" xml:space="preserve">
+    <value>data:</value>
+  </data>
+  <data name="addressbookExport" xml:space="preserve">
+    <value>exportera adresser</value>
+  </data>
+  <data name="msgtoolbarCancel" xml:space="preserve">
+    <value>avbryt</value>
+  </data>
+  <data name="noSubject" xml:space="preserve">
+    <value>[ ingen rubrik ]</value>
+  </data>
+  <data name="newMessageWindowAttachmentsButton" xml:space="preserve">
+    <value>Bilagor</value>
+  </data>
+  <data name="newMessageLinkButton" xml:space="preserve">
+    <value>Nytt meddelande</value>
+  </data>
+  <data name="msgtoolbarHeader" xml:space="preserve">
+    <value>granska meddelandehuvuden</value>
+  </data>
+  <data name="newMessageValidationError" xml:space="preserve">
+    <value>Fel uppstod vid validering av formuläret.</value>
+  </data>
+  <data name="newMessageWindowSubjectLabel" xml:space="preserve">
+    <value>Rubrik:</value>
+  </data>
+  <data name="loginButton" xml:space="preserve">
+    <value>Logga in</value>
+  </data>
+  <data name="inboxHeaderNumber" xml:space="preserve">
+    <value>nº</value>
+  </data>
+  <data name="searchWindowTitle" xml:space="preserve">
+    <value>Sök i inkorgen</value>
+  </data>
+  <data name="newMessageWindowFormatTextLabel" xml:space="preserve">
+    <value>Vanlig text</value>
+  </data>
+  <data name="addressbookLabel" xml:space="preserve">
+    <value>adressbok:</value>
+  </data>
+  <data name="addressbookEntryInsertError" xml:space="preserve">
+    <value>Fel vid skapandet av adressuppgift</value>
+  </data>
+  <data name="inboxNextPage" xml:space="preserve">
+    <value>nästa</value>
+  </data>
+  <data name="forwardPrefixBody" xml:space="preserve">
+    <value>-------- Ursprungligt medelande --------</value>
+  </data>
+  <data name="addressbookEntryInsert" xml:space="preserve">
+    <value>lägg till adress</value>
+  </data>
+  <data name="loginWindowTitle" xml:space="preserve">
+    <value>Välkommen till</value>
+  </data>
+  <data name="addressbookLinkButton" xml:space="preserve">
+    <value>Adressbok</value>
+  </data>
+  <data name="errorMsgLogin" xml:space="preserve">
+    <value>Ogiltliga inloggningsuppgifter. Försök igen.</value>
+  </data>
+  <data name="loginWindowUsername2" xml:space="preserve">
+    <value>användarnamn:</value>
+  </data>
+  <data name="newMessageWindowSendButton" xml:space="preserve">
+    <value>Skicka</value>
+  </data>
+  <data name="addressbookEmailLabel" xml:space="preserve">
+    <value>e-post:</value>
+  </data>
+  <data name="newMessageWindowDateLabel" xml:space="preserve">
+    <value>Skickat:</value>
+  </data>
+  <data name="addressbookImportExport" xml:space="preserve">
+    <value>importera/exportera adresser</value>
+  </data>
+  <data name="optionsLabel" xml:space="preserve">
+    <value>Val</value>
+  </data>
+  <data name="bytes" xml:space="preserve">
+    <value>bytes</value>
+  </data>
+  <data name="searchLinkButton" xml:space="preserve">
+    <value>Sök i inkorgen</value>
+  </data>
+  <data name="addressbookImportError" xml:space="preserve">
+    <value>Fel vid import av data (## rad)</value>
+  </data>
+  <data name="addressbookEntryUpdate" xml:space="preserve">
+    <value>uppdatera adress</value>
+  </data>
+  <data name="newMessageWindowFromEmailLabel" xml:space="preserve">
+    <value>e-post:</value>
+  </data>
+  <data name="trashLinkButton" xml:space="preserve">
+    <value>Skräp</value>
+  </data>
+  <data name="msgtoolbarForward" xml:space="preserve">
+    <value>Vidarebefordra</value>
+  </data>
+  <data name="loginWindowUsername" xml:space="preserve">
+    <value>e-post:</value>
+  </data>
+  <data name="newMessageWindowFormatLabel" xml:space="preserve">
+    <value>Format:</value>
+  </data>
+  <data name="logoutImageButton" xml:space="preserve">
+    <value>logga ut</value>
+  </data>
+  <data name="newMessageWindowToEmailLabel" xml:space="preserve">
+    <value>Till:</value>
+  </data>
+  <data name="newMessageWindowAttachButton" xml:space="preserve">
+    <value>Bifoga</value>
+  </data>
+  <data name="addressbookEntryEdit" xml:space="preserve">
+    <value>editera</value>
+  </data>
+  <data name="addressbookImportDuplicatesLabel" xml:space="preserve">
+    <value>uppdatera dubbletter:</value>
+  </data>
+  <data name="addressbookEntryUpdateError" xml:space="preserve">
+    <value>Fel vid updatering av adressuppgift</value>
+  </data>
+  <data name="forwardPrefix" xml:space="preserve">
+    <value>vb</value>
+  </data>
+  <data name="replyPrefix" xml:space="preserve">
+    <value>SV</value>
+  </data>
+  <data name="newMessageWindowCcLabel" xml:space="preserve">
+    <value>Cc:</value>
+  </data>
+  <data name="addressbookDelimiterLabel" xml:space="preserve">
+    <value>separator:</value>
+  </data>
+  <data name="newMessageSent" xml:space="preserve">
+    <value>Meddelandet skickades utan problem.</value>
+  </data>
+  <data name="newMessageWindowFromNameLabel" xml:space="preserve">
+    <value>Från:</value>
+  </data>
+  <data name="newMessageWindowFormatHtmlLabel" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="addressbookEntryDeleteError" xml:space="preserve">
+    <value>Fel vid borttagning av adressuppgift</value>
+  </data>
+  <data name="replyPrefixBody" xml:space="preserve">
+    <value>-------- Ursprungligt medelande --------</value>
+  </data>
+  <data name="inboxHeaderFrom" xml:space="preserve">
+    <value>Från</value>
+  </data>
+  <data name="inboxHeaderDate" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="inboxHeaderSize" xml:space="preserve">
+    <value>Storlek</value>
+  </data>
+  <data name="newMessageWindowAttachmentAddButton" xml:space="preserve">
+    <value>Lägg till fil</value>
+  </data>
+  <data name="inboxLinkButton" xml:space="preserve">
+    <value>Inkorg</value>
+  </data>
+  <data name="inboxHeaderSubject" xml:space="preserve">
+    <value>Rubrik</value>
+  </data>
+  <data name="messages" xml:space="preserve">
+    <value>meddelanden</value>
+  </data>
+  <data name="inboxPrevPage" xml:space="preserve">
+    <value>föreg</value>
+  </data>
+</root>

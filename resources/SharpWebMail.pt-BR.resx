@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="addressbookImportSuccess" xml:space="preserve">
+    <value>Dados importados com sucesso (## endereços)</value>
+  </data>
+  <data name="msgtoolbarReply" xml:space="preserve">
+    <value>responder</value>
+  </data>
+  <data name="addressbookImport" xml:space="preserve">
+    <value>importar endereços</value>
+  </data>
+  <data name="addressbookNameLabel" xml:space="preserve">
+    <value>nome:</value>
+  </data>
+  <data name="newMessageWindowTitle" xml:space="preserve">
+    <value>Nova mensagem</value>
+  </data>
+  <data name="refreshPageImageButton" xml:space="preserve">
+    <value>Atualizar</value>
+  </data>
+  <data name="logoutLinkButton" xml:space="preserve">
+    <value>Encerrar</value>
+  </data>
+  <data name="searchWindowSearchButton" xml:space="preserve">
+    <value>Pesquisar</value>
+  </data>
+  <data name="loginWindowPassword" xml:space="preserve">
+    <value>senha:</value>
+  </data>
+  <data name="msgtoolbarDelete" xml:space="preserve">
+    <value>Apagar</value>
+  </data>
+  <data name="addressbookImportExportData" xml:space="preserve">
+    <value>dados:</value>
+  </data>
+  <data name="addressbookExport" xml:space="preserve">
+    <value>exportar endereços</value>
+  </data>
+  <data name="msgtoolbarCancel" xml:space="preserve">
+    <value>cancelar</value>
+  </data>
+  <data name="noSubject" xml:space="preserve">
+    <value>[ sem assunto ]</value>
+  </data>
+  <data name="newMessageWindowAttachmentsButton" xml:space="preserve">
+    <value>Anexos</value>
+  </data>
+  <data name="newMessageLinkButton" xml:space="preserve">
+    <value>Nova mensagem</value>
+  </data>
+  <data name="msgtoolbarHeader" xml:space="preserve">
+    <value>ver cabealhos (headers)</value>
+  </data>
+  <data name="newMessageValidationError" xml:space="preserve">
+    <value>Erro ao validar o Form.</value>
+  </data>
+  <data name="newMessageWindowSubjectLabel" xml:space="preserve">
+    <value>Assunto:</value>
+  </data>
+  <data name="loginButton" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="inboxHeaderNumber" xml:space="preserve">
+    <value>nº</value>
+  </data>
+  <data name="searchWindowTitle" xml:space="preserve">
+    <value>Procurar na Caixa de Entrada</value>
+  </data>
+  <data name="newMessageWindowFormatTextLabel" xml:space="preserve">
+    <value>Texto puro</value>
+  </data>
+  <data name="addressbookLabel" xml:space="preserve">
+    <value>catálogo de endereços:</value>
+  </data>
+  <data name="addressbookEntryInsertError" xml:space="preserve">
+    <value>Falha ao inserir registro de endereço</value>
+  </data>
+  <data name="inboxNextPage" xml:space="preserve">
+    <value>próxima</value>
+  </data>
+  <data name="forwardPrefixBody" xml:space="preserve">
+    <value>-------- Mensagem Original --------</value>
+  </data>
+  <data name="addressbookEntryInsert" xml:space="preserve">
+    <value>inserir endereço</value>
+  </data>
+  <data name="loginWindowTitle" xml:space="preserve">
+    <value>Bemvindo ao</value>
+  </data>
+  <data name="addressbookLinkButton" xml:space="preserve">
+    <value>Catálogo de endereços</value>
+  </data>
+  <data name="errorMsgLogin" xml:space="preserve">
+    <value>Login ou senha inválidos. Tente novamente</value>
+  </data>
+  <data name="loginWindowUsername2" xml:space="preserve">
+    <value>usuário:</value>
+  </data>
+  <data name="newMessageWindowSendButton" xml:space="preserve">
+    <value>enviar</value>
+  </data>
+  <data name="addressbookEmailLabel" xml:space="preserve">
+    <value>correio eletrônico:</value>
+  </data>
+  <data name="newMessageWindowDateLabel" xml:space="preserve">
+    <value>Enviado:</value>
+  </data>
+  <data name="addressbookImportExport" xml:space="preserve">
+    <value>importar/exportar endereços</value>
+  </data>
+  <data name="optionsLabel" xml:space="preserve">
+    <value>Opções</value>
+  </data>
+  <data name="bytes" xml:space="preserve">
+    <value>bytes</value>
+  </data>
+  <data name="searchLinkButton" xml:space="preserve">
+    <value>Pesquisar Caixa de Entrada</value>
+  </data>
+  <data name="addressbookImportError" xml:space="preserve">
+    <value>Falha ao importar dados (linha ##)</value>
+  </data>
+  <data name="addressbookEntryUpdate" xml:space="preserve">
+    <value>atualizar endereço</value>
+  </data>
+  <data name="newMessageWindowFromEmailLabel" xml:space="preserve">
+    <value>email:</value>
+  </data>
+  <data name="trashLinkButton" xml:space="preserve">
+    <value>Lixeira</value>
+  </data>
+  <data name="msgtoolbarForward" xml:space="preserve">
+    <value>encaminhar</value>
+  </data>
+  <data name="loginWindowUsername" xml:space="preserve">
+    <value>e-mail:</value>
+  </data>
+  <data name="newMessageWindowFormatLabel" xml:space="preserve">
+    <value>Formato:</value>
+  </data>
+  <data name="logoutImageButton" xml:space="preserve">
+    <value>encerrar</value>
+  </data>
+  <data name="newMessageWindowToEmailLabel" xml:space="preserve">
+    <value>Para:</value>
+  </data>
+  <data name="newMessageWindowAttachButton" xml:space="preserve">
+    <value>Anexo</value>
+  </data>
+  <data name="addressbookEntryEdit" xml:space="preserve">
+    <value>editar</value>
+  </data>
+  <data name="addressbookImportDuplicatesLabel" xml:space="preserve">
+    <value>atualizar duplicados:</value>
+  </data>
+  <data name="addressbookEntryUpdateError" xml:space="preserve">
+    <value>Falha ao atualizar registro de endereço</value>
+  </data>
+  <data name="forwardPrefix" xml:space="preserve">
+    <value>Enc</value>
+  </data>
+  <data name="replyPrefix" xml:space="preserve">
+    <value>RES</value>
+  </data>
+  <data name="newMessageWindowCcLabel" xml:space="preserve">
+    <value>Cc:</value>
+  </data>
+  <data name="addressbookDelimiterLabel" xml:space="preserve">
+    <value>delimitador:</value>
+  </data>
+  <data name="newMessageSent" xml:space="preserve">
+    <value>Mensagem enviada com sucesso.</value>
+  </data>
+  <data name="newMessageWindowFromNameLabel" xml:space="preserve">
+    <value>De:</value>
+  </data>
+  <data name="newMessageWindowFormatHtmlLabel" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="addressbookEntryDeleteError" xml:space="preserve">
+    <value>Falha ao apagar registro de endereço</value>
+  </data>
+  <data name="replyPrefixBody" xml:space="preserve">
+    <value>-------- Mensagem Original --------</value>
+  </data>
+  <data name="inboxHeaderFrom" xml:space="preserve">
+    <value>De</value>
+  </data>
+  <data name="inboxHeaderDate" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="inboxHeaderSize" xml:space="preserve">
+    <value>Tamanho</value>
+  </data>
+  <data name="newMessageWindowAttachmentAddButton" xml:space="preserve">
+    <value>Adicionar arquivo</value>
+  </data>
+  <data name="inboxLinkButton" xml:space="preserve">
+    <value>Caixa de Entrada</value>
+  </data>
+  <data name="inboxHeaderSubject" xml:space="preserve">
+    <value>Assunto</value>
+  </data>
+  <data name="messages" xml:space="preserve">
+    <value>mensagens</value>
+  </data>
+  <data name="inboxPrevPage" xml:space="preserve">
+    <value>anterior</value>
+  </data>
+</root>
